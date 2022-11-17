@@ -12,6 +12,9 @@ echo "Repository name: $repository_name"
 echo "Checkout gh-pages branch..."
 git checkout -f gh-pages
 
+echo "Delete existing SNAPSHOT directory..."
+rm -rf *-SNAPSHOT
+
 echo "Copy diagram folders..."
 find .. -type d -regex '\.\./[0-9].*$' -exec cp -rf -t . {} +
 
