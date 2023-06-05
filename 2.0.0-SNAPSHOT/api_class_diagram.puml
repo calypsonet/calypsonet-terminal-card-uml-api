@@ -1,6 +1,8 @@
 @startuml
 title
-        Calypsonet Terminal Card API 2.0.+ (2023-06-01)
+    <img:../assets/logo.png>
+
+    Terminal Card API 2.0.+ (2023-06-01)
 end title
 
 ' == THEME ==
@@ -51,8 +53,10 @@ hide <<grey>> stereotype
 
 ' == CONTENT ==
 
+package "card" as card {
+
 ' SPI
-package "SPI" as spi {
+package "spi" as spi {
     +interface "<color:blue>CardSelectionExtensionSpi" as CardSelectionExtensionSpi {
         +CardSelectionRequestSpi getCardSelectionRequest ()
         +SmartCardSpi parse (CardSelectionResponseApi cardSelectionResponseApi)
@@ -147,6 +151,8 @@ package "SPI" as spi {
         \tboolean isCardResponseComplete, String message, Throwable cause)
 }
 
+}
+
 ' Associations
 
 CardSelectionExtensionSpi ...> ParseException #C_LINK : throw >
@@ -179,16 +185,17 @@ ProxyReaderApi ..> AbstractApduException #C_LINK : throw >
 
 ' == STYLE ==
 
-package spi #C_GREY1 {}
+package card #C_GREY1 {}
+package card.spi #C_GREY2 {}
 
-interface ProxyReaderApi <<green>>
+interface card.ProxyReaderApi <<green>>
 
-interface CardSelectionResponseApi <<purple>>
-interface CardResponseApi <<purple>>
-interface ApduResponseApi <<purple>>
-abstract class AbstractApduException <<purple>>
-class ReaderBrokenCommunicationException <<purple>>
-class CardBrokenCommunicationException <<purple>>
-class UnexpectedStatusWordException <<purple>>
+interface card.CardSelectionResponseApi <<purple>>
+interface card.CardResponseApi <<purple>>
+interface card.ApduResponseApi <<purple>>
+abstract class card.AbstractApduException <<purple>>
+class card.ReaderBrokenCommunicationException <<purple>>
+class card.CardBrokenCommunicationException <<purple>>
+class card.UnexpectedStatusWordException <<purple>>
 
 @enduml
