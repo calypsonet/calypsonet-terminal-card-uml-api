@@ -9,8 +9,8 @@ cd "$repository_name" || exit
 
 echo "Repository name: $repository_name"
 
-echo "Checkout gh-pages branch..."
-git checkout -f gh-pages
+echo "Checkout doc branch..."
+git checkout -f doc
 
 echo "Delete existing SNAPSHOT directory..."
 rm -rf *-SNAPSHOT
