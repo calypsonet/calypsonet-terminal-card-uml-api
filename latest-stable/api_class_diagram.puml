@@ -1,0 +1,190 @@
+@startuml
+title
+    <img:../assets/logo.svg{scale=0.2}>
+
+    Terminal Card API 2.1.+ (2023-06-19)
+end title
+
+' == THEME ==
+
+'Couleurs issues de : https://htmlcolorcodes.com/fr/tableau-de-couleur/tableau-de-couleur-design-plat/
+!define C_GREY1 F8F9F9
+!define C_GREY2 F2F3F4
+!define C_GREY3 E5E7E9
+!define C_GREY4 D7DBDD
+!define C_GREY5 CACFD2
+!define C_GREY6 BDC3C7
+!define C_LINK 3498DB
+!define C_USE 27AE60
+!define C_THROW 2C3E50
+
+' -- Styles that don't work with new version of plantuml --
+skinparam stereotypeABorderColor #A9DCDF
+skinparam stereotypeIBorderColor #B4A7E5
+skinparam stereotypeCBorderColor #ADD1B2
+skinparam stereotypeEBorderColor #EB93DF
+' -- END --
+
+skinparam ClassBorderThickness 2
+skinparam ArrowThickness 2
+
+' Yellow
+skinparam ClassBackgroundColor #FEFECE
+skinparam ClassBorderColor #D4AC0D
+' Red
+skinparam ClassBackgroundColor<<red>> #FDEDEC
+skinparam ClassBorderColor<<red>> #E74C3C
+hide <<red>> stereotype
+' Purple
+skinparam ClassBackgroundColor<<purple>> #F4ECF7
+skinparam ClassBorderColor<<purple>> #8E44AD
+hide <<purple>> stereotype
+' blue
+skinparam ClassBackgroundColor<<blue>> #EBF5FB
+skinparam ClassBorderColor<<blue>> #3498DB
+hide <<blue>> stereotype
+' Green
+skinparam ClassBackgroundColor<<green>> #E9F7EF
+skinparam ClassBorderColor<<green>> #27AE60
+hide <<green>> stereotype
+' Grey
+skinparam ClassBackgroundColor<<grey>> #EAECEE
+skinparam ClassBorderColor<<grey>> #2C3E50
+hide <<grey>> stereotype
+
+' == CONTENT ==
+
+package "card" as card {
+
+' SPI
+package "spi" as spi {
+    +interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
+        +CardSelectionRequestSpi getCardSelectionRequest ()
+        +SmartCardSpi parse (CardSelectionResponseApi cardSelectionResponseApi)
+    }
+    +interface SmartCardSpi <<red>> {
+    }
+    ' REQUEST
+    +interface CardSelectionRequestSpi <<red>> {
+        +Set<Integer> getSuccessfulSelectionStatusWords ()
+        +CardRequestSpi getCardRequest ()
+    }
+    +interface CardRequestSpi <<red>> {
+        +List<ApduRequestSpi> getApduRequests ()
+        +boolean stopOnUnsuccessfulStatusWord ()
+    }
+    +interface ApduRequestSpi <<red>> {
+        +byte[] getApdu ()
+        +Set<Integer> getSuccessfulStatusWords ()
+        +String getInfo ()
+    }
+}
++class "**final** CardApiProperties" as ApiProperties <<green>> {
+    +{static} **final** String VERSION
+}
++class "<<Exception>>\n**final** ParseException" as ParseException <<green>> {
+    +ParseException (String message)
+    +ParseException (String message, Throwable cause)
+}
++interface ProxyReaderApi {
+    --
+    +CardResponseApi transmitCardRequest (
+        \tCardRequestSpi cardRequest,
+        \tChannelControl channelControl)
+
+    +void releaseChannel ()
+}
++enum ChannelControl <<green>> {
+    KEEP_OPEN
+    CLOSE_AFTER
+}
+' RESPONSE
++interface CardSelectionResponseApi {
+    +String getPowerOnData ()
+    +ApduResponseApi getSelectApplicationResponse ()
+    +boolean hasMatched ()
+    +CardResponseApi getCardResponse ()
+}
++interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
+    +List<ApduResponseApi> getApduResponses ()
+    +boolean isLogicalChannelOpen ()
+}
++interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
+    +byte[] getApdu ()
+    +byte[] getDataOut ()
+    +int getStatusWord ()
+}
+
++abstract class "<<Exception>>\nAbstractApduException" as AbstractApduException <<green>> {
+    --
+    #AbstractApduException (
+        \tCardResponseApi cardResponseApi,
+        \tboolean isCardResponseComplete,
+        \tString message)
+    #AbstractApduException (
+        \tCardResponseApi cardResponseApi,
+        \tboolean isCardResponseComplete,
+        \tString message,
+        \tThrowable cause)
+
+    +CardResponseApi getCardResponse ()
+    +boolean isCardResponseComplete ()
+}
++class "**final** ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
+    --
+    +ReaderBrokenCommunicationException (CardResponseApi cardResponseApi
+        \tboolean isCardResponseComplete, String message)
+    +ReaderBrokenCommunicationException (CardResponseApi cardResponseApi
+        \tboolean isCardResponseComplete, String message, Throwable cause)
+}
++class "**final** CardBrokenCommunicationException" as CardBrokenCommunicationException <<green>> extends AbstractApduException {
+    --
+    +CardBrokenCommunicationException (CardResponseApi cardResponseApi
+        \tboolean isCardResponseComplete, String message)
+    +CardBrokenCommunicationException (CardResponseApi cardResponseApi
+        \tboolean isCardResponseComplete, String message, Throwable cause)
+}
++class "**final** UnexpectedStatusWordException" as UnexpectedStatusWordException <<green>> extends AbstractApduException {
+    --
+    +UnexpectedStatusWordException (CardResponseApi cardResponseApi
+        \tboolean isCardResponseComplete, String message)
+    +UnexpectedStatusWordException (CardResponseApi cardResponseApi
+        \tboolean isCardResponseComplete, String message, Throwable cause)
+}
+
+}
+
+' Associations
+
+CardSelectionExtensionSpi .right.> ParseException #C_THROW : throw >
+CardSelectionExtensionSpi ..> SmartCardSpi #C_LINK : provide >
+CardSelectionExtensionSpi ..> CardSelectionRequestSpi #C_LINK : provide >
+CardSelectionExtensionSpi ..> CardSelectionResponseApi #C_USE : use >
+
+CardSelectionRequestSpi ..> CardRequestSpi #C_LINK : provide >
+
+CardRequestSpi ..> ApduRequestSpi #C_LINK : provide >
+
+CardSelectionResponseApi ..> ApduResponseApi #C_LINK : provide >
+CardSelectionResponseApi ..> CardResponseApi #C_LINK : provide >
+
+CardResponseApi ..> ApduResponseApi #C_LINK : provide >
+
+AbstractApduException *-up- "0..1" CardResponseApi #C_LINK
+
+ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
+ProxyReaderApi .up.> ChannelControl #C_USE : use >
+
+ProxyReaderApi .right.> CardResponseApi #C_LINK : provide >
+ProxyReaderApi ..> AbstractApduException #C_THROW : throw >
+
+' == LAYOUT ==
+
+ApiProperties -[hidden]- ParseException
+
+' == STYLE ==
+
+package card #C_GREY1 {}
+package card.spi #C_GREY2 {}
+
+@enduml
