@@ -1,4 +1,4 @@
-name: Publish Calypsonet Terminal Calypso API - UML class diagrams to GH pages
+name: Publish Calypsonet Terminal Card API - UML class diagrams to GH pages
 
 on:
   push:
@@ -11,12 +11,15 @@ jobs:
     steps:
       - name: Check out repository code from ${{ github.repository }}/${{ github.ref }}
         uses: actions/checkout@v3
+
       - name: Update permissions
         working-directory: .
         run: chmod +x ./.github/scripts/*.sh
+
       - name: Prepare publication locally
         working-directory: .
         run: ./.github/scripts/prepare_publication.sh
+
       - name: Deploy diagrams to doc
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -24,3 +27,10 @@ jobs:
           publish_dir: ./${{ github.event.repository.name }}
           publish_branch: doc
           enable_jekyll: true
+
+      - name: Trigger central documentation update
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.ORG_GITHUB_BOT_TOKEN }}
+          repository: calypsonet/calypsonet-terminal-api-docs
+          event-type: update-submodules
