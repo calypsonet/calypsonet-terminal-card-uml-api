@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Card API 2.1.+ (2023-06-19)
+    Terminal Card API 2.0.+ (2023-06-19)
 end title
 
 ' == THEME ==
@@ -58,7 +58,7 @@ package "card" as card {
 
 ' SPI
 package "spi" as spi {
-    +interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
+    +interface "<color:blue>CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
         +CardSelectionRequestSpi getCardSelectionRequest ()
         +SmartCardSpi parse (CardSelectionResponseApi cardSelectionResponseApi)
     }
@@ -66,7 +66,7 @@ package "spi" as spi {
     }
     ' REQUEST
     +interface CardSelectionRequestSpi <<red>> {
-        +Set<Integer> getSuccessfulSelectionStatusWords ()
+        +<color:blue>Set<Integer> getSuccessfulSelectionStatusWords ()
         +CardRequestSpi getCardRequest ()
     }
     +interface CardRequestSpi <<red>> {
@@ -82,7 +82,7 @@ package "spi" as spi {
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** String VERSION
 }
-+class "<<Exception>>\n**final** ParseException" as ParseException <<green>> {
++class "<<Exception>>\n<color:blue>**final** ParseException" as ParseException <<green>> {
     +ParseException (String message)
     +ParseException (String message, Throwable cause)
 }
