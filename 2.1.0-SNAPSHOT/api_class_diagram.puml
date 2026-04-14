@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Card API 2.1.+ (2026-04-08)
+    Terminal Card API 2.1.+ (2026-04-14)
 end title
 
 ' == THEME ==
@@ -80,6 +80,7 @@ package "spi" as spi {
         +byte[] getApdu ()
         +Set<Integer> getSuccessfulStatusWords ()
         +String getInfo ()
+        +<color:blue>Long getApduExchangeMaxDuration ()
     }
 }
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
@@ -121,6 +122,7 @@ package "spi" as spi {
     +byte[] getApdu ()
     +byte[] getDataOut ()
     +int getStatusWord ()
+    +<color:blue>Long getApduExchangeDuration ()
 }
 
 +abstract class "<<Exception>>\nAbstractApduException" as AbstractApduException <<green>> {
@@ -158,6 +160,13 @@ package "spi" as spi {
         \tboolean isCardResponseComplete, String message)
     +UnexpectedStatusWordException (CardResponseApi cardResponseApi
         \tboolean isCardResponseComplete, String message, Throwable cause)
+}
++class "<color:blue>**final** ApduExchangeDurationExceededException" as ApduExchangeDurationExceededException <<green>> extends AbstractApduException {
+    --
+    +<color:blue>ApduExchangeDurationExceededException (CardResponseApi cardResponseApi
+        \t<color:blue>boolean isCardResponseComplete, String message)
+    +<color:blue>ApduExchangeDurationExceededException (CardResponseApi cardResponseApi
+        \t<color:blue>boolean isCardResponseComplete, String message, Throwable cause)
 }
 
 }
