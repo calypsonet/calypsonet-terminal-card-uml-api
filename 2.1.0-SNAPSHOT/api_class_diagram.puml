@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Card API 2.1.+ (2026-04-14)
+    Terminal Card API 2.1.+ (2026-04-21)
 end title
 
 ' == THEME ==
@@ -63,9 +63,10 @@ package "spi" as spi {
         +SmartCardSpi parse (CardSelectionResponseApi cardSelectionResponseApi)
     }
     +interface SmartCardSpi <<red>> {
-        +<color:blue>boolean isActive ()
-        +<color:blue>int getChannel ()
         +<color:blue>void deactivate ()
+    }
+    +interface "<color:blue>MultichannelSmartCardSpi" as MultichannelSmartCardSpi <<red>> extends SmartCardSpi {
+        +<color:blue>int getChannel ()
     }
     ' REQUEST
     +interface CardSelectionRequestSpi <<red>> {
@@ -96,11 +97,17 @@ package "spi" as spi {
         \t<color:red><s>CardRequestSpi cardRequest,
         \t<color:red><s>ChannelControl channelControl)
 
+    +<color:red><s>void releaseChannel ()
+
     +<color:blue>CardResponseApi transmitCardRequest (
         \t<color:blue>CardRequestSpi cardRequest,
         \t<color:blue>SmartCardSpi smartCard)
 
-    +<color:red><s>void releaseChannel ()
+    +<color:blue>CardResponseApi transmitCardRequestAndCloseChannel (
+        \t<color:blue>CardRequestSpi cardRequest,
+        \t<color:blue>MultichannelSmartCardSpi multichannelSmartCard)
+
+    +<color:blue>void closeChannel (MultichannelSmartCardSpi multichannelSmartCard)
 }
 +enum "<color:red><s>ChannelControl" as ChannelControl <<green>> {
     <color:red><s>KEEP_OPEN
@@ -116,7 +123,7 @@ package "spi" as spi {
 }
 +interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
     +List<ApduResponseApi> getApduResponses ()
-    +boolean isLogicalChannelOpen ()
+    +<color:red><s>boolean isLogicalChannelOpen ()
 }
 +interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
     +byte[] getApdu ()
@@ -192,6 +199,7 @@ AbstractApduException *-up- "0..1" CardResponseApi #C_LINK
 ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
 ProxyReaderApi .up.> ChannelControl #C_USE : use >
 ProxyReaderApi .up.> SmartCardSpi #C_USE : use >
+ProxyReaderApi .left.> MultichannelSmartCardSpi #C_USE : use >
 
 ProxyReaderApi .right.> CardResponseApi #C_LINK : provide >
 ProxyReaderApi ..> AbstractApduException #C_THROW : throw >
