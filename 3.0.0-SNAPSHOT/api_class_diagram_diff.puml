@@ -3,6 +3,7 @@ title
     <img:../assets/logo.svg{scale=0.2}>
 
     Terminal Card API 3.0.+ (2026-04-21)
+    DIFF with 2.0
 end title
 
 ' == THEME ==
@@ -93,6 +94,12 @@ package "spi" as spi {
 }
 +interface ProxyReaderApi {
     --
+    +<color:red><s>CardResponseApi transmitCardRequest (
+        \t<color:red><s>CardRequestSpi cardRequest,
+        \t<color:red><s>ChannelControl channelControl)
+
+    +<color:red><s>void releaseChannel ()
+
     +<color:blue>CardResponseApi transmitCardRequest (
         \t<color:blue>CardRequestSpi cardRequest,
         \t<color:blue>SmartCardSpi smartCard)
@@ -102,6 +109,10 @@ package "spi" as spi {
         \t<color:blue>MultichannelSmartCardSpi multichannelSmartCard)
 
     +<color:blue>void closeChannel (MultichannelSmartCardSpi multichannelSmartCard)
+}
++enum "<color:red><s>ChannelControl" as ChannelControl <<green>> {
+    <color:red><s>KEEP_OPEN
+    <color:red><s>CLOSE_AFTER
 }
 ' RESPONSE
 +interface CardSelectionResponseApi {
@@ -113,6 +124,7 @@ package "spi" as spi {
 }
 +interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
     +List<ApduResponseApi> getApduResponses ()
+    +<color:red><s>boolean isLogicalChannelOpen ()
 }
 +interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
     +byte[] getApdu ()
@@ -186,6 +198,7 @@ CardResponseApi ..> ApduResponseApi #C_LINK : provide >
 AbstractApduException *-up- "0..1" CardResponseApi #C_LINK
 
 ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
+ProxyReaderApi .up.> ChannelControl #C_USE : use >
 ProxyReaderApi .up.> SmartCardSpi #C_USE : use >
 ProxyReaderApi .left.> MultichannelSmartCardSpi #C_USE : use >
 
