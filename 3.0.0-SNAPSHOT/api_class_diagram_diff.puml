@@ -55,6 +55,19 @@ hide <<grey>> stereotype
 
 ' == CONTENT ==
 
+legend top
+    * __Text__
+    *** <color:blue><b>New element added since the last version
+    *** <color:red><s><b>Element marked as deprecated since the last version
+    *** <s><b>Element marked as deprecated
+    *** <color:grey><b>Work in progress...
+    * __Object__
+    *** <back:#EBF5FB><color:#3498DB><b>Factory or interface provided by the factory
+    *** <back:#FEFECE><color:#D4AC0D><b>Interface that cannot be instantiated directly by the factory
+    *** <back:#FDEDEC><color:#E74C3C><b>SPI (Service Provider Interface) to be provided by the end-user
+    *** <back:#E9F7EF><color:#27AE60><b>Class, enum or exception
+end legend
+
 package "card" as card {
 
 ' SPI
@@ -134,47 +147,16 @@ package "spi" as spi {
 }
 
 +abstract class "<<Exception>>\nAbstractApduException" as AbstractApduException <<green>> {
-    --
-    #AbstractApduException (
-        \tCardResponseApi cardResponseApi,
-        \tboolean isCardResponseComplete,
-        \tString message)
-    #AbstractApduException (
-        \tCardResponseApi cardResponseApi,
-        \tboolean isCardResponseComplete,
-        \tString message,
-        \tThrowable cause)
-
     +CardResponseApi getCardResponse ()
     +boolean isCardResponseComplete ()
 }
-+class "**final** ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
-    --
-    +ReaderBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message)
-    +ReaderBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message, Throwable cause)
++class "ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
 }
-+class "**final** CardBrokenCommunicationException" as CardBrokenCommunicationException <<green>> extends AbstractApduException {
-    --
-    +CardBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message)
-    +CardBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message, Throwable cause)
++class "CardBrokenCommunicationException" as CardBrokenCommunicationException <<green>> extends AbstractApduException {
 }
-+class "**final** UnexpectedStatusWordException" as UnexpectedStatusWordException <<green>> extends AbstractApduException {
-    --
-    +UnexpectedStatusWordException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message)
-    +UnexpectedStatusWordException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message, Throwable cause)
++class "UnexpectedStatusWordException" as UnexpectedStatusWordException <<green>> extends AbstractApduException {
 }
-+class "<color:blue>**final** ApduExchangeDurationExceededException" as ApduExchangeDurationExceededException <<green>> extends AbstractApduException {
-    --
-    +<color:blue>ApduExchangeDurationExceededException (CardResponseApi cardResponseApi
-        \t<color:blue>boolean isCardResponseComplete, String message)
-    +<color:blue>ApduExchangeDurationExceededException (CardResponseApi cardResponseApi
-        \t<color:blue>boolean isCardResponseComplete, String message, Throwable cause)
++class "<color:blue>ApduExchangeDurationExceededException" as ApduExchangeDurationExceededException <<green>> extends AbstractApduException {
 }
 
 }
