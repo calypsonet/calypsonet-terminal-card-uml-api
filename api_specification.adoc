@@ -1,0 +1,759 @@
+= Terminal Card API -- Technical Specification
+Calypso Networks Association <https://calypsonet.org>
+v2.0.0-SNAPSHOT, {docdate}
+:doctype: book
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:sectanchors:
+:sectlinks:
+:data-uri:
+:icons: font
+:rouge-style: github
+:source-highlighter: rouge
+:docinfodir: {docdir}/assets
+:docinfo: shared
+:imagesoutdir: {docdir}/gen
+:pdf-themesdir: {docdir}/assets
+:pdf-theme: calypso
+:pdf-fontsdir: {docdir}/assets/fonts
+:experimental:
+:xrefstyle: short
+:figure-caption: Figure
+:table-caption: Table
+:example-caption: Example
+:appendix-caption: Appendix
+:organization: Calypso Networks Association
+:short-name: CNA
+:spec-name: Terminal Card API
+:spec-id: CNA-TC-API
+:spec-version: 2.0.0-SNAPSHOT
+
+[abstract]
+== Abstract
+
+This document is the official technical specification of the **{spec-name}** standardised
+by the **{organization}** ({short-name}).
+It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
+relationships and behavioural requirements that any conforming implementation of the {spec-name} MUST satisfy.
+
+The {spec-name} is the *underside* of the *Terminal Reader API* ([CNA-TR-API]). It defines the contract used
+internally by reader implementations and by card extension modules to exchange APDU-level data with cards, while
+the *Terminal Reader API* remains the public-facing surface used by terminal applications.
+
+[discrete]
+== Document Status
+
+[cols="1h,3", grid=rows, frame=ends]
+|===
+| Specification ID    | {spec-id}
+| Version             | {spec-version}
+| Status              | Working Draft
+| Editor              | {organization}
+| Reference model     | link:api_class_diagram.puml[`api_class_diagram.puml`] / link:api_class_diagram.svg[`api_class_diagram.svg`]
+| Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
+|===
+
+[discrete]
+== Revision History
+
+[cols="1,2,2,5", options="header"]
+|===
+| Version | Date | Editor | Description
+| 1.0.0          | _TBC_ | CNA  | Initial release.
+| {spec-version} | _TBD_ | CNA  | Introduction of `CardSelectionExtensionSpi`, `ParseException` and per-request successful-selection status words.
+|===
+
+// =============================================================================
+== Introduction
+
+=== Purpose
+
+The {spec-name} defines the contract by which:
+
+* a *reader implementation* MUST expose an APDU transmission interface (the *proxy reader*) so that selection
+  managers and card transaction managers can exchange data with cards in a uniform way,
+* a *card extension* MUST expose its selection process (request preparation and response parsing) so that the
+  selection manager defined by [CNA-TR-API] can drive it,
+* exceptions raised at APDU exchange level MUST carry the responses already received before the failure.
+
+The API is *internal*: terminal applications MUST NOT use it directly. It is the contract that allows reader
+implementations and card extensions written by independent vendors to interoperate.
+
+=== Scope
+
+This specification covers:
+
+* the APDU request and response data carriers,
+* the selection request and response data carriers,
+* the proxy-reader contract through which APDUs are transmitted,
+* the SPI implemented by card extensions to drive selection,
+* the channel-control policy applied after a card request,
+* the family of exceptions raised at APDU exchange level.
+
+The following topics are *out of scope*:
+
+* the public reader interface exposed to terminal applications (covered by [CNA-TR-API]),
+* the parsing of APDU payloads (deferred to specific card extension specifications).
+
+=== Conformance
+
+A software product conforms to this specification if and only if:
+
+. it implements every interface and class defined in <<sec_specification>> with the operations and semantics
+  prescribed in this document,
+. it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
+. when implementing an adapter of <<type_ProxyReaderApi,`ProxyReaderApi`>>, it MUST also implement the
+  `CardReader` interface of [CNA-TR-API]; when implementing an adapter of
+  <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi`>>, it MUST also implement the
+  `CardSelectionExtension` interface of [CNA-TR-API]; when implementing an adapter of
+  <<type_SmartCardSpi,`SmartCardSpi`>>, it MUST also implement the `SmartCard` interface of [CNA-TR-API].
+
+Throughout this specification, the key words **MUST**, **MUST NOT**, **SHALL**, **SHALL NOT**, **SHOULD**,
+**SHOULD NOT**, **RECOMMENDED**, **MAY** and **OPTIONAL** are to be interpreted as described in **RFC 2119** and
+**RFC 8174** when, and only when, they appear in all capitals.
+
+=== Document Conventions
+
+==== Language-agnostic types
+
+[cols="1,3,3", options="header"]
+|===
+| Symbolic type   | Description                                                     | Typical bindings
+| `string`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
+| `boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
+| `integer`       | Signed 32-bit integer.                                           | `int`, `Int32`.
+| `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
+| `list<T>`       | Ordered collection of `T` values.                                | `List<T>`, `Vec<T>`.
+| `set<T>`        | Unordered collection of unique `T` values.                       | `Set<T>`, `HashSet<T>`.
+| `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+|===
+
+=== References
+
+[cols="1,1,4", options="header"]
+|===
+| Reference | Identifier | Title
+
+| [[ref_rfc2119]] [RFC 2119]
+| RFC 2119
+| _Key words for use in RFCs to Indicate Requirement Levels_, S. Bradner, March 1997.
+
+| [[ref_iso7816]] [ISO/IEC 7816-4]
+| ISO/IEC 7816-4
+| _Identification cards -- Integrated circuit cards -- Part 4: Organization, security and commands for interchange_.
+
+| [[ref_cna_tr]] [CNA-TR-API]
+| CNA-TR-API
+| _Terminal Reader API Specification_, {organization}.
+|===
+
+// =============================================================================
+== Terms, Definitions and Abbreviations
+
+=== Terms and Definitions
+
+[cols="1,4", options="header"]
+|===
+| Term              | Definition
+
+| APDU              | Application Protocol Data Unit, the message format used between the terminal and the card (ISO/IEC 7816-4).
+| Case 4 APDU       | APDU command that carries data in both directions; the `Le` field is mandatory and SHALL be set to `00h`.
+| Card Extension    | Software module providing the card-specific dialogue with a card family (e.g. Calypso).
+| Logical Channel   | Software-level communication path established with a card after a successful selection.
+| Physical Channel  | Hardware-level communication path between the reader and the card.
+| Proxy Reader      | Reader-side facet exposing APDU transmission to extension layers, by opposition to the public reader interface presented to terminal applications.
+| Status Word (SW)  | Two-byte trailer of an APDU response indicating the outcome of the command.
+| SPI               | Service Provider Interface -- a set of interfaces designed to be implemented by an extension module.
+|===
+
+=== Abbreviations
+
+[cols="1,4", options="header"]
+|===
+| Abbreviation | Expansion
+
+| APDU | Application Protocol Data Unit
+| ATR  | Answer To Reset
+| CNA  | Calypso Networks Association
+| FCI  | File Control Information
+| ISO  | International Organization for Standardization
+| SPI  | Service Provider Interface
+| SW   | Status Word
+| UML  | Unified Modelling Language
+|===
+
+// =============================================================================
+[[sec_architecture]]
+== Architectural Overview
+
+=== Functional positioning
+
+[plantuml, target=architecture-overview, format=svg]
+....
+@startuml
+skinparam shadowing false
+skinparam roundCorner 8
+
+component "Terminal Application" as App
+component "Terminal Reader API\n[CNA-TR-API]" as TR
+component "Card Extension\n(e.g. Calypso Card API)" as Ext
+component "Terminal Card API\n(this specification)" as TC
+component "Reader Implementation" as Drv
+
+App --> TR : public surface
+Ext --> TC : drives selection / dialog
+TR  ..> TC : adapter relationship
+Drv --> TC : implements
+@enduml
+....
+
+=== Logical packages
+
+[cols="1,1,4", options="header"]
+|===
+| Package           | Role     | Summary
+
+| `card`            | Public API
+| Properties, data carriers (APDU response, card response, selection response), proxy-reader interface, channel-control policy and exceptions.
+
+| `card.spi`        | SPI
+| Data carriers and contracts implemented by card extensions and reader implementations.
+|===
+
+[[sec_class_diagram]]
+=== Reference class diagram
+
+* link:api_class_diagram.puml[`api_class_diagram.puml`] -- canonical UML model,
+* link:api_class_diagram.svg[`api_class_diagram.svg`]   -- rendered representation,
+* link:api_class_diagram_diff.puml[`api_class_diagram_diff.puml`] -- delta against the previous version.
+
+image::../api_class_diagram.svg[Terminal Card API class diagram, align=center]
+
+// =============================================================================
+[[sec_specification]]
+== API Specification
+
+=== Package card
+
+[[type_CardApiProperties]]
+==== CardApiProperties
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Final class
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Exposes the immutable properties of the {spec-name}.
+|===
+
+===== Constants
+
+[cols="1,1,1,4", options="header"]
+|===
+| Name      | Type     | Since  | Description
+
+| `VERSION` | `string` | 1.0.0  | String representation of the version of the API implemented by the conforming binding (e.g. `"2.0"`).
+|===
+
+[[type_ChannelControl]]
+==== ChannelControl
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Enumeration
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Policy for managing the physical channel after a card request has been executed.
+|===
+
+[cols="1,1,4", options="header"]
+|===
+| Value          | Since | Description
+
+| `KEEP_OPEN`    | 1.0.0 | Leaves the physical channel open.
+| `CLOSE_AFTER`  | 1.0.0 | Terminates communication with the card. The physical channel closes instantly, or a card removal sequence is initiated depending on the observation mode.
+|===
+
+[[type_ApduResponseApi]]
+==== ApduResponseApi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Carries the data received in response to a single APDU command (variable-length payload followed by the status word).
+|===
+
+Instances MUST be serialisable so that they can be transported across distributed boundaries.
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getApdu() -> byte array`
+| Since       | 1.0.0
+| Description | Returns the raw response bytes received from the card, *including* the status word.
+| Returns     | A `byte array` of at least 2 bytes.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getDataOut() -> byte array`
+| Since       | 1.0.0
+| Description | Returns the data part of the response (excluding the status word).
+| Returns     | A non-`null` `byte array`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getStatusWord() -> integer`
+| Since       | 1.0.0
+| Description | Returns the status word as an `integer` between `0000h` and `FFFFh`.
+| Returns     | An `integer` in the range `[0x0000, 0xFFFF]`.
+| Throws      | None.
+|===
+
+[[type_CardResponseApi]]
+==== CardResponseApi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Groups multiple APDU responses received from the card, together with the execution status (logical channel state, completeness of the responses).
+|===
+
+A `CardResponseApi` MAY be embedded in an <<type_AbstractApduException,`AbstractApduException`>>; in that case
+some responses MAY be missing (e.g. the card was removed during processing, or processing stopped after an
+unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getApduResponses() -> list<ApduResponseApi>`
+| Since       | 1.0.0
+| Description | Returns the responses received for the executed APDU requests, in the same order in which the requests were submitted.
+| Returns     | A non-`null` `list`; empty if there is no response.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `isLogicalChannelOpen() -> boolean`
+| Since       | 1.0.0
+| Description | Indicates the state of the logical channel after the request has been processed.
+| Returns     | `true` if the logical channel is open, `false` otherwise.
+| Throws      | None.
+|===
+
+[[type_CardSelectionResponseApi]]
+==== CardSelectionResponseApi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Carries the data observed during the start-up phase with the card -- the selection step itself and any additional commands that may have been executed afterwards.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getPowerOnData() -> string`
+| Since       | 1.0.0
+| Description
+| Returns the card's power-on data as collected by the reader at insertion. For a contact reader, this is the
+  ISO/IEC 7816 Answer To Reset (ATR). For a contactless reader, the reader decides what this data is (virtual ATR,
+  anti-collision elements, proprietary representation). The data is exposed as a `string` that MAY be a
+  hexadecimal string or any other relevant representation.
+| Returns     | The power-on data, or `null` if no power-on data is available.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getSelectApplicationResponse() -> ApduResponseApi`
+| Since       | 1.0.0
+| Description | Returns the response received from the card to the *Select Application* command.
+| Returns     | The response, or `null` if no *Select Application* command was executed.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `hasMatched() -> boolean`
+| Since       | 1.0.0
+| Description | Indicates whether the inserted card matches the selection filters.
+| Returns     | `true` if the card matched, `false` otherwise.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getCardResponse() -> CardResponseApi`
+| Since       | 1.0.0
+| Description | Returns the responses corresponding to the requests carried by the originating <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi.getCardRequest`>>.
+| Returns     | The card response, or `null` if no card request had been defined.
+| Throws      | None.
+|===
+
+[[type_ProxyReaderApi]]
+==== ProxyReaderApi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Reader-side facet exposing APDU transmission and physical-channel control. The *underside* of the [CNA-TR-API] `CardReader` interface.
+|===
+
+[NOTE]
+====
+Adapters of <<type_ProxyReaderApi,`ProxyReaderApi`>> MUST also implement [CNA-TR-API] `CardReader`. To consume the
+API, the application casts a `CardReader` instance to `ProxyReaderApi`.
+====
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `transmitCardRequest(cardRequest: CardRequestSpi, channelControl: ChannelControl) -> CardResponseApi`
+| Since       | 1.0.0
+| Description
+| Transmits a <<type_CardRequestSpi,`CardRequestSpi`>>, applies the supplied <<type_ChannelControl,`ChannelControl`>>
+  policy and returns a <<type_CardResponseApi,`CardResponseApi`>>. The APDUs in the request MUST be sent in order;
+  the corresponding responses are appended to the returned object.
+
+  In case of an error when sending an APDU (communication failure, unexpected status word), an
+  <<type_AbstractApduException,`AbstractApduException`>> MUST be thrown. Any responses to previously transmitted
+  APDU commands MUST be attached to this exception so that the calling application can tolerate card tearing or
+  enforce strict APDU-by-APDU control (see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
+| Parameters
+| `cardRequest`     -- the card request. +
+  `channelControl`  -- the channel control policy to apply.
+| Returns     | A non-`null` <<type_CardResponseApi,`CardResponseApi`>>.
+| Throws
+| `IllegalArgumentException` -- if any parameter is `null`. +
+  `ReaderBrokenCommunicationException` -- if the communication with the reader has failed. +
+  `CardBrokenCommunicationException` -- if the communication with the card has failed. +
+  `UnexpectedStatusWordException` -- if any of the APDUs returned an unexpected status word and the request requires checking them.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `releaseChannel() -> void`
+| Since       | 1.0.0
+| Description | Releases the communication channel previously established with the card.
+| Throws      | `ReaderBrokenCommunicationException` -- if the communication with the reader has failed.
+|===
+
+=== Package card.spi
+
+[[type_ApduRequestSpi]]
+==== ApduRequestSpi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Carries the data required to build a single APDU command to send to a card.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getApdu() -> byte array`
+| Since       | 1.0.0
+| Description
+| Returns the APDU bytes to send to the card. For *case 4* APDU commands, the `Le` field is *mandatory* and MUST
+  be set to `00h`.
+| Returns     | A `byte array` of at least 4 bytes.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getSuccessfulStatusWords() -> set<integer>`
+| Since       | 1.0.0
+| Description | Returns the set of status words that MUST be considered successful for the APDU.
+| Returns     | A `set<integer>` containing at least `9000h`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getInfo() -> string`
+| Since       | 1.0.0
+| Description | Returns the descriptive information associated with this APDU request (typically the command name). This information is intended to enrich the logging.
+| Returns     | The descriptive information, or `null` if none has been defined.
+| Throws      | None.
+|===
+
+[[type_CardRequestSpi]]
+==== CardRequestSpi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Groups multiple APDUs to be executed consecutively, together with a flag controlling the reaction to unexpected status words.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getApduRequests() -> list<ApduRequestSpi>`
+| Since       | 1.0.0
+| Description | Returns the list of APDU requests carried by this card request.
+| Returns     | A non-empty `list<ApduRequestSpi>`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `stopOnUnsuccessfulStatusWord() -> boolean`
+| Since       | 1.0.0
+| Description | Indicates whether processing of the requests MUST stop at the first APDU that returns an unexpected status word.
+| Returns     | `true` to stop at the first unsuccessful status word, `false` to continue.
+| Throws      | None.
+|===
+
+[[type_CardSelectionRequestSpi]]
+==== CardSelectionRequestSpi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Carries the data provided as input to the selection process: a card selector (target profile) and an optional card request executed after a successful selection.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
+| Since       | 2.0.0
+| Description | Returns the status words that MUST be considered successful for the selection itself.
+| Returns     | A `set<integer>` containing at least `9000h`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getCardRequest() -> CardRequestSpi`
+| Since       | 1.0.0
+| Description | Returns the card request to be executed after the selection.
+| Returns     | The card request, or `null` if no card request has been defined.
+| Throws      | None.
+|===
+
+[[type_CardSelectionExtensionSpi]]
+==== CardSelectionExtensionSpi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 2.0.0
+| Purpose  | Provides the selection request and interprets the response in order to produce a <<type_SmartCardSpi,`SmartCardSpi`>>. The *underside* of the [CNA-TR-API] `CardSelectionExtension` interface.
+|===
+
+[NOTE]
+====
+Adapters of <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi`>> MUST also implement [CNA-TR-API]
+`CardSelectionExtension`.
+====
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
+| Since       | 1.0.0
+| Description | Returns the selection request prepared by the extension.
+| Returns     | A non-`null` <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
+| Since       | 1.0.0
+| Description | Analyses the response received during selection and returns a corresponding <<type_SmartCardSpi,`SmartCardSpi`>>.
+| Parameters  | `cardSelectionResponseApi` -- the card selection response.
+| Returns     | A non-`null` <<type_SmartCardSpi,`SmartCardSpi`>>.
+| Throws      | `ParseException` -- if the card selection response could not be parsed.
+|===
+
+[[type_SmartCardSpi]]
+==== SmartCardSpi
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Marker interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Provides run-time type information about the data that defines the [CNA-TR-API] `SmartCard` produced by the selection process.
+|===
+
+[NOTE]
+====
+Adapters of <<type_SmartCardSpi,`SmartCardSpi`>> MUST also implement [CNA-TR-API] `SmartCard`. The interface declares
+no operation at the API level.
+====
+
+// =============================================================================
+[[sec_exceptions]]
+== Exceptions
+
+All exceptions defined here are *checked* and MUST be declared by the operations that may raise them. Every
+exception carries the responses already received from the card before the failure occurred, so that the calling
+layer can tolerate partial responses.
+
+[[type_AbstractApduException]]
+=== AbstractApduException
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Abstract checked exception
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Common base type for every exception carrying response data received from the card up to the point a communication failure or an unexpected status word occurred.
+|===
+
+===== Constructors
+
+* `AbstractApduException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string)` -- _since 1.0.0_.
+* `AbstractApduException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string, cause: throwable)` -- _since 1.0.0_.
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `getCardResponse() -> CardResponseApi`
+| Since       | 1.0.0
+| Description | Returns the response data received from the card so far.
+| Returns     | A non-`null` <<type_CardResponseApi,`CardResponseApi`>>.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Signature   | `isCardResponseComplete() -> boolean`
+| Since       | 1.0.0
+| Description | Indicates whether the number of responses received equals the number of requests carried by the originating <<type_CardRequestSpi,`CardRequestSpi`>>.
+| Returns     | `true` if all expected responses have been received, `false` otherwise.
+| Throws      | None.
+|===
+
+[[type_CardBrokenCommunicationException]]
+=== CardBrokenCommunicationException
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Checked exception (final)
+| Package  | `card`
+| Since    | 1.0.0
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Purpose  | Raised when the communication with the card fails while transmitting a card request.
+|===
+
+===== Constructors
+
+* `CardBrokenCommunicationException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string)` -- _since 1.0.0_.
+* `CardBrokenCommunicationException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string, cause: throwable)` -- _since 1.0.0_.
+
+[[type_ReaderBrokenCommunicationException]]
+=== ReaderBrokenCommunicationException
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Checked exception (final)
+| Package  | `card`
+| Since    | 1.0.0
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Purpose  | Raised when the communication with the reader fails while transmitting a card request.
+|===
+
+===== Constructors
+
+* `ReaderBrokenCommunicationException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string)` -- _since 1.0.0_.
+* `ReaderBrokenCommunicationException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string, cause: throwable)` -- _since 1.0.0_.
+
+[[type_UnexpectedStatusWordException]]
+=== UnexpectedStatusWordException
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Checked exception (final)
+| Package  | `card`
+| Since    | 1.0.0
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Purpose  | Raised when an APDU response carries a status word that does not belong to the set of successful status words declared by the corresponding request, while the request requires checking them.
+|===
+
+===== Constructors
+
+* `UnexpectedStatusWordException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string)` -- _since 1.0.0_.
+* `UnexpectedStatusWordException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string, cause: throwable)` -- _since 1.0.0_.
+
+[[type_ParseException]]
+=== ParseException
+
+[cols="1h,4", grid=rows, frame=ends]
+|===
+| Kind     | Checked exception (final)
+| Package  | `card`
+| Since    | 2.0.0
+| Purpose  | Raised when the parsing of a card selection response fails -- typically because the *Select Application* command returned an invalid FCI structure.
+|===
+
+===== Constructors
+
+* `ParseException(message: string)` -- _since 2.0.0_.
+* `ParseException(message: string, cause: throwable)` -- _since 2.0.0_.
+
+// =============================================================================
+[[sec_behaviours]]
+== Behavioural Requirements
+
+. The order of APDUs in a <<type_CardRequestSpi,`CardRequestSpi`>> MUST be preserved by the proxy reader, and so
+  MUST the order of responses in the resulting <<type_CardResponseApi,`CardResponseApi`>>.
+. The set of successful status words declared by an <<type_ApduRequestSpi,`ApduRequestSpi`>> MUST contain at least
+  `9000h`.
+. The set of successful selection status words declared by a <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>
+  MUST contain at least `9000h`.
+. When `stopOnUnsuccessfulStatusWord` returns `true`, transmission of the remaining APDUs MUST stop at the first
+  unsuccessful status word; the responses already received MUST be returned in the exception payload.
+. The `isCardResponseComplete` flag of any <<type_AbstractApduException,`AbstractApduException`>> MUST reflect
+  exactly whether the number of responses already received equals the number of APDU requests in the originating
+  <<type_CardRequestSpi,`CardRequestSpi`>>.
+. An adapter implementing <<type_ProxyReaderApi,`ProxyReaderApi`>> MUST also implement [CNA-TR-API] `CardReader`;
+  similarly for <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi`>>/`CardSelectionExtension` and
+  <<type_SmartCardSpi,`SmartCardSpi`>>/`SmartCard`.
+
+// =============================================================================
+[appendix]
+== Copyright and License
+
+Copyright (c) {organization}, https://calypsonet.org.
+
+This specification is distributed under the terms of the *Eclipse Public License -- v 2.0* (EPL-2.0). A copy of the
+license is available in the link:LICENSE[`LICENSE`] file alongside this document and at
+https://www.eclipse.org/legal/epl-2.0/.
