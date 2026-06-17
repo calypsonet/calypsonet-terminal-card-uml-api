@@ -51,7 +51,6 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 | Version             | {spec-version}
 | Status              | Working Draft -- submitted to the CNA TC Terminal for validation
 | Editor              | {organization}
-| Reference model     | link:api_class_diagram.puml[`api_class_diagram.puml`] / link:api_class_diagram.svg[`api_class_diagram.svg`]
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
@@ -256,12 +255,13 @@ To enable software-level detection of relay attacks, this specification carries:
   `ApduExchangeDurationExceededException`>> raised when the effective duration exceeds the declared bound.
 
 [[sec_class_diagram]]
-=== Reference class diagram
+=== UML class diagram
 
-* link:api_class_diagram.puml[`api_class_diagram.puml`] -- canonical UML model,
-* link:api_class_diagram.svg[`api_class_diagram.svg`]   -- rendered representation.
 
-image::../api_class_diagram.svg[Terminal Card API class diagram, align=center]
+[plantuml, target="api_class_diagram", format="svg"]
+----
+include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
+----
 
 // =============================================================================
 [[sec_specification]]
