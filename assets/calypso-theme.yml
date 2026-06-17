@@ -1,0 +1,100 @@
+extends: default
+
+page:
+  margin: [1.0in, 0.67in, 0.67in, 0.67in]
+
+font:
+  catalog:
+    Montserrat: &montserrat
+      regular: Montserrat-Regular.ttf
+      bold: Montserrat-Bold.ttf
+      italic: Montserrat-Italic.ttf
+      bold_italic: Montserrat-BoldItalic.ttf
+    JetBrains Mono: &jetbrains
+      regular: JetBrainsMono-Regular.ttf
+      bold: JetBrainsMono-Bold.ttf
+    "M+ 1mn": *jetbrains
+    fallback: *montserrat
+
+base:
+  font-family: Montserrat
+  font-size: 10.5
+  font-color: #333333
+
+title_page:
+  align: center
+  logo:
+    align: center
+    image: image:logo.svg[pdfwidth=4.0in]
+    top: 20%
+  title:
+    align: center
+    font-color: #039efd
+  authors:
+    align: center
+  revision:
+    align: center
+
+heading:
+  font-color: #039efd
+  font-style: normal
+
+code:
+  font-family: JetBrains Mono
+  font-size: 8.5
+
+link:
+  font-color: #039efd
+  text-decoration: underline
+
+table:
+  head:
+    background-color: #f2f3f4
+    border-bottom-width: 0.5
+
+header:
+  height: 0.6in
+  border-color: #039efd
+  border-width: 0.5
+  padding: [16, 0, 4, 0]
+  font-family: Montserrat
+  font-size: 9
+  start-at: body
+  recto:
+    left:
+      content: image:logo.svg[pdfwidth=1.0in]
+      valign: center
+    right:
+      content: '{spec-name} -- {spec-version}'
+      valign: center
+  verso:
+    left:
+      content: image:logo.svg[pdfwidth=1.0in]
+      valign: center
+    right:
+      content: '{spec-name} -- {spec-version}'
+      valign: center
+
+footer:
+  height: 0.4in
+  border-color: #039efd
+  border-width: 0.5
+  padding: [4, 0, 4, 0]
+  font-family: Montserrat
+  font-size: 8
+  font-color: #6b7280
+  start-at: body
+  recto:
+    left:
+      content: '{revdate}'
+      valign: center
+    right:
+      content: '{page-number} / {page-count}'
+      valign: center
+  verso:
+    left:
+      content: '{revdate}'
+      valign: center
+    right:
+      content: '{page-number} / {page-count}'
+      valign: center
