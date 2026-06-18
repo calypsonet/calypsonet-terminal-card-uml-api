@@ -259,8 +259,6 @@ To enable software-level detection of relay attacks, this specification carries:
 
 The following UML class diagram provides a visual representation of the types and relationships defined by this specification:
 
-
-
 [plantuml, target="api_class_diagram", format="svg"]
 ----
 include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
@@ -308,11 +306,6 @@ The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prev
 | Since    | 2.0.0
 | Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
 |===
-
-===== Constructors
-
-* `ParseException(message: string)`
-* `ParseException(message: string, cause: throwable)`
 
 [[type_ApduResponseApi]]
 ==== ApduResponseApi
@@ -764,7 +757,7 @@ defined in [CNA-TR-API].
 == Exceptions
 
 All exception types defined by this specification are unchecked (runtime) unless explicitly stated otherwise and
-MAY be propagated to the application. Each exception MUST expose the constructors documented below.
+MAY be propagated to the application.
 
 [[type_AbstractApduException]]
 === AbstractApduException
@@ -776,11 +769,6 @@ MAY be propagated to the application. Each exception MUST expose the constructor
 | Since    | 1.0.0
 | Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
 |===
-
-===== Constructors
-
-* `AbstractApduException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string)`
-* `AbstractApduException(cardResponseApi: CardResponseApi, isCardResponseComplete: boolean, message: string, cause: throwable)`
 
 ===== Operations
 
@@ -893,6 +881,4 @@ MAY be propagated to the application. Each exception MUST expose the constructor
 
 Copyright (c) {organization}, https://calypsonet.org.
 
-This specification is distributed under the terms of the *Eclipse Public License -- v 2.0* (EPL-2.0). A copy of the
-license is available in the link:LICENSE[`LICENSE`] file alongside this document and at
-https://www.eclipse.org/legal/epl-2.0/.
+This specification is distributed under the terms of the *Eclipse Public License -- v 2.0* (EPL-2.0). See https://www.eclipse.org/legal/epl-2.0/ for the license text.
