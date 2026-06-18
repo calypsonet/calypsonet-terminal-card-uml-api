@@ -257,6 +257,9 @@ To enable software-level detection of relay attacks, this specification carries:
 [[sec_class_diagram]]
 === UML class diagram
 
+The following UML class diagram provides a visual representation of the types and relationships defined by this specification:
+
+
 
 [plantuml, target="api_class_diagram", format="svg"]
 ----
