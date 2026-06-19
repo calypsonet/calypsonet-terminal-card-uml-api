@@ -446,7 +446,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Kind     | Final checked exception
+| Kind     | Checked exception
 | Package  | `card`
 | Since    | 2.0.0
 | Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
