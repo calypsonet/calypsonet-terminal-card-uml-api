@@ -13,6 +13,8 @@ font:
     JetBrains Mono: &jetbrains
       regular: JetBrainsMono-Regular.ttf
       bold: JetBrainsMono-Bold.ttf
+      italic: JetBrainsMono-Italic.ttf
+      bold_italic: JetBrainsMono-BoldItalic.ttf
     "M+ 1mn": *jetbrains
     fallback: *montserrat
 
