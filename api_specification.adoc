@@ -654,7 +654,7 @@ defined in [CNA-TR-API].
 | Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
 | Since       | 2.0.0
 | Description | Returns the set of status words that MUST be considered successful for this selection case.
-| Returns     | A non-`null` `set` of status words.
+| Returns     | A non-`null` `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
@@ -716,7 +716,7 @@ defined in [CNA-TR-API].
 | Signature   | `getApdu() -> byte array`
 | Since       | 1.0.0
 | Description | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`).
-| Returns     | A non-`null`, non-empty `byte array`.
+| Returns     | A non-`null` `byte array` of at least 4 bytes.
 | Throws      | None.
 |===
 
@@ -725,16 +725,16 @@ defined in [CNA-TR-API].
 | Signature   | `getSuccessfulStatusWords() -> set<integer>`
 | Since       | 1.0.0
 | Description | Returns the set of status words that MUST be considered successful for this APDU.
-| Returns     | A non-`null` `set` of status words.
+| Returns     | A non-`null` `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getInfo() -> string`
+| Signature   | `getInfo() -> string?`
 | Since       | 1.0.0
 | Description | Returns an informational string describing the APDU, used by implementations for logging and error messages.
-| Returns     | A non-`null` `string`.
+| Returns     | The informational `string`, or `null` if no information has been defined.
 | Throws      | None.
 |===
 
@@ -756,15 +756,15 @@ defined in [CNA-TR-API].
 [[sec_exceptions]]
 == Exceptions
 
-All exception types defined by this specification are unchecked (runtime) unless explicitly stated otherwise and
-MAY be propagated to the application.
+All exception types defined by this specification are *checked* (they extend the language's base `Exception`) and
+MUST be declared by the operations that may raise them.
 
 [[type_AbstractApduException]]
 === AbstractApduException
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Kind     | Abstract runtime exception
+| Kind     | Abstract checked exception
 | Package  | `card`
 | Since    | 1.0.0
 | Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
@@ -795,7 +795,7 @@ MAY be propagated to the application.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Kind     | Final runtime exception
+| Kind     | Checked exception
 | Package  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0.0
@@ -807,7 +807,7 @@ MAY be propagated to the application.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Kind     | Final runtime exception
+| Kind     | Checked exception
 | Package  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0.0
@@ -819,7 +819,7 @@ MAY be propagated to the application.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Kind     | Final runtime exception
+| Kind     | Checked exception
 | Package  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0.0
@@ -831,7 +831,7 @@ MAY be propagated to the application.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Kind     | Final runtime exception
+| Kind     | Checked exception
 | Package  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 3.0.0
