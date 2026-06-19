@@ -669,7 +669,7 @@ defined in [CNA-TR-API].
 | Since       | 1.0.0
 | Description
 | Parses the response of an executed selection case to produce the corresponding smart-card SPI.
-| Parameters  | `cardSelectionResponseApi` -- the non-`null` response.
+| Parameters  | `cardSelectionResponseApi` -- the non-`null` card selection response.
 | Returns     | A non-`null` <<type_SmartCardSpi,`SmartCardSpi`>>.
 | Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
 |===
