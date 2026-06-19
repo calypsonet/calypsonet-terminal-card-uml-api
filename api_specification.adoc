@@ -125,8 +125,9 @@ order to avoid ambiguity.
 | `string`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
 | `boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
 | `integer`       | Signed 32-bit integer.                                           | `int`, `Int32`.
-| `long?`         | Optional signed 64-bit integer (nullable / boxed).               | `Long` (Java boxed), `long?` (C#), `Option<i64>` (Rust).
+| `long`          | Signed 64-bit integer.                                           | `long`, `Int64`.
 | `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
+| `T?`            | Nullable value: either a `T` value or the absence of value (`null`). | `Integer` (boxed), `Optional<T>`, `T?`.
 | `list<T>`       | Ordered collection of `T` values.                                | `List<T>`, `Vec<T>`.
 | `set<T>`        | Unordered collection of unique `T` values.                       | `Set<T>`, `HashSet<T>`.
 | `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
