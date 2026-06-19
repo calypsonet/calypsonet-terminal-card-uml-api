@@ -271,42 +271,6 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 // -----------------------------------------------------------------------------
 === Package card
 
-[[type_CardApiProperties]]
-==== CardApiProperties
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Final class
-| Package  | `card`
-| Since    | 1.0.0
-| Purpose  | Exposes the immutable properties of the {spec-name}.
-|===
-
-===== Constants
-
-[cols="1,1,1,4", options="header"]
-|===
-| Name      | Type     | Since | Description
-
-| `VERSION` | `string` | 1.0.0 | String representation of the version of the API implemented by the conforming binding (e.g. `"3.0"`).
-|===
-
-[NOTE]
-====
-The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prevent external construction.
-====
-
-[[type_ParseException]]
-==== ParseException
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Final checked exception
-| Package  | `card`
-| Since    | 2.0.0
-| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
-|===
-
 [[type_ApduResponseApi]]
 ==== ApduResponseApi
 
@@ -360,6 +324,31 @@ Instances MUST be serialisable so that they can be transported across distribute
 | Returns     | The measured duration in milliseconds, or `null` if the reader does not provide the measurement.
 | Throws      | None.
 |===
+
+[[type_CardApiProperties]]
+==== CardApiProperties
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Final class
+| Package  | `card`
+| Since    | 1.0.0
+| Purpose  | Exposes the immutable properties of the {spec-name}.
+|===
+
+===== Constants
+
+[cols="1,1,1,4", options="header"]
+|===
+| Name      | Type     | Since | Description
+
+| `VERSION` | `string` | 1.0.0 | String representation of the version of the API implemented by the conforming binding (e.g. `"3.0"`).
+|===
+
+[NOTE]
+====
+The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prevent external construction.
+====
 
 [[type_CardResponseApi]]
 ==== CardResponseApi
@@ -450,6 +439,17 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Description | Returns the responses received for any additional commands attached to the selection case.
 | Returns     | The grouped response, or `null` if no additional command was executed.
 | Throws      | None.
+|===
+
+[[type_ParseException]]
+==== ParseException
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Final checked exception
+| Package  | `card`
+| Since    | 2.0.0
+| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
 |===
 
 [[type_ProxyReaderApi]]
@@ -551,153 +551,6 @@ variant.
 // -----------------------------------------------------------------------------
 === Package card.spi
 
-[[type_CardSelectionExtensionSpi]]
-==== CardSelectionExtensionSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `card.spi`
-| Since    | 2.0.0
-| Purpose  | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
-|===
-
-An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
-defined in [CNA-TR-API].
-
-===== Operations
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
-| Since       | 1.0.0
-| Description | Returns the request to use when executing this selection case.
-| Returns     | A non-`null` <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
-| Throws      | None.
-|===
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
-| Since       | 1.0.0
-| Description
-| Parses the response of an executed selection case to produce the corresponding smart-card SPI.
-| Parameters  | `cardSelectionResponseApi` -- the non-`null` response.
-| Returns     | A non-`null` <<type_SmartCardSpi,`SmartCardSpi`>>.
-| Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
-|===
-
-[[type_SmartCardSpi]]
-==== SmartCardSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `card.spi`
-| Since    | 1.0.0
-| Purpose  | Reader-side facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in [CNA-TR-API].
-|===
-
-===== Operations
-
-[[op_deactivate]]
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `deactivate() -> void`
-| Since       | 3.0.0
-| Description
-| Marks this smart card as no longer active. After this operation has returned, the corresponding `SmartCard`
-  exposed to the application via [CNA-TR-API] MUST report `isActive() == false`.
-
-  MUST be idempotent: calling it twice MUST have the same observable effect as calling it once.
-| Throws      | None.
-|===
-
-[[type_MultichannelSmartCardSpi]]
-==== MultichannelSmartCardSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `card.spi`
-| Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
-| Since    | 3.0.0
-| Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
-|===
-
-===== Operations
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getChannel() -> integer`
-| Since       | 3.0.0
-| Description | Returns the logical channel number on which this smart card has been placed.
-| Returns     | A non-negative `integer`.
-| Throws      | None.
-|===
-
-[[type_CardSelectionRequestSpi]]
-==== CardSelectionRequestSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `card.spi`
-| Since    | 1.0.0
-| Purpose  | Carries the data needed to execute a single selection case.
-|===
-
-===== Operations
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
-| Since       | 2.0.0
-| Description | Returns the set of status words that MUST be considered successful for this selection case.
-| Returns     | A non-`null` `set` of status words, containing at least `9000h`.
-| Throws      | None.
-|===
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getCardRequest() -> CardRequestSpi`
-| Since       | 1.0.0
-| Description | Returns the optional follow-up card request to execute after a successful selection.
-| Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
-| Throws      | None.
-|===
-
-[[type_CardRequestSpi]]
-==== CardRequestSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `card.spi`
-| Since    | 1.0.0
-| Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
-|===
-
-===== Operations
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getApduRequests() -> list<ApduRequestSpi>`
-| Since       | 1.0.0
-| Description | Returns the ordered list of APDU requests to be executed.
-| Returns     | A non-`null`, non-empty `list`.
-| Throws      | None.
-|===
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `stopOnUnsuccessfulStatusWord() -> boolean`
-| Since       | 1.0.0
-| Description | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
-| Returns     | `true` to stop on the first failure, `false` to continue regardless.
-| Throws      | None.
-|===
-
 [[type_ApduRequestSpi]]
 ==== ApduRequestSpi
 
@@ -754,6 +607,153 @@ defined in [CNA-TR-API].
 
 // =============================================================================
 [[sec_exceptions]]
+[[type_CardRequestSpi]]
+==== CardRequestSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getApduRequests() -> list<ApduRequestSpi>`
+| Since       | 1.0.0
+| Description | Returns the ordered list of APDU requests to be executed.
+| Returns     | A non-`null`, non-empty `list`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `stopOnUnsuccessfulStatusWord() -> boolean`
+| Since       | 1.0.0
+| Description | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
+| Returns     | `true` to stop on the first failure, `false` to continue regardless.
+| Throws      | None.
+|===
+
+[[type_CardSelectionExtensionSpi]]
+==== CardSelectionExtensionSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 2.0.0
+| Purpose  | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
+|===
+
+An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
+defined in [CNA-TR-API].
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
+| Since       | 1.0.0
+| Description | Returns the request to use when executing this selection case.
+| Returns     | A non-`null` <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
+| Since       | 1.0.0
+| Description
+| Parses the response of an executed selection case to produce the corresponding smart-card SPI.
+| Parameters  | `cardSelectionResponseApi` -- the non-`null` response.
+| Returns     | A non-`null` <<type_SmartCardSpi,`SmartCardSpi`>>.
+| Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
+|===
+
+[[type_CardSelectionRequestSpi]]
+==== CardSelectionRequestSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Carries the data needed to execute a single selection case.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
+| Since       | 2.0.0
+| Description | Returns the set of status words that MUST be considered successful for this selection case.
+| Returns     | A non-`null` `set` of status words, containing at least `9000h`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getCardRequest() -> CardRequestSpi`
+| Since       | 1.0.0
+| Description | Returns the optional follow-up card request to execute after a successful selection.
+| Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
+| Throws      | None.
+|===
+
+[[type_MultichannelSmartCardSpi]]
+==== MultichannelSmartCardSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
+| Since    | 3.0.0
+| Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getChannel() -> integer`
+| Since       | 3.0.0
+| Description | Returns the logical channel number on which this smart card has been placed.
+| Returns     | A non-negative `integer`.
+| Throws      | None.
+|===
+
+[[type_SmartCardSpi]]
+==== SmartCardSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `card.spi`
+| Since    | 1.0.0
+| Purpose  | Reader-side facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in [CNA-TR-API].
+|===
+
+===== Operations
+
+[[op_deactivate]]
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `deactivate() -> void`
+| Since       | 3.0.0
+| Description
+| Marks this smart card as no longer active. After this operation has returned, the corresponding `SmartCard`
+  exposed to the application via [CNA-TR-API] MUST report `isActive() == false`.
+
+  MUST be idempotent: calling it twice MUST have the same observable effect as calling it once.
+| Throws      | None.
+|===
+
 == Exceptions
 
 All exception types defined by this specification are *checked* (they extend the language's base `Exception`) and
