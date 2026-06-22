@@ -133,6 +133,15 @@ order to avoid ambiguity.
 | `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
 |===
 
+==== Operation contracts
+
+To avoid repetition, the following rules apply to every operation table in <<sec_specification>> and are therefore
+not restated for each operation:
+
+* *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter MUST be non-`null`.
+* *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
+  operation returns a non-`null` value.
+
 === References
 
 [cols="1,1,4", options="header"]
@@ -270,7 +279,8 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 == API Specification
 
 // -----------------------------------------------------------------------------
-=== Package card
+[[sec_pkg_card]]
+=== Card APDU Exchange (`card`)
 
 [[type_ApduResponseApi]]
 ==== ApduResponseApi
@@ -301,7 +311,7 @@ Instances MUST be serialisable so that they can be transported across distribute
 | Signature   | `getDataOut() -> byte array`
 | Since       | 1.0
 | Description | Returns the data part of the response (excluding the status word).
-| Returns     | A non-`null` `byte array`.
+| Returns     | A `byte array`.
 | Throws      | None.
 |===
 
@@ -373,7 +383,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Signature   | `getApduResponses() -> list<ApduResponseApi>`
 | Since       | 1.0
 | Description | Returns the responses received for the executed APDU requests, in the same order in which the requests were submitted.
-| Returns     | A non-`null` `list`; empty if there is no response.
+| Returns     | A `list`; empty if there is no response.
 | Throws      | None.
 |===
 
@@ -487,9 +497,9 @@ extracts the channel information (when the dynamic type is <<type_MultichannelSm
   of the call; if it is not, the implementation MUST raise `CardBrokenCommunicationException` without performing
   any exchange.
 | Parameters
-| `cardRequest` -- the non-`null` request to transmit. +
-  `smartCard`   -- the non-`null` smart card SPI identifying the target.
-| Returns     | A non-`null` <<type_CardResponseApi,`CardResponseApi`>>.
+| `cardRequest` -- the request to transmit. +
+  `smartCard`   -- the smart card SPI identifying the target.
+| Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Throws
 | `ReaderBrokenCommunicationException` -- if communication with the reader is broken. +
   `CardBrokenCommunicationException` -- if communication with the card is broken, or if the smart card is no
@@ -510,9 +520,9 @@ extracts the channel information (when the dynamic type is <<type_MultichannelSm
   successful completion, closes the corresponding logical channel. The implementation MUST deactivate the smart
   card after the channel has been closed (see <<sec_smartcard_role>>).
 | Parameters
-| `cardRequest`           -- the non-`null` request to transmit. +
-  `multichannelSmartCard` -- the non-`null` multi-channel smart card SPI identifying the target.
-| Returns     | A non-`null` <<type_CardResponseApi,`CardResponseApi`>>.
+| `cardRequest`           -- the request to transmit. +
+  `multichannelSmartCard` -- the multi-channel smart card SPI identifying the target.
+| Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Throws      | Same as <<op_transmitCardRequest,`transmitCardRequest`>>.
 |===
 
@@ -524,7 +534,7 @@ extracts the channel information (when the dynamic type is <<type_MultichannelSm
 | Description
 | Closes the logical channel of the smart card identified by `multichannelSmartCard` and deactivates the smart
   card. MUST be idempotent: calling it on an already-closed channel MUST be a no-op.
-| Parameters  | `multichannelSmartCard` -- the non-`null` multi-channel smart card SPI identifying the target.
+| Parameters  | `multichannelSmartCard` -- the multi-channel smart card SPI identifying the target.
 | Throws
 | `ReaderBrokenCommunicationException` -- if communication with the reader is broken. +
   `CardBrokenCommunicationException` -- if communication with the card is broken.
@@ -550,7 +560,8 @@ Roles 2 and 3 are common to `SmartCardSpi` and `MultichannelSmartCardSpi`; role 
 variant.
 
 // -----------------------------------------------------------------------------
-=== Package card.spi
+[[sec_pkg_card_spi]]
+=== Card Request and Selection SPI (`card.spi`)
 
 [[type_ApduRequestSpi]]
 ==== ApduRequestSpi
@@ -570,7 +581,7 @@ variant.
 | Signature   | `getApdu() -> byte array`
 | Since       | 1.0
 | Description | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`).
-| Returns     | A non-`null` `byte array` of at least 4 bytes.
+| Returns     | A `byte array` of at least 4 bytes.
 | Throws      | None.
 |===
 
@@ -579,7 +590,7 @@ variant.
 | Signature   | `getSuccessfulStatusWords() -> set<integer>`
 | Since       | 1.0
 | Description | Returns the set of status words that MUST be considered successful for this APDU.
-| Returns     | A non-`null` `set` of status words, containing at least `9000h`.
+| Returns     | A `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
@@ -607,7 +618,6 @@ variant.
 |===
 
 // =============================================================================
-[[sec_exceptions]]
 [[type_CardRequestSpi]]
 ==== CardRequestSpi
 
@@ -626,7 +636,7 @@ variant.
 | Signature   | `getApduRequests() -> list<ApduRequestSpi>`
 | Since       | 1.0
 | Description | Returns the ordered list of APDU requests to be executed.
-| Returns     | A non-`null`, non-empty `list`.
+| Returns     | A non-empty `list`.
 | Throws      | None.
 |===
 
@@ -660,18 +670,19 @@ defined in [CNA-TR-API].
 | Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
 | Since       | 1.0
 | Description | Returns the request to use when executing this selection case.
-| Returns     | A non-`null` <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
+| Returns     | A <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
 | Throws      | None.
 |===
 
+[[op_CardSelectionExtensionSpi_parse]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
 | Since       | 1.0
 | Description
 | Parses the response of an executed selection case to produce the corresponding smart-card SPI.
-| Parameters  | `cardSelectionResponseApi` -- the non-`null` card selection response.
-| Returns     | A non-`null` <<type_SmartCardSpi,`SmartCardSpi`>>.
+| Parameters  | `cardSelectionResponseApi` -- the card selection response.
+| Returns     | A <<type_SmartCardSpi,`SmartCardSpi`>>.
 | Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
 |===
 
@@ -693,7 +704,7 @@ defined in [CNA-TR-API].
 | Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
 | Since       | 2.0
 | Description | Returns the set of status words that MUST be considered successful for this selection case.
-| Returns     | A non-`null` `set` of status words, containing at least `9000h`.
+| Returns     | A `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
@@ -755,6 +766,7 @@ defined in [CNA-TR-API].
 | Throws      | None.
 |===
 
+[[sec_exceptions]]
 == Exceptions
 
 All exception types defined by this specification are *checked* (they extend the language's base `Exception`) and
