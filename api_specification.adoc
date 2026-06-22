@@ -280,7 +280,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 
 // -----------------------------------------------------------------------------
 [[sec_pkg_card]]
-=== Card APDU Exchange (`card`)
+=== Namespace -- card
 
 [[type_ApduResponseApi]]
 ==== ApduResponseApi
@@ -288,7 +288,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (Serializable)
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 1.0
 | Purpose  | Carries the data received in response to a single APDU command (variable-length payload followed by the status word).
 |===
@@ -342,7 +342,7 @@ Instances MUST be serialisable so that they can be transported across distribute
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Final class
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 1.0
 | Purpose  | Exposes the immutable properties of the {spec-name}.
 |===
@@ -367,7 +367,7 @@ The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prev
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (Serializable)
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 1.0
 | Purpose  | Groups multiple APDU responses received from the card after the execution of a `CardRequestSpi`.
 |===
@@ -393,7 +393,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 1.0
 | Purpose  | Carries the data observed during the start-up phase with the card -- the selection step itself, the channel on which the card has been placed and any additional commands that may have been executed afterwards.
 |===
@@ -458,7 +458,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 2.0
 | Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
 |===
@@ -469,7 +469,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 1.0
 | Purpose  | Reader-side facet exposing APDU transmission and channel-closure operations to card extensions.
 |===
@@ -561,7 +561,7 @@ variant.
 
 // -----------------------------------------------------------------------------
 [[sec_pkg_card_spi]]
-=== Card Request and Selection SPI (`card.spi`)
+=== Namespace -- card.spi
 
 [[type_ApduRequestSpi]]
 ==== ApduRequestSpi
@@ -569,7 +569,7 @@ variant.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `card.spi`
+| Namespace  | `card.spi`
 | Since    | 1.0
 | Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to detect relay attacks.
 |===
@@ -624,7 +624,7 @@ variant.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `card.spi`
+| Namespace  | `card.spi`
 | Since    | 1.0
 | Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
 |===
@@ -655,7 +655,7 @@ variant.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `card.spi`
+| Namespace  | `card.spi`
 | Since    | 2.0
 | Purpose  | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
 |===
@@ -692,7 +692,7 @@ defined in [CNA-TR-API].
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `card.spi`
+| Namespace  | `card.spi`
 | Since    | 1.0
 | Purpose  | Carries the data needed to execute a single selection case.
 |===
@@ -723,7 +723,7 @@ defined in [CNA-TR-API].
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `card.spi`
+| Namespace  | `card.spi`
 | Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
 | Since    | 3.0
 | Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
@@ -746,7 +746,7 @@ defined in [CNA-TR-API].
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `card.spi`
+| Namespace  | `card.spi`
 | Since    | 1.0
 | Purpose  | Reader-side facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in [CNA-TR-API].
 |===
@@ -778,7 +778,7 @@ MUST be declared by the operations that may raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Abstract checked exception
-| Package  | `card`
+| Namespace  | `card`
 | Since    | 1.0
 | Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
 |===
@@ -809,7 +809,7 @@ MUST be declared by the operations that may raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `card`
+| Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0
 | Purpose  | Indicates that the communication with the reader has failed during the execution of a card request.
@@ -821,7 +821,7 @@ MUST be declared by the operations that may raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `card`
+| Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0
 | Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active.
@@ -833,7 +833,7 @@ MUST be declared by the operations that may raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `card`
+| Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0
 | Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set.
@@ -845,7 +845,7 @@ MUST be declared by the operations that may raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `card`
+| Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 3.0
 | Purpose
