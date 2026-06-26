@@ -284,25 +284,6 @@ The API is organized into the following packages:
 
 [[sec_pkg_card_spi]]
 
-[[sec_smartcard_role]]
-=== Role of the SmartCardSpi parameter
-
-The three operations of `ProxyReaderApi` receive a smart-card SPI parameter. This parameter is *not* a mere
-vehicle for the channel number. It plays up to three roles:
-
-. **Channel routing** (only when the dynamic type is <<type_MultichannelSmartCardSpi,
-  `MultichannelSmartCardSpi`>>): the logical channel number is read via `getChannel()` and used to route the
-  APDU exchange or the closure on the correct logical channel.
-. **Active-state check**: the proxy reader MUST verify, before performing any exchange, that the smart card is
-  still active (`SmartCard.isActive()` is `true` per [CNA-TR-API]). If it is not, the proxy reader MUST raise
-  `CardBrokenCommunicationException` without contacting the card.
-. **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
-  channel closure), the proxy reader MUST invoke <<op_deactivate,`SmartCardSpi.deactivate`>> so that the
-  deactivation is immediately visible to the application via `SmartCard.isActive() == false`.
-
-Roles 2 and 3 are common to `SmartCardSpi` and `MultichannelSmartCardSpi`; role 1 is specific to the multi-channel
-variant.
-
 === Classes
 
 [[type_CardApiProperties]]
@@ -796,7 +777,25 @@ is exposed to extension modules.
 The proxy reader uses the *smart card SPI* received as parameter to identify the target of every operation: it
 extracts the channel information (when the dynamic type is <<type_MultichannelSmartCardSpi,
 `MultichannelSmartCardSpi`>>) and verifies the active state of the smart card (see
-<<sec_smartcard_role>>) before performing any exchange.
+<<sec_smartcard_role,the role of the smart-card SPI parameter>>) before performing any exchange.
+
+[[sec_smartcard_role]]
+.Role of the smart-card SPI parameter
+The three operations of `ProxyReaderApi` receive a smart-card SPI parameter. This parameter is *not* a mere
+vehicle for the channel number. It plays up to three roles:
+
+. **Channel routing** (only when the dynamic type is <<type_MultichannelSmartCardSpi,
+  `MultichannelSmartCardSpi`>>): the logical channel number is read via `getChannel()` and used to route the
+  APDU exchange or the closure on the correct logical channel.
+. **Active-state check**: the proxy reader MUST verify, before performing any exchange, that the smart card is
+  still active (`SmartCard.isActive()` is `true` per [CNA-TR-API]). If it is not, the proxy reader MUST raise
+  `CardBrokenCommunicationException` without contacting the card.
+. **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
+  channel closure), the proxy reader MUST invoke <<op_deactivate,`SmartCardSpi.deactivate`>> so that the
+  deactivation is immediately visible to the application via `SmartCard.isActive() == false`.
+
+Roles 2 and 3 are common to `SmartCardSpi` and `MultichannelSmartCardSpi`; role 1 is specific to the multi-channel
+variant.
 
 [[op_closeChannel]]
 ===== Close Channel
@@ -851,7 +850,7 @@ extracts the channel information (when the dynamic type is <<type_MultichannelSm
 | Description
 | Transmits the provided request targeting the smart card identified by `multichannelSmartCard` and, upon
   successful completion, closes the corresponding logical channel. The implementation MUST deactivate the smart
-  card after the channel has been closed (see <<sec_smartcard_role>>).
+  card after the channel has been closed (see <<sec_smartcard_role,the role of the smart-card SPI parameter>>).
 | Parameters
 | `cardRequest`           -- the request to transmit. +
   `multichannelSmartCard` -- the multi-channel smart card SPI identifying the target.
