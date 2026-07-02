@@ -311,166 +311,7 @@ The API is organized into the following packages:
 The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prevent external construction.
 ====
 
-[[sec_exceptions]]
-=== Exceptions
-
-[[type_AbstractApduException]]
-==== Abstract APDU Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Abstract checked exception
-| Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
-|===
-
-===== Get Card Response
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getCardResponse() -> CardResponseApi`
-| Since       | 1.0
-| Description | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
-| Returns     | A `CardResponseApi`, or `null`.
-| Throws      | None.
-|===
-
-===== Is Card Response Complete
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `isCardResponseComplete() -> boolean`
-| Since       | 1.0
-| Description | Indicates whether the embedded card response is complete (every prepared APDU produced a response) or partial.
-| Returns     | `true` if complete, `false` if partial.
-| Throws      | None.
-|===
-
-[[type_ApduExchangeDurationExceededException]]
-==== APDU Exchange Duration Exceeded Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
-| Since    | 3.0
-| Purpose
-| Indicates that the effective duration of an APDU exchange exceeded the bound declared on the request via
-  <<op_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
-  intercept this exception, cancel any ongoing session and propagate the failure to the application as an
-  `InvalidCardResponseException` ([CNA-TR-API]).
-|===
-
-[[type_CardBrokenCommunicationException]]
-==== Card Broken Communication Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
-| Since    | 1.0
-| Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active.
-|===
-
-[[type_ParseException]]
-==== Parse Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `card`
-| Since    | 2.0
-| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
-|===
-
-[[type_ReaderBrokenCommunicationException]]
-==== Reader Broken Communication Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
-| Since    | 1.0
-| Purpose  | Indicates that the communication with the reader has failed during the execution of a card request.
-|===
-
-[[type_UnexpectedStatusWordException]]
-==== Unexpected Status Word Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
-| Since    | 1.0
-| Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set.
-|===
-
-=== Interfaces
-
-[[type_ApduRequestSpi]]
-==== APDU Request SPI
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to detect relay attacks.
-|===
-
-===== Get APDU
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getApdu() -> byte array`
-| Since       | 1.0
-| Description | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`).
-| Returns     | A `byte array` of at least 4 bytes.
-| Throws      | None.
-|===
-
-[[op_getApduExchangeMaxDuration]]
-===== Get APDU Exchange Max Duration
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getApduExchangeMaxDuration() -> long?`
-| Since       | 3.0
-| Description
-| Returns the maximum tolerated duration of the APDU exchange, in *milliseconds*. The proxy reader MUST measure
-  the effective duration of the exchange and raise
-  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> if it exceeds this
-  bound.
-| Returns     | The maximum duration in milliseconds, or `null` if no bound is defined for this request.
-| Throws      | None.
-|===
-
-===== Get Info
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getInfo() -> string?`
-| Since       | 1.0
-| Description | Returns an informational string describing the APDU, used by implementations for logging and error messages.
-| Returns     | The informational `string`, or `null` if no information has been defined.
-| Throws      | None.
-|===
-
-===== Get Successful Status Words
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getSuccessfulStatusWords() -> set<integer>`
-| Since       | 1.0
-| Description | Returns the set of status words that MUST be considered successful for this APDU.
-| Returns     | A `set` of status words, containing at least `9000h`.
-| Throws      | None.
-|===
+=== API Interfaces
 
 [[type_ApduResponseApi]]
 ==== APDU Response API
@@ -532,39 +373,6 @@ Instances MUST be serialisable so that they can be transported across distribute
 | Throws      | None.
 |===
 
-[[type_CardRequestSpi]]
-==== Card Request SPI
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
-|===
-
-===== Get APDU Requests
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getApduRequests() -> list<ApduRequestSpi>`
-| Since       | 1.0
-| Description | Returns the ordered list of APDU requests to be executed.
-| Returns     | A non-empty `list`.
-| Throws      | None.
-|===
-
-===== Stop On Unsuccessful Status Word
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `stopOnUnsuccessfulStatusWord() -> boolean`
-| Since       | 1.0
-| Description | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
-| Returns     | `true` to stop on the first failure, `false` to continue regardless.
-| Throws      | None.
-|===
-
 [[type_CardResponseApi]]
 ==== Card Response API
 
@@ -588,78 +396,6 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Since       | 1.0
 | Description | Returns the responses received for the executed APDU requests, in the same order in which the requests were submitted.
 | Returns     | A `list`; empty if there is no response.
-| Throws      | None.
-|===
-
-[[type_CardSelectionExtensionSpi]]
-==== Card Selection Extension SPI
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `card.spi`
-| Since    | 2.0
-| Purpose  | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
-|===
-
-An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
-defined in [CNA-TR-API].
-
-===== Get Card Selection Request
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
-| Since       | 1.0
-| Description | Returns the request to use when executing this selection case.
-| Returns     | A <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
-| Throws      | None.
-|===
-
-[[op_CardSelectionExtensionSpi_parse]]
-===== Parse
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
-| Since       | 1.0
-| Description
-| Parses the response of an executed selection case to produce the corresponding smart-card SPI.
-| Parameters  | `cardSelectionResponseApi` -- the card selection response.
-| Returns     | A <<type_SmartCardSpi,`SmartCardSpi`>>.
-| Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
-|===
-
-[[type_CardSelectionRequestSpi]]
-==== Card Selection Request SPI
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Carries the data needed to execute a single selection case.
-|===
-
-===== Get Card Request
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getCardRequest() -> CardRequestSpi`
-| Since       | 1.0
-| Description | Returns the optional follow-up card request to execute after a successful selection.
-| Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
-| Throws      | None.
-|===
-
-===== Get Successful Selection Status Words
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
-| Since       | 2.0
-| Description | Returns the set of status words that MUST be considered successful for this selection case.
-| Returns     | A `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
@@ -733,29 +469,6 @@ defined in [CNA-TR-API].
 | Since       | 1.0
 | Description | Indicates whether the inserted card matches the selection filters.
 | Returns     | `true` if the card matched, `false` otherwise.
-| Throws      | None.
-|===
-
-[[type_MultichannelSmartCardSpi]]
-==== Multichannel Smart Card SPI
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `card.spi`
-| Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
-| Since    | 3.0
-| Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
-|===
-
-===== Get Channel
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getChannel() -> integer`
-| Since       | 3.0
-| Description | Returns the logical channel number on which this smart card has been placed.
-| Returns     | A non-negative `integer`.
 | Throws      | None.
 |===
 
@@ -858,6 +571,196 @@ variant.
 | Throws      | Same as <<op_transmitCardRequest,`transmitCardRequest`>>.
 |===
 
+=== SPI Interfaces
+
+[[type_ApduRequestSpi]]
+==== APDU Request SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `card.spi`
+| Since    | 1.0
+| Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to detect relay attacks.
+|===
+
+===== Get APDU
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getApdu() -> byte array`
+| Since       | 1.0
+| Description | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`).
+| Returns     | A `byte array` of at least 4 bytes.
+| Throws      | None.
+|===
+
+[[op_getApduExchangeMaxDuration]]
+===== Get APDU Exchange Max Duration
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getApduExchangeMaxDuration() -> long?`
+| Since       | 3.0
+| Description
+| Returns the maximum tolerated duration of the APDU exchange, in *milliseconds*. The proxy reader MUST measure
+  the effective duration of the exchange and raise
+  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> if it exceeds this
+  bound.
+| Returns     | The maximum duration in milliseconds, or `null` if no bound is defined for this request.
+| Throws      | None.
+|===
+
+===== Get Info
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getInfo() -> string?`
+| Since       | 1.0
+| Description | Returns an informational string describing the APDU, used by implementations for logging and error messages.
+| Returns     | The informational `string`, or `null` if no information has been defined.
+| Throws      | None.
+|===
+
+===== Get Successful Status Words
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getSuccessfulStatusWords() -> set<integer>`
+| Since       | 1.0
+| Description | Returns the set of status words that MUST be considered successful for this APDU.
+| Returns     | A `set` of status words, containing at least `9000h`.
+| Throws      | None.
+|===
+
+[[type_CardRequestSpi]]
+==== Card Request SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `card.spi`
+| Since    | 1.0
+| Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
+|===
+
+===== Get APDU Requests
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getApduRequests() -> list<ApduRequestSpi>`
+| Since       | 1.0
+| Description | Returns the ordered list of APDU requests to be executed.
+| Returns     | A non-empty `list`.
+| Throws      | None.
+|===
+
+===== Stop On Unsuccessful Status Word
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `stopOnUnsuccessfulStatusWord() -> boolean`
+| Since       | 1.0
+| Description | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
+| Returns     | `true` to stop on the first failure, `false` to continue regardless.
+| Throws      | None.
+|===
+
+[[type_CardSelectionExtensionSpi]]
+==== Card Selection Extension SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `card.spi`
+| Since    | 2.0
+| Purpose  | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
+|===
+
+An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
+defined in [CNA-TR-API].
+
+===== Get Card Selection Request
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
+| Since       | 1.0
+| Description | Returns the request to use when executing this selection case.
+| Returns     | A <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
+| Throws      | None.
+|===
+
+[[op_CardSelectionExtensionSpi_parse]]
+===== Parse
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
+| Since       | 1.0
+| Description
+| Parses the response of an executed selection case to produce the corresponding smart-card SPI.
+| Parameters  | `cardSelectionResponseApi` -- the card selection response.
+| Returns     | A <<type_SmartCardSpi,`SmartCardSpi`>>.
+| Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
+|===
+
+[[type_CardSelectionRequestSpi]]
+==== Card Selection Request SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `card.spi`
+| Since    | 1.0
+| Purpose  | Carries the data needed to execute a single selection case.
+|===
+
+===== Get Card Request
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getCardRequest() -> CardRequestSpi`
+| Since       | 1.0
+| Description | Returns the optional follow-up card request to execute after a successful selection.
+| Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
+| Throws      | None.
+|===
+
+===== Get Successful Selection Status Words
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
+| Since       | 2.0
+| Description | Returns the set of status words that MUST be considered successful for this selection case.
+| Returns     | A `set` of status words, containing at least `9000h`.
+| Throws      | None.
+|===
+
+[[type_MultichannelSmartCardSpi]]
+==== Multichannel Smart Card SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `card.spi`
+| Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
+| Since    | 3.0
+| Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
+|===
+
+===== Get Channel
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getChannel() -> integer`
+| Since       | 3.0
+| Description | Returns the logical channel number on which this smart card has been placed.
+| Returns     | A non-negative `integer`.
+| Throws      | None.
+|===
+
 [[type_SmartCardSpi]]
 ==== Smart Card SPI
 
@@ -882,6 +785,105 @@ variant.
 
   MUST be idempotent: calling it twice MUST have the same observable effect as calling it once.
 | Throws      | None.
+|===
+
+[[sec_exceptions]]
+=== Exceptions
+
+[[type_AbstractApduException]]
+==== Abstract APDU Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Abstract checked exception
+| Namespace  | `card`
+| Since    | 1.0
+| Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
+|===
+
+===== Get Card Response
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getCardResponse() -> CardResponseApi`
+| Since       | 1.0
+| Description | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
+| Returns     | A `CardResponseApi`, or `null`.
+| Throws      | None.
+|===
+
+===== Is Card Response Complete
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `isCardResponseComplete() -> boolean`
+| Since       | 1.0
+| Description | Indicates whether the embedded card response is complete (every prepared APDU produced a response) or partial.
+| Returns     | `true` if complete, `false` if partial.
+| Throws      | None.
+|===
+
+[[type_ApduExchangeDurationExceededException]]
+==== APDU Exchange Duration Exceeded Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `card`
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Since    | 3.0
+| Purpose
+| Indicates that the effective duration of an APDU exchange exceeded the bound declared on the request via
+  <<op_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
+  intercept this exception, cancel any ongoing session and propagate the failure to the application as an
+  `InvalidCardResponseException` ([CNA-TR-API]).
+|===
+
+[[type_CardBrokenCommunicationException]]
+==== Card Broken Communication Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `card`
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Since    | 1.0
+| Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active.
+|===
+
+[[type_ParseException]]
+==== Parse Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `card`
+| Since    | 2.0
+| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
+|===
+
+[[type_ReaderBrokenCommunicationException]]
+==== Reader Broken Communication Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `card`
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Since    | 1.0
+| Purpose  | Indicates that the communication with the reader has failed during the execution of a card request.
+|===
+
+[[type_UnexpectedStatusWordException]]
+==== Unexpected Status Word Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `card`
+| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Since    | 1.0
+| Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set.
 |===
 
 [[sec_behaviours]]
