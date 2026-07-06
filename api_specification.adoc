@@ -173,7 +173,11 @@ not restated for each operation:
 | RFC 2119
 | _Key words for use in RFCs to Indicate Requirement Levels_, S. Bradner, March 1997.
 
-| [[ref_iso7816]] [ISO/IEC 7816-4]
+| [[ref_rfc8174]] [RFC 8174]
+| RFC 8174
+| _Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_, B. Leiba, May 2017.
+
+| [[ref_iso7816_4]] [ISO/IEC 7816-4]
 | ISO/IEC 7816-4
 | _Identification cards -- Integrated circuit cards -- Part 4: Organization, security and commands for interchange_.
 
