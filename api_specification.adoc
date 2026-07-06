@@ -117,6 +117,12 @@ order to avoid ambiguity.
 
 === Document Conventions
 
+==== Naming
+
+Type names follow `UpperCamelCase`; operation, parameter and enumeration-member names follow `lowerCamelCase`
+except for enumeration values which use `UPPER_SNAKE_CASE`. Names defined by this specification are reproduced
+as-is in the UML class diagram (<<sec_class_diagram>>).
+
 ==== Language-agnostic types
 
 [cols="1,3,3", options="header"]
@@ -131,6 +137,19 @@ order to avoid ambiguity.
 | `set<T>`        | Unordered collection of unique `T` values.                       | `Set<T>`, `HashSet<T>`.
 | `T?`            | Nullable value: either a `T` value or the absence of value (`null`). | `Integer` (boxed), `Optional<T>`, `T?`.
 | `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+|===
+
+==== Operation tables
+
+Each operation defined in this document is described by a table of the form:
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | The operation's language-agnostic signature.
+| Description | A normative description of the operation's behaviour.
+| Parameters  | A description of each input parameter.
+| Returns     | A description of the returned value, if any.
+| Throws      | A list of exceptional conditions, each mapped to a specific exception type.
 |===
 
 ==== Operation contracts
