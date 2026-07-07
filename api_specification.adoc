@@ -38,7 +38,7 @@ by the **{organization}** ({short-name}).
 It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
 relationships and behavioural requirements that any conforming implementation of the {spec-name} MUST satisfy.
 
-The {spec-name} is the *underside* of the *Terminal Reader API* ([CNA-TR-API]). It defines the *internal*
+The {spec-name} is the *underside* of the *Terminal Reader API* (<<ref_cna_tr,CNA-TR-API>>). It defines the *internal*
 contract used by reader implementations and by card extension modules to exchange APDU-level data with cards,
 while the *Terminal Reader API* remains the public-facing surface used by terminal applications.
 
@@ -68,7 +68,7 @@ The {spec-name} defines the *internal* contract by which:
 * a *reader implementation* MUST expose an APDU transmission interface (the *proxy reader*) so that selection
   managers and card transaction managers can exchange data with cards in a uniform way,
 * a *card extension* MUST expose its selection process (request preparation and response parsing) so that the
-  selection manager defined by [CNA-TR-API] can drive it,
+  selection manager defined by <<ref_cna_tr,CNA-TR-API>> can drive it,
 * APDU-level exceptions carry the responses already received before the failure together with any duration
   information required to fight relay attacks.
 
@@ -90,7 +90,7 @@ This specification covers:
 
 The following topics are *out of scope*:
 
-* the public reader interface exposed to terminal applications (covered by [CNA-TR-API]),
+* the public reader interface exposed to terminal applications (covered by <<ref_cna_tr,CNA-TR-API>>),
 * the parsing of APDU payloads (deferred to specific card extension specifications),
 * the cryptographic detection of relay attacks at protocol level (handled by card extensions such as the
   Calypso Card API).
@@ -103,10 +103,10 @@ A software product conforms to this specification if and only if:
   prescribed in this document,
 . it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
 . when implementing an adapter of <<type_ProxyReaderApi,`ProxyReaderApi`>>, it MUST also implement the
-  `CardReader` interface of [CNA-TR-API]; when implementing an adapter of
+  `CardReader` interface of <<ref_cna_tr,CNA-TR-API>>; when implementing an adapter of
   <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi`>>, it MUST also implement the
-  `CardSelectionExtension` interface of [CNA-TR-API]; when implementing an adapter of
-  <<type_SmartCardSpi,`SmartCardSpi`>>, it MUST also implement the `SmartCard` interface of [CNA-TR-API].
+  `CardSelectionExtension` interface of <<ref_cna_tr,CNA-TR-API>>; when implementing an adapter of
+  <<type_SmartCardSpi,`SmartCardSpi`>>, it MUST also implement the `SmartCard` interface of <<ref_cna_tr,CNA-TR-API>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
 **MAY** and **OPTIONAL** are to be interpreted as described in **RFC 2119** and **RFC 8174** when, and only when,
@@ -518,7 +518,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Purpose  | Reader-side facet exposing APDU transmission and channel-closure operations to card extensions.
 |===
 
-An implementation of `ProxyReaderApi` MUST also implement the `CardReader` interface defined in [CNA-TR-API]. The
+An implementation of `ProxyReaderApi` MUST also implement the `CardReader` interface defined in <<ref_cna_tr,CNA-TR-API>>. The
 two facets share the same underlying reader; they are separated so that only the *internal* dialogue with cards
 is exposed to extension modules.
 
@@ -536,7 +536,7 @@ vehicle for the channel number. It plays up to three roles:
   `MultichannelSmartCardSpi`>>): the logical channel number is read via `getChannel()` and used to route the
   APDU exchange or the closure on the correct logical channel.
 . **Active-state check**: the proxy reader MUST verify, before performing any exchange, that the smart card is
-  still active (`SmartCard.isActive()` is `true` per [CNA-TR-API]). If it is not, the proxy reader MUST raise
+  still active (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not, the proxy reader MUST raise
   `CardBrokenCommunicationException` without contacting the card.
 . **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
   channel closure), the proxy reader MUST invoke <<op_deactivate,`SmartCardSpi.deactivate`>> so that the
@@ -713,7 +713,7 @@ variant.
 |===
 
 An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
-defined in [CNA-TR-API].
+defined in <<ref_cna_tr,CNA-TR-API>>.
 
 ===== Get Card Selection Request
 
@@ -804,7 +804,7 @@ defined in [CNA-TR-API].
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
-| Purpose  | Reader-side facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in [CNA-TR-API].
+| Purpose  | Reader-side facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in <<ref_cna_tr,CNA-TR-API>>.
 |===
 
 [[op_deactivate]]
@@ -816,7 +816,7 @@ defined in [CNA-TR-API].
 | Since       | 3.0
 | Description
 | Marks this smart card as no longer active. After this operation has returned, the corresponding `SmartCard`
-  exposed to the application via [CNA-TR-API] MUST report `isActive() == false`.
+  exposed to the application via <<ref_cna_tr,CNA-TR-API>> MUST report `isActive() == false`.
 
   MUST be idempotent: calling it twice MUST have the same observable effect as calling it once.
 | Throws      | None.
@@ -871,7 +871,7 @@ defined in [CNA-TR-API].
 | Indicates that the effective duration of an APDU exchange exceeded the bound declared on the request via
   <<op_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
   intercept this exception, cancel any ongoing session and propagate the failure to the application as an
-  `InvalidCardResponseException` ([CNA-TR-API]).
+  `InvalidCardResponseException` (<<ref_cna_tr,CNA-TR-API>>).
 |===
 
 [[type_CardBrokenCommunicationException]]
