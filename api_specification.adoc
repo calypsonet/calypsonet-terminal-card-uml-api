@@ -439,7 +439,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getCardResponse() -> CardResponseApi`
+| Signature   | `getCardResponse() -> CardResponseApi?`
 | Since       | 1.0
 | Description | Returns the responses received for any additional commands attached to the selection case.
 | Returns     | The grouped response, or `null` if no additional command was executed.
@@ -464,7 +464,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getPowerOnData() -> string`
+| Signature   | `getPowerOnData() -> string?`
 | Since       | 1.0
 | Description
 | Returns the card's power-on data as collected by the reader at insertion. For a contact reader, this is the
@@ -479,7 +479,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getSelectApplicationResponse() -> ApduResponseApi`
+| Signature   | `getSelectApplicationResponse() -> ApduResponseApi?`
 | Since       | 1.0
 | Description | Returns the response received from the card to the *Select Application* command.
 | Returns     | The response, or `null` if no *Select Application* command was executed.
@@ -745,7 +745,7 @@ defined in [CNA-TR-API].
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getCardRequest() -> CardRequestSpi`
+| Signature   | `getCardRequest() -> CardRequestSpi?`
 | Since       | 1.0
 | Description | Returns the optional follow-up card request to execute after a successful selection.
 | Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
@@ -830,7 +830,7 @@ defined in [CNA-TR-API].
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getCardResponse() -> CardResponseApi`
+| Signature   | `getCardResponse() -> CardResponseApi?`
 | Since       | 1.0
 | Description | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
 | Returns     | A `CardResponseApi`, or `null`.
