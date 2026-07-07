@@ -54,9 +54,9 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
-NOTE: The present document specifies the {spec-version} of the {spec-name} as an *initial release*, without
-historical reference to earlier drafts. It defines a single, coherent baseline against which conforming
-implementations are evaluated.
+NOTE: The present document specifies the {spec-version} of the {spec-name}. It defines a single, coherent
+baseline against which conforming implementations are evaluated; the *Since* column indicates the version in
+which each member was introduced.
 
 // =============================================================================
 == Introduction
