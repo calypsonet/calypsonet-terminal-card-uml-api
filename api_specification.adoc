@@ -162,6 +162,8 @@ not restated for each operation:
   condition is a `null` argument therefore declare no entry in their *Throws* row.
 * *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
   operation returns a non-`null` value.
+* *Collections.* Unless the return type is marked nullable (`T?`), an operation whose return type is a collection
+  (e.g. `list`, `set`, `map`) returns an empty collection rather than `null`.
 
 === References
 
