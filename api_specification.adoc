@@ -165,6 +165,12 @@ not restated for each operation:
 * *Collections.* Unless the return type is marked nullable (`T?`), an operation whose return type is a collection
   (e.g. `list`, `set`, `map`) returns an empty collection rather than `null`.
 
+==== Concurrency
+
+Unless explicitly stated otherwise, the stateful types defined by this specification are *not* thread-safe. A given
+instance MUST be accessed from a single thread at a time; concurrent use of the same instance without external
+synchronisation results in undefined behaviour. Distinct instances MAY be used concurrently.
+
 === References
 
 [cols="1,1,4", options="header"]
