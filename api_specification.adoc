@@ -218,7 +218,7 @@ is backward-compatible per that API's evolution policy.
 
 | APDU              | Application Protocol Data Unit, the message format used between the terminal and the card (<<ref_iso7816,ISO/IEC 7816-4>>).
 | Case 4 APDU       | APDU command that carries data in both directions; the `Le` field is mandatory and MUST be set to `00h`.
-| Card Extension    | Software module providing the card-specific dialogue with a card family (e.g. Calypso).
+| Card Extension    | Software module providing the card-specific dialog with a card family (e.g. Calypso).
 | Logical Channel   | Software-level communication path established with a card after a successful selection.
 | Basic Channel     | The default logical channel (channel `0`) of an ISO/IEC 7816-4 card.
 | Physical Channel  | Hardware-level communication path between the reader and the card.
@@ -532,7 +532,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 |===
 
 An implementation of `ProxyReaderApi` MUST also implement the `CardReader` interface defined in <<ref_cna_tr,CNA-TR-API>>. The
-two facets share the same underlying reader; they are separated so that only the *internal* dialogue with cards
+two facets share the same underlying reader; they are separated so that only the *internal* dialog with cards
 is exposed to extension modules.
 
 The proxy reader uses the *smart card SPI* received as parameter to identify the target of every operation: it
