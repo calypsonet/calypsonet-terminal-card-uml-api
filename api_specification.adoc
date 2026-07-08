@@ -109,10 +109,10 @@ A software product conforms to this specification if and only if:
   <<type_SmartCardSpi,`SmartCardSpi`>>, it MUST also implement the `SmartCard` interface of <<ref_cna_tr,CNA-TR-API>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
-**MAY** and **OPTIONAL** are to be interpreted as described in **RFC 2119** and **RFC 8174** when, and only when,
+**MAY** and **OPTIONAL** are to be interpreted as described in <<ref_rfc2119,RFC 2119>> and <<ref_rfc8174,RFC 8174>> when, and only when,
 they appear in all capitals.
 
-In conformance with RFC 2119, **SHALL** is equivalent to **MUST**; this specification uses **MUST** exclusively in
+In conformance with <<ref_rfc2119,RFC 2119>>, **SHALL** is equivalent to **MUST**; this specification uses **MUST** exclusively in
 order to avoid ambiguity.
 
 === Document Conventions
