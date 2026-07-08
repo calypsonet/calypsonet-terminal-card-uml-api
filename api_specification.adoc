@@ -146,6 +146,7 @@ Each operation defined in this document is described by a table of the form:
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | The operation's language-agnostic signature.
+| Since       | The version of the API in which the operation was introduced.
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
