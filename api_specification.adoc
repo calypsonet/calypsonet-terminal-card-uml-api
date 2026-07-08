@@ -30,12 +30,6 @@ v3.0.0-SNAPSHOT, {docdate}
 :spec-id: CNA-TCD-API
 :spec-version: 3.0.0-SNAPSHOT
 :ver-cna-tr: 3.0
-:ver-cna-tc: 3.0
-:ver-cna-td: 1.0
-:ver-cna-tcc: 3.0
-:ver-cna-tccs: 0.1
-:ver-cna-tcca: 0.2
-:ver-cna-tccl: 2.0
 
 [abstract]
 == Abstract
@@ -207,9 +201,9 @@ is backward-compatible per that API's evolution policy.
 |===
 | Resource | Link
 
-| Calypso Networks Association | https://calypsonet.org[calypsonet.org]
-| Terminal APIs website        | https://terminal-api.calypsonet.org/[terminal-api.calypsonet.org]
-| Terminal APIs documentation  | https://docs.terminal-api.calypsonet.org[docs.terminal-api.calypsonet.org]
+| Calypso Networks Association | https://calypsonet.org
+| Terminal APIs website        | https://terminal-api.calypsonet.org/
+| Terminal APIs documentation  | https://docs.terminal-api.calypsonet.org
 |===
 
 // =============================================================================
