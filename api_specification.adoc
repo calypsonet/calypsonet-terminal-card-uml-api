@@ -188,8 +188,8 @@ is backward-compatible per that API's evolution policy.
 | [[ref_rfc8174]] [RFC 8174]
 | https://www.rfc-editor.org/rfc/rfc8174[_Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_], B. Leiba, May 2017.
 
-| [[ref_iso7816_4]] [ISO/IEC 7816-4]
-| https://www.iso.org[_Identification cards -- Integrated circuit cards -- Part 4: Organization, security and commands for interchange_].
+| [[ref_iso7816]] [ISO/IEC 7816]
+| https://www.iso.org[_Identification cards -- Integrated circuit cards_].
 
 | [[ref_cna_tr]] [CNA-TR-API]
 | https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_], version {ver-cna-tr}, {organization}.
@@ -215,7 +215,7 @@ is backward-compatible per that API's evolution policy.
 |===
 | Term              | Definition
 
-| APDU              | Application Protocol Data Unit, the message format used between the terminal and the card (ISO/IEC 7816-4).
+| APDU              | Application Protocol Data Unit, the message format used between the terminal and the card (<<ref_iso7816,ISO/IEC 7816-4>>).
 | Case 4 APDU       | APDU command that carries data in both directions; the `Le` field is mandatory and MUST be set to `00h`.
 | Card Extension    | Software module providing the card-specific dialogue with a card family (e.g. Calypso).
 | Logical Channel   | Software-level communication path established with a card after a successful selection.
