@@ -479,7 +479,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Signature   | `getCardResponse() -> CardResponseApi?`
 | Since       | 1.0
 | Description | Returns the responses received for any additional commands attached to the selection case.
-| Returns     | The grouped response, or `null` if no additional command was executed.
+| Returns     | The grouped response (<<type_CardResponseApi,`CardResponseApi`>>), or `null` if no additional command was executed.
 | Throws      | None.
 |===
 
@@ -519,7 +519,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Signature   | `getSelectApplicationResponse() -> ApduResponseApi?`
 | Since       | 1.0
 | Description | Returns the response received from the card to the *Select Application* command.
-| Returns     | The response, or `null` if no *Select Application* command was executed.
+| Returns     | The response (<<type_ApduResponseApi,`ApduResponseApi`>>), or `null` if no *Select Application* command was executed.
 | Throws      | None.
 |===
 
