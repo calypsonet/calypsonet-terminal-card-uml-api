@@ -582,10 +582,10 @@ variant.
 | Description
 | Closes the logical channel of the smart card identified by `multichannelSmartCard` and deactivates the smart
   card. MUST be idempotent: calling it on an already-closed channel MUST be a no-op.
-| Parameters  | `multichannelSmartCard` -- the multi-channel smart card SPI identifying the target.
+| Parameters  | `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Throws
-| `ReaderBrokenCommunicationException` -- if communication with the reader is broken. +
-  `CardBrokenCommunicationException` -- if communication with the card is broken.
+| <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
+  <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken.
 |===
 
 [[op_transmitCardRequest]]
@@ -602,15 +602,15 @@ variant.
   of the call; if it is not, the implementation MUST raise `CardBrokenCommunicationException` without performing
   any exchange.
 | Parameters
-| `cardRequest` -- the request to transmit. +
-  `smartCard`   -- the smart card SPI identifying the target.
+| `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>) -- the request to transmit. +
+  `smartCard` (<<type_SmartCardSpi,`SmartCardSpi`>>)   -- the smart card SPI identifying the target.
 | Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Throws
-| `ReaderBrokenCommunicationException` -- if communication with the reader is broken. +
-  `CardBrokenCommunicationException` -- if communication with the card is broken, or if the smart card is no
+| <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
+  <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken, or if the smart card is no
   longer active. +
-  `UnexpectedStatusWordException` -- if a command returned an unexpected status word. +
-  `ApduExchangeDurationExceededException` -- if a measured APDU duration exceeded the bound declared on the
+  <<type_UnexpectedStatusWordException,`UnexpectedStatusWordException`>> -- if a command returned an unexpected status word. +
+  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> -- if a measured APDU duration exceeded the bound declared on the
   request.
 |===
 
@@ -627,8 +627,8 @@ variant.
   successful completion, closes the corresponding logical channel. The implementation MUST deactivate the smart
   card after the channel has been closed (see <<sec_smartcard_role,the role of the smart-card SPI parameter>>).
 | Parameters
-| `cardRequest`           -- the request to transmit. +
-  `multichannelSmartCard` -- the multi-channel smart card SPI identifying the target.
+| `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>)           -- the request to transmit. +
+  `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Throws      | Same as <<op_transmitCardRequest,`transmitCardRequest`>>.
 |===
@@ -762,7 +762,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 1.0
 | Description
 | Parses the response of an executed selection case to produce the corresponding smart-card SPI.
-| Parameters  | `cardSelectionResponseApi` -- the card selection response.
+| Parameters  | `cardSelectionResponseApi` (<<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>) -- the card selection response.
 | Returns     | A <<type_SmartCardSpi,`SmartCardSpi`>>.
 | Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
 |===
@@ -870,7 +870,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Signature   | `getCardResponse() -> CardResponseApi?`
 | Since       | 1.0
 | Description | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
-| Returns     | A `CardResponseApi`, or `null`.
+| Returns     | A <<type_CardResponseApi,`CardResponseApi`>>, or `null`.
 | Throws      | None.
 |===
 
