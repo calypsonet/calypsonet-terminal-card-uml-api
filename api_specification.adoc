@@ -139,6 +139,20 @@ as-is in the UML class diagram (<<sec_class_diagram>>).
 | `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
 |===
 
+==== Type tables
+
+Each interface, class, enumeration and exception defined in this document is described by a table of the form:
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind       | The category of the type (interface, class, enumeration, exception, etc.).
+| Namespace  | The package in which the type is defined.
+| Extends    | The type extended by this type, when applicable.
+| Implements | The interface implemented by this type, when applicable.
+| Since      | The version of the API in which the type was introduced.
+| Purpose    | A normative description of the type's responsibility.
+|===
+
 ==== Operation tables
 
 Each operation defined in this document is described by a table of the form:
