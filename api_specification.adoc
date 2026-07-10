@@ -85,7 +85,7 @@ This specification covers:
 * the proxy-reader contract through which APDUs are transmitted, including the multi-channel transmission and
   closure operations,
 * the SPI implemented by card extensions to drive selection,
-* the SPI implemented by reader-side smart-card adapters, including the multi-channel variant,
+* the SPI implemented by card extensions to represent a selected smart card, including the multi-channel variant,
 * the family of exceptions raised at APDU exchange level.
 
 The following topics are *out of scope*:
@@ -830,7 +830,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
-| Purpose  | Reader-side facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in <<ref_cna_tr,CNA-TR-API>>.
+| Purpose  | Card-extension facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in <<ref_cna_tr,CNA-TR-API>>.
 |===
 
 [[op_deactivate]]
