@@ -102,11 +102,7 @@ A software product conforms to this specification if and only if:
 . it implements every interface and class defined in <<sec_specification>> with the operations and semantics
   prescribed in this document,
 . it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
-. when implementing an adapter of <<type_ProxyReaderApi,`ProxyReaderApi`>>, it MUST also implement the
-  `CardReader` interface of <<ref_cna_tr,CNA-TR-API>>; when implementing an adapter of
-  <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi`>>, it MUST also implement the
-  `CardSelectionExtension` interface of <<ref_cna_tr,CNA-TR-API>>; when implementing an adapter of
-  <<type_SmartCardSpi,`SmartCardSpi`>>, it MUST also implement the `SmartCard` interface of <<ref_cna_tr,CNA-TR-API>>.
+. it preserves the structural and behavioural relationships described in <<sec_architecture>> and <<sec_behaviours>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
 **MAY** and **OPTIONAL** are to be interpreted as described in <<ref_rfc2119,RFC 2119>> and <<ref_rfc8174,RFC 8174>> when, and only when,
@@ -281,6 +277,17 @@ TR  ..> TC : adapter relationship
 Drv --> TC : implements
 @enduml
 ....
+
+The *adapter relationship* depicted above (`TR ..> TC`) binds this specification to <<ref_cna_tr,CNA-TR-API>>: an
+implementation exposes each contract of this API through an adapter that also implements the corresponding
+public-facing interface of the *Terminal Reader API*. Specifically:
+
+* an adapter of <<type_ProxyReaderApi,`ProxyReaderApi`>> MUST also implement the `CardReader` interface of
+  <<ref_cna_tr,CNA-TR-API>>;
+* an adapter of <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi`>> MUST also implement the
+  `CardSelectionExtension` interface of <<ref_cna_tr,CNA-TR-API>>;
+* an adapter of <<type_SmartCardSpi,`SmartCardSpi`>> MUST also implement the `SmartCard` interface of
+  <<ref_cna_tr,CNA-TR-API>>.
 
 === Logical namespaces
 
