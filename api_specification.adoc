@@ -70,7 +70,7 @@ The {spec-name} defines the *internal* contract by which:
 * a *card extension* MUST expose its selection process (request preparation and response parsing) so that the
   selection manager defined by <<ref_cna_tr,CNA-TR-API>> can drive it,
 * APDU-level exceptions carry the responses already received before the failure together with any duration
-  information required to fight relay attacks.
+  information required to enforce the APDU exchange execution-time bounds.
 
 The API is *internal*: terminal applications MUST NOT use it directly. It is the contract that allows reader
 implementations and card extensions written by independent vendors to interoperate.
@@ -80,7 +80,7 @@ implementations and card extensions written by independent vendors to interopera
 This specification covers:
 
 * the APDU request and response data carriers, including the per-request duration bound and per-response measured
-  duration used to detect relay attacks,
+  duration used to control the APDU exchange execution time,
 * the selection request and response data carriers, including the multi-channel-aware channel information,
 * the proxy-reader contract through which APDUs are transmitted, including the multi-channel transmission and
   closure operations,
@@ -92,8 +92,8 @@ The following topics are *out of scope*:
 
 * the public reader interface exposed to terminal applications (covered by <<ref_cna_tr,CNA-TR-API>>),
 * the parsing of APDU payloads (deferred to specific card extension specifications),
-* the cryptographic detection of relay attacks at protocol level (handled by card extensions such as the
-  Calypso Card API).
+* the protocol-level cryptographic security mechanisms handled by card extensions such as the
+  Calypso Card API.
 
 === Conformance
 
@@ -237,7 +237,6 @@ is backward-compatible per that API's evolution policy.
 | Basic Channel     | The default logical channel (channel `0`) of an ISO/IEC 7816-4 card.
 | Physical Channel  | Hardware-level communication path between the reader and the card.
 | Proxy Reader      | Reader-side facet exposing APDU transmission to extension layers, by opposition to the public reader interface presented to terminal applications.
-| Relay Attack      | Software-level attack consisting in interposing a relay between the card and the terminal to redirect APDU exchanges to a distant card.
 | Status Word (SW)  | Two-byte trailer of an APDU response indicating the outcome of the command.
 | SPI               | Service Provider Interface -- a set of interfaces designed to be implemented by an extension module.
 |===
@@ -313,9 +312,9 @@ The single-channel transmission operation <<op_transmitCardRequest,`transmitCard
 <<type_SmartCardSpi,`SmartCardSpi`>> and serves both the single-channel and the multi-channel use case (the
 implementation extracts the channel information from the dynamic sub-type when needed).
 
-=== Relay-attack countermeasure
+=== APDU exchange execution-time control
 
-To enable software-level detection of relay attacks, this specification carries:
+To enable software-level control of the APDU exchange execution time, this specification carries:
 
 * an *optional* per-request duration bound on <<type_ApduRequestSpi,`ApduRequestSpi`>>
   (<<op_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>),
@@ -643,7 +642,7 @@ variant.
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
-| Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to detect relay attacks.
+| Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to control the APDU exchange execution time.
 |===
 
 ===== Get APDU
