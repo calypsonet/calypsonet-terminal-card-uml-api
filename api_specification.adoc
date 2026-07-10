@@ -102,7 +102,7 @@ A software product conforms to this specification if and only if:
 . it implements every interface and class defined in <<sec_specification>> with the operations and semantics
   prescribed in this document,
 . it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
-. it preserves the structural and behavioural relationships described in <<sec_architecture>> and <<sec_behaviours>>.
+. it preserves the structural relationships described in <<sec_architecture>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
 **MAY** and **OPTIONAL** are to be interpreted as described in <<ref_rfc2119,RFC 2119>> and <<ref_rfc8174,RFC 8174>> when, and only when,
@@ -343,8 +343,6 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 [[sec_specification]]
 == API Specification
 
-Stateful operations are subject to the ordering and lifecycle constraints defined in <<sec_behaviours>>.
-
 === Classes
 
 [[type_CardApiProperties]]
@@ -560,7 +558,8 @@ vehicle for the channel number. It plays up to three roles:
 
 . **Channel routing** (only when the dynamic type is <<type_MultichannelSmartCardSpi,
   `MultichannelSmartCardSpi`>>): the logical channel number is read via `getChannel()` and used to route the
-  APDU exchange or the closure on the correct logical channel.
+  APDU exchange or the closure on the correct logical channel. When the parameter is a base `SmartCardSpi` (not a
+  `MultichannelSmartCardSpi`), the exchange MUST be addressed to the basic channel (channel `0`).
 . **Active-state check**: the proxy reader MUST verify, before performing any exchange, that the smart card is
   still active (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not, the proxy reader MUST raise
   `CardBrokenCommunicationException` without contacting the card.
@@ -946,38 +945,6 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since    | 1.0
 | Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set.
 |===
-
-[[sec_behaviours]]
-== Behavioural Requirements
-
-=== Active-state contract
-
-. A `ProxyReaderApi` operation that receives a smart-card SPI parameter MUST check the active state of the
-  smart card *before* performing any exchange with the card.
-. If the smart card is no longer active, the operation MUST raise `CardBrokenCommunicationException` and MUST
-  NOT contact the card.
-
-=== Channel routing
-
-. When a `ProxyReaderApi` operation receives a `MultichannelSmartCardSpi`, the implementation MUST use the value
-  returned by `getChannel()` to route the APDU exchange or the closure on the corresponding logical channel.
-. When `transmitCardRequest` is called with a base `SmartCardSpi` whose dynamic type is *not*
-  `MultichannelSmartCardSpi`, the implementation MUST address the basic channel (channel `0`).
-
-=== Channel closure
-
-. `closeChannel` and `transmitCardRequestAndCloseChannel` MUST close the targeted logical channel and MUST then
-  invoke `deactivate()` on the smart card.
-. `closeChannel` MUST be idempotent.
-
-=== Duration measurement
-
-. If `ApduRequestSpi.getApduExchangeMaxDuration()` returns a non-`null` value, the proxy reader MUST measure the
-  effective duration of the APDU exchange and MUST raise `ApduExchangeDurationExceededException` if the bound
-  is exceeded.
-. If the bound is `null`, the duration measurement is OPTIONAL. The implementation MAY still expose a measured
-  duration on the corresponding `ApduResponseApi`; if the measurement is not available, the response operation
-  MUST return `null`.
 
 // =============================================================================
 [appendix]
