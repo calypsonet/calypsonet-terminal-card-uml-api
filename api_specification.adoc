@@ -146,7 +146,7 @@ Each interface, class, enumeration and exception defined in this document is des
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind       | The category of the type (interface, class, enumeration, exception, etc.).
-| Namespace  | The package in which the type is defined.
+| Namespace  | The namespace in which the type is defined.
 | Extends    | The type extended by this type, when applicable.
 | Implements | The interface implemented by this type, when applicable.
 | Since      | The version of the API in which the type was introduced.
@@ -293,8 +293,7 @@ Drv --> TC : implements
   interface and exceptions.
 
 | `card.spi`        | SPI
-| Data carriers and contracts implemented by card extensions and reader implementations -- including the
-  multi-channel-aware smart card SPI.
+| Data carriers and contracts implemented by card extensions.
 |===
 
 === Multi-channel design
@@ -338,12 +337,6 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 == API Specification
 
 Stateful operations are subject to the ordering and lifecycle constraints defined in <<sec_behaviours>>.
-
-The API is organized into the following packages:
-
-[[sec_pkg_card]]
-
-[[sec_pkg_card_spi]]
 
 === Classes
 
