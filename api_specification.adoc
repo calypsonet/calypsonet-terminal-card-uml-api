@@ -367,7 +367,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 
 [NOTE]
 ====
-The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prevent external construction.
+The `CardApiProperties` type cannot be instantiated; it exposes only static properties.
 ====
 
 === API Interfaces
@@ -383,7 +383,7 @@ The `CardApiProperties` type MUST NOT be instantiated. Implementations MUST prev
 | Purpose  | Carries the data received in response to a single APDU command (variable-length payload followed by the status word).
 |===
 
-Instances MUST be serialisable so that they can be transported across distributed boundaries.
+Instances are serialisable so that they can be transported across distributed boundaries.
 
 ===== Get APDU
 
@@ -488,7 +488,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Since       | 3.0
 | Description
 | Returns the logical channel number on which the card has been placed by the selection. For a single-channel
-  selection scenario this MUST be `0`. For a multi-channel selection scenario, the channel MAY be any value
+  selection scenario this is `0`. For a multi-channel selection scenario, the channel may be any value
   supported by the underlying ISO/IEC 7816-4 card.
 | Returns     | A non-negative `integer`.
 | Throws      | None.
@@ -542,9 +542,9 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Purpose  | Reader-side facet exposing APDU transmission and channel-closure operations to card extensions.
 |===
 
-An implementation of `ProxyReaderApi` MUST also implement the `CardReader` interface defined in <<ref_cna_tr,CNA-TR-API>>. The
-two facets share the same underlying reader; they are separated so that only the *internal* dialog with cards
-is exposed to extension modules.
+A `ProxyReaderApi` and the `CardReader` interface defined in <<ref_cna_tr,CNA-TR-API>> are two facets of the same
+underlying reader; they are separated so that only the *internal* dialog with cards is exposed to extension
+modules.
 
 The proxy reader uses the *smart card SPI* received as parameter to identify the target of every operation: it
 extracts the channel information (when the dynamic type is <<type_MultichannelSmartCardSpi,
@@ -559,13 +559,13 @@ vehicle for the channel number. It plays up to three roles:
 . **Channel routing** (only when the dynamic type is <<type_MultichannelSmartCardSpi,
   `MultichannelSmartCardSpi`>>): the logical channel number is read via `getChannel()` and used to route the
   APDU exchange or the closure on the correct logical channel. When the parameter is a base `SmartCardSpi` (not a
-  `MultichannelSmartCardSpi`), the exchange MUST be addressed to the basic channel (channel `0`).
-. **Active-state check**: the proxy reader MUST verify, before performing any exchange, that the smart card is
-  still active (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not, the proxy reader MUST raise
-  `CardBrokenCommunicationException` without contacting the card.
+  `MultichannelSmartCardSpi`), the exchange is addressed to the basic channel (channel `0`).
+. **Active-state check**: the active state of the smart card is verified before any exchange
+  (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not active, a
+  `CardBrokenCommunicationException` is raised without contacting the card.
 . **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
-  channel closure), the proxy reader MUST invoke <<op_deactivate,`SmartCardSpi.deactivate`>> so that the
-  deactivation is immediately visible to the application via `SmartCard.isActive() == false`.
+  channel closure), <<op_deactivate,`SmartCardSpi.deactivate`>> is invoked so that the deactivation is immediately
+  visible to the application via `SmartCard.isActive() == false`.
 
 Roles 2 and 3 are common to `SmartCardSpi` and `MultichannelSmartCardSpi`; role 1 is specific to the multi-channel
 variant.
@@ -579,7 +579,7 @@ variant.
 | Since       | 3.0
 | Description
 | Closes the logical channel of the smart card identified by `multichannelSmartCard` and deactivates the smart
-  card. MUST be idempotent: calling it on an already-closed channel MUST be a no-op.
+  card. This operation is idempotent: calling it on an already-closed channel has no effect.
 | Parameters  | `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Throws
 | <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
@@ -596,9 +596,8 @@ variant.
 | Since       | 3.0
 | Description
 | Transmits the provided <<type_CardRequestSpi,`CardRequestSpi`>> targeting the smart card identified by
-  `smartCard`. The logical channel remains open after the operation. The smart card MUST be active at the moment
-  of the call; if it is not, the implementation MUST raise `CardBrokenCommunicationException` without performing
-  any exchange.
+  `smartCard`. The logical channel remains open after the operation. If the smart card is no longer active at the
+  moment of the call, a `CardBrokenCommunicationException` is raised without any exchange.
 | Parameters
 | `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>) -- the request to transmit. +
   `smartCard` (<<type_SmartCardSpi,`SmartCardSpi`>>)   -- the smart card SPI identifying the target.
@@ -622,8 +621,8 @@ variant.
 | Since       | 3.0
 | Description
 | Transmits the provided request targeting the smart card identified by `multichannelSmartCard` and, upon
-  successful completion, closes the corresponding logical channel. The implementation MUST deactivate the smart
-  card after the channel has been closed (see <<sec_smartcard_role,the role of the smart-card SPI parameter>>).
+  successful completion, closes the corresponding logical channel. The smart card is deactivated after the channel
+  has been closed (see <<sec_smartcard_role,the role of the smart-card SPI parameter>>).
 | Parameters
 | `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>)           -- the request to transmit. +
   `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
