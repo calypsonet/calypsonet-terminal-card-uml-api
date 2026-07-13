@@ -564,7 +564,7 @@ vehicle for the channel number. It plays up to three roles:
   (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not active, a
   `CardBrokenCommunicationException` is raised without contacting the card.
 . **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
-  channel closure), <<op_deactivate,`SmartCardSpi.deactivate`>> is invoked so that the deactivation is immediately
+  channel closure), <<op_deactivate,`SmartCardSpi.deactivate`>> is called so that the deactivation is immediately
   visible to the application via `SmartCard.isActive() == false`.
 
 Roles 2 and 3 are common to `SmartCardSpi` and `MultichannelSmartCardSpi`; role 1 is specific to the multi-channel
