@@ -141,6 +141,7 @@ Each interface, class, enumeration and exception defined in this document is des
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name       | The type's normalized name.
 | Kind       | The category of the type (interface, class, enumeration, exception, etc.).
 | Namespace  | The namespace in which the type is defined.
 | Extends    | The type extended by this type, when applicable.
@@ -350,6 +351,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardApiProperties`
 | Kind     | Final class
 | Namespace  | `card`
 | Since    | 1.0
@@ -377,6 +379,7 @@ The `CardApiProperties` type cannot be instantiated; it exposes only static prop
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `ApduResponseApi`
 | Kind     | Interface (Serializable)
 | Namespace  | `card`
 | Since    | 1.0
@@ -437,6 +440,7 @@ Instances are serialisable so that they can be transported across distributed bo
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardResponseApi`
 | Kind     | Interface (Serializable)
 | Namespace  | `card`
 | Since    | 1.0
@@ -463,6 +467,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardSelectionResponseApi`
 | Kind     | Interface
 | Namespace  | `card`
 | Since    | 1.0
@@ -536,6 +541,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `ProxyReaderApi`
 | Kind     | Interface
 | Namespace  | `card`
 | Since    | 1.0
@@ -643,6 +649,7 @@ variant.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `ApduRequestSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
@@ -703,6 +710,7 @@ variant.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardRequestSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
@@ -736,6 +744,7 @@ variant.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardSelectionExtensionSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 2.0
@@ -775,6 +784,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardSelectionRequestSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
@@ -808,6 +818,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `MultichannelSmartCardSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
@@ -831,6 +842,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `SmartCardSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
@@ -860,6 +872,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `AbstractApduException`
 | Kind     | Abstract checked exception
 | Namespace  | `card`
 | Since    | 1.0
@@ -893,6 +906,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `ApduExchangeDurationExceededException`
 | Kind     | Checked exception
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
@@ -909,6 +923,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardBrokenCommunicationException`
 | Kind     | Checked exception
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
@@ -921,6 +936,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `ParseException`
 | Kind     | Checked exception
 | Namespace  | `card`
 | Since    | 2.0
@@ -932,6 +948,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `ReaderBrokenCommunicationException`
 | Kind     | Checked exception
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
@@ -944,6 +961,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `UnexpectedStatusWordException`
 | Kind     | Checked exception
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
