@@ -627,7 +627,13 @@ variant.
 | `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>)           -- the request to transmit. +
   `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
-| Throws      | Same as <<op_transmitCardRequest,`transmitCardRequest`>>.
+| Throws
+| <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
+  <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken, or if the smart card is no
+  longer active. +
+  <<type_UnexpectedStatusWordException,`UnexpectedStatusWordException`>> -- if a command returned an unexpected status word. +
+  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> -- if a measured APDU duration exceeded the bound declared on the
+  request.
 |===
 
 === SPI Interfaces
