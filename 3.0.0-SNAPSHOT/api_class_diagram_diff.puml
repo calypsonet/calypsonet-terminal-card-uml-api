@@ -101,9 +101,7 @@ package "spi" as spi {
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** String VERSION
 }
-+class "<<Exception>>\n**final** ParseException" as ParseException <<green>> {
-    +ParseException (String message)
-    +ParseException (String message, Throwable cause)
++class "<<Exception>>\nParseException" as ParseException <<green>> {
 }
 +interface ProxyReaderApi {
     --
