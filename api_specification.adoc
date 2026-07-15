@@ -311,11 +311,11 @@ The {spec-name} exposes the multi-channel capability of ISO/IEC 7816-4 cards thr
 * a dedicated SPI sub-type <<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>> that carries the channel
   number of each active smart card,
 * dedicated proxy-reader operations
-  <<op_transmitCardRequestAndCloseChannel,`transmitCardRequestAndCloseChannel`>> and
-  <<op_closeChannel,`closeChannel`>> that target a specific channel by passing the corresponding
+  <<op_ProxyReaderApi_transmitCardRequestAndCloseChannel,`transmitCardRequestAndCloseChannel`>> and
+  <<op_ProxyReaderApi_closeChannel,`closeChannel`>> that target a specific channel by passing the corresponding
   `MultichannelSmartCardSpi`.
 
-The single-channel transmission operation <<op_transmitCardRequest,`transmitCardRequest`>> accepts the base
+The single-channel transmission operation <<op_ProxyReaderApi_transmitCardRequest,`transmitCardRequest`>> accepts the base
 <<type_SmartCardSpi,`SmartCardSpi`>> and serves both the single-channel and the multi-channel use case (the
 implementation extracts the channel information from the dynamic sub-type when needed).
 
@@ -324,9 +324,9 @@ implementation extracts the channel information from the dynamic sub-type when n
 To enable software-level control of the APDU exchange execution time, this specification carries:
 
 * an *optional* per-request duration bound on <<type_ApduRequestSpi,`ApduRequestSpi`>>
-  (<<op_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>),
+  (<<op_ApduRequestSpi_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>),
 * an *optional* per-response effective duration on <<type_ApduResponseApi,`ApduResponseApi`>>
-  (<<op_getApduExchangeDuration,`getApduExchangeDuration`>>),
+  (<<op_ApduResponseApi_getApduExchangeDuration,`getApduExchangeDuration`>>),
 * a dedicated exception <<type_ApduExchangeDurationExceededException,
   `ApduExchangeDurationExceededException`>> raised when the effective duration exceeds the declared bound.
 
@@ -388,6 +388,7 @@ The `CardApiProperties` type cannot be instantiated; it exposes only static prop
 
 Instances are serialisable so that they can be transported across distributed boundaries.
 
+[[op_ApduResponseApi_getApdu]]
 ===== Get APDU
 
 [cols="1h,4", grid=rows, frame=all]
@@ -399,7 +400,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Throws      | None.
 |===
 
-[[op_getApduExchangeDuration]]
+[[op_ApduResponseApi_getApduExchangeDuration]]
 ===== Get APDU Exchange Duration
 
 [cols="1h,4", grid=rows, frame=all]
@@ -413,6 +414,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Throws      | None.
 |===
 
+[[op_ApduResponseApi_getDataOut]]
 ===== Get Data Out
 
 [cols="1h,4", grid=rows, frame=all]
@@ -424,6 +426,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Throws      | None.
 |===
 
+[[op_ApduResponseApi_getStatusWord]]
 ===== Get Status Word
 
 [cols="1h,4", grid=rows, frame=all]
@@ -451,6 +454,7 @@ A `CardResponseApi` MAY be embedded in an <<type_AbstractApduException,`Abstract
 some responses MAY be missing (e.g. the card was removed during processing, or processing stopped after an
 unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
 
+[[op_CardResponseApi_getApduResponses]]
 ===== Get APDU Responses
 
 [cols="1h,4", grid=rows, frame=all]
@@ -474,6 +478,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Purpose  | Carries the data observed during the start-up phase with the card -- the selection step itself, the channel on which the card has been placed and any additional commands that may have been executed afterwards.
 |===
 
+[[op_CardSelectionResponseApi_getCardResponse]]
 ===== Get Card Response
 
 [cols="1h,4", grid=rows, frame=all]
@@ -485,6 +490,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Throws      | None.
 |===
 
+[[op_CardSelectionResponseApi_getChannel]]
 ===== Get Channel
 
 [cols="1h,4", grid=rows, frame=all]
@@ -499,6 +505,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Throws      | None.
 |===
 
+[[op_CardSelectionResponseApi_getPowerOnData]]
 ===== Get Power On Data
 
 [cols="1h,4", grid=rows, frame=all]
@@ -514,6 +521,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Throws      | None.
 |===
 
+[[op_CardSelectionResponseApi_getSelectApplicationResponse]]
 ===== Get Select Application Response
 
 [cols="1h,4", grid=rows, frame=all]
@@ -525,6 +533,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Throws      | None.
 |===
 
+[[op_CardSelectionResponseApi_hasMatched]]
 ===== Has Matched
 
 [cols="1h,4", grid=rows, frame=all]
@@ -570,13 +579,13 @@ vehicle for the channel number. It plays up to three roles:
   (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not active, a
   `CardBrokenCommunicationException` is raised without contacting the card.
 . **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
-  channel closure), <<op_deactivate,`SmartCardSpi.deactivate`>> is called so that the deactivation is immediately
+  channel closure), <<op_SmartCardSpi_deactivate,`SmartCardSpi.deactivate`>> is called so that the deactivation is immediately
   visible to the application via `SmartCard.isActive() == false`.
 
 Roles 2 and 3 are common to `SmartCardSpi` and `MultichannelSmartCardSpi`; role 1 is specific to the multi-channel
 variant.
 
-[[op_closeChannel]]
+[[op_ProxyReaderApi_closeChannel]]
 ===== Close Channel
 
 [cols="1h,4", grid=rows, frame=all]
@@ -592,7 +601,7 @@ variant.
   <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken.
 |===
 
-[[op_transmitCardRequest]]
+[[op_ProxyReaderApi_transmitCardRequest]]
 ===== Transmit Card Request
 
 [cols="1h,4", grid=rows, frame=all]
@@ -617,7 +626,7 @@ variant.
   request.
 |===
 
-[[op_transmitCardRequestAndCloseChannel]]
+[[op_ProxyReaderApi_transmitCardRequestAndCloseChannel]]
 ===== Transmit Card Request And Close Channel
 
 [cols="1h,4", grid=rows, frame=all]
@@ -656,6 +665,7 @@ variant.
 | Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to control the APDU exchange execution time.
 |===
 
+[[op_ApduRequestSpi_getApdu]]
 ===== Get APDU
 
 [cols="1h,4", grid=rows, frame=all]
@@ -667,7 +677,7 @@ variant.
 | Throws      | None.
 |===
 
-[[op_getApduExchangeMaxDuration]]
+[[op_ApduRequestSpi_getApduExchangeMaxDuration]]
 ===== Get APDU Exchange Max Duration
 
 [cols="1h,4", grid=rows, frame=all]
@@ -683,6 +693,7 @@ variant.
 | Throws      | None.
 |===
 
+[[op_ApduRequestSpi_getInfo]]
 ===== Get Info
 
 [cols="1h,4", grid=rows, frame=all]
@@ -694,6 +705,7 @@ variant.
 | Throws      | None.
 |===
 
+[[op_ApduRequestSpi_getSuccessfulStatusWords]]
 ===== Get Successful Status Words
 
 [cols="1h,4", grid=rows, frame=all]
@@ -717,6 +729,7 @@ variant.
 | Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
 |===
 
+[[op_CardRequestSpi_getApduRequests]]
 ===== Get APDU Requests
 
 [cols="1h,4", grid=rows, frame=all]
@@ -728,6 +741,7 @@ variant.
 | Throws      | None.
 |===
 
+[[op_CardRequestSpi_stopOnUnsuccessfulStatusWord]]
 ===== Stop On Unsuccessful Status Word
 
 [cols="1h,4", grid=rows, frame=all]
@@ -754,6 +768,7 @@ variant.
 An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
 defined in <<ref_cna_tr,CNA-TR-API>>.
 
+[[op_CardSelectionExtensionSpi_getCardSelectionRequest]]
 ===== Get Card Selection Request
 
 [cols="1h,4", grid=rows, frame=all]
@@ -791,6 +806,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Purpose  | Carries the data needed to execute a single selection case.
 |===
 
+[[op_CardSelectionRequestSpi_getCardRequest]]
 ===== Get Card Request
 
 [cols="1h,4", grid=rows, frame=all]
@@ -802,6 +818,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Throws      | None.
 |===
 
+[[op_CardSelectionRequestSpi_getSuccessfulSelectionStatusWords]]
 ===== Get Successful Selection Status Words
 
 [cols="1h,4", grid=rows, frame=all]
@@ -826,6 +843,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
 |===
 
+[[op_MultichannelSmartCardSpi_getChannel]]
 ===== Get Channel
 
 [cols="1h,4", grid=rows, frame=all]
@@ -849,7 +867,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Purpose  | Card-extension facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in <<ref_cna_tr,CNA-TR-API>>.
 |===
 
-[[op_deactivate]]
+[[op_SmartCardSpi_deactivate]]
 ===== Deactivate
 
 [cols="1h,4", grid=rows, frame=all]
@@ -879,6 +897,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
 |===
 
+[[op_AbstractApduException_getCardResponse]]
 ===== Get Card Response
 
 [cols="1h,4", grid=rows, frame=all]
@@ -890,6 +909,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Throws      | None.
 |===
 
+[[op_AbstractApduException_isCardResponseComplete]]
 ===== Is Card Response Complete
 
 [cols="1h,4", grid=rows, frame=all]
@@ -913,7 +933,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since    | 3.0
 | Purpose
 | Indicates that the effective duration of an APDU exchange exceeded the bound declared on the request via
-  <<op_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
+  <<op_ApduRequestSpi_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
   intercept this exception, cancel any ongoing session and propagate the failure to the application as an
   `InvalidCardResponseException` (<<ref_cna_tr,CNA-TR-API>>).
 |===
