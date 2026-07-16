@@ -422,7 +422,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Signature   | `getDataOut() -> byte array`
 | Since       | 1.0
 | Description | Returns the data part of the response (excluding the status word).
-| Returns     | A `byte array`.
+| Returns     | A `byte array`; empty if the response carries no data.
 | Throws      | None.
 |===
 
@@ -517,7 +517,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
   ISO/IEC 7816 Answer To Reset (ATR). For a contactless reader, the reader decides what this data is (virtual ATR,
   anti-collision elements, proprietary representation). The data is exposed as a `string` that MAY be a
   hexadecimal string or any other relevant representation.
-| Returns     | The power-on data, or `null` if no power-on data is available.
+| Returns     | The non-empty power-on data, or `null` if no power-on data is available.
 | Throws      | None.
 |===
 
@@ -701,7 +701,7 @@ variant.
 | Signature   | `getInfo() -> string?`
 | Since       | 1.0
 | Description | Returns an informational string describing the APDU, used by implementations for logging and error messages.
-| Returns     | The informational `string`, or `null` if no information has been defined.
+| Returns     | The non-empty informational `string`, or `null` if no information has been defined.
 | Throws      | None.
 |===
 
@@ -713,7 +713,7 @@ variant.
 | Signature   | `getSuccessfulStatusWords() -> set<integer>`
 | Since       | 1.0
 | Description | Returns the set of status words that MUST be considered successful for this APDU.
-| Returns     | A `set` of status words, containing at least `9000h`.
+| Returns     | A non-empty `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
@@ -826,7 +826,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
 | Since       | 2.0
 | Description | Returns the set of status words that MUST be considered successful for this selection case.
-| Returns     | A `set` of status words, containing at least `9000h`.
+| Returns     | A non-empty `set` of status words, containing at least `9000h`.
 | Throws      | None.
 |===
 
