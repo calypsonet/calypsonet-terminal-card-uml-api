@@ -28,6 +28,8 @@ v3.0.0-SNAPSHOT, {docdate}
 :short-name: CNA
 :spec-name: Terminal Card API
 :spec-id: CNA-TCD-API
+:release-date: <YYMMDD>
+:doc-ref: {release-date}-SP-CNATerminalAPI-Card
 :spec-version: 3.0.0-SNAPSHOT
 :ver-cna-tr: 3.0
 
@@ -48,7 +50,8 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 
 [cols="1h,3", grid=rows, frame=all]
 |===
-| Specification ID    | {spec-id}
+| Reference           | {doc-ref}
+| Short name          | {spec-id}
 | Version             | {spec-version}
 | Editor              | {organization}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
@@ -216,7 +219,7 @@ is backward-compatible per that API's evolution policy.
 | https://pcscworkgroup.com[_Interoperability Specification for ICCs and Personal Computer Systems_].
 
 | [[ref_cna_tr]] [CNA-TR-API]
-| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_], version {ver-cna-tr}, {organization}.
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
 |===
 
 ==== External resources
