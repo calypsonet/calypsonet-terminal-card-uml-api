@@ -576,7 +576,8 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 A `ProxyReaderApi` and the `CardReader` interface defined in <<ref_cna_tr,CNA-TR-API>> are two facets of the same
 underlying reader; they are separated so that only the *internal* dialog with cards is exposed to extension
-modules.
+modules. `ProxyReaderApi` is the *backside* of `CardReader`: it is the reader able to transmit card requests and
+having control over the physical channel. An adapter of this interface MUST therefore also implement `CardReader`.
 
 The proxy reader uses the *smart card SPI* received as parameter to identify the target of every operation: it
 extracts the channel information (when the dynamic type is <<type_MultichannelSmartCardSpi,
@@ -746,7 +747,7 @@ variant.
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
-| Purpose  | Aggregates an ordered list of APDU requests to be executed against the card together with an iteration policy.
+| Purpose  | Aggregates an ordered list of <<type_ApduRequestSpi,`ApduRequestSpi`>> to be executed consecutively against the card, together with a flag indicating whether processing stops when one of the APDUs answers with an unexpected status word.
 | See also    | <<type_ApduResponseApi,`ApduResponseApi`>>
 |===
 
@@ -824,7 +825,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Kind     | Interface (SPI)
 | Namespace  | `card.spi`
 | Since    | 1.0
-| Purpose  | Carries the data needed to execute a single selection case.
+| Purpose  | Carries the data needed to execute a single selection case: a card selector defining the target card profile, and an optional card request to be executed after a successful card selection.
 | See also    | <<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>
 |===
 
@@ -982,7 +983,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Kind     | Checked exception
 | Namespace  | `card`
 | Since    | 2.0
-| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the selection response cannot be interpreted.
+| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the parsing of the card selection response has failed. The most likely reason is that the *Select Application* command returned an invalid FCI structure.
 |===
 
 [[type_ReaderBrokenCommunicationException]]
