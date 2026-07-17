@@ -635,6 +635,12 @@ variant.
 | Transmits the provided <<type_CardRequestSpi,`CardRequestSpi`>> targeting the smart card identified by
   `smartCard`. The logical channel remains open after the operation. If the smart card is no longer active at the
   moment of the call, a `CardBrokenCommunicationException` is raised without any exchange.
+
+*Note:* if an error occurs while sending an APDU (communication error or unexpected status word), an
+<<type_AbstractApduException,`AbstractApduException`>> is thrown and the responses already collected from the
+previously transmitted APDUs are attached to it. This lets the application tolerate card tearing and retrieve the
+partial response, or keep strict control over the APDUs sent to the card (see
+<<op_CardRequestSpi_stopOnUnsuccessfulStatusWord,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
 | Parameters
 | `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>) -- the request to transmit. +
   `smartCard` (<<type_SmartCardSpi,`SmartCardSpi`>>)   -- the smart card SPI identifying the target.
@@ -921,7 +927,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Kind     | Abstract checked exception
 | Namespace  | `card`
 | Since    | 1.0
-| Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the responses already collected before the failure together with a completeness flag.
+| Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the response data received from the card until a communication failure occurs or an unexpected APDU status word is received, together with a completeness flag indicating whether every prepared APDU produced a response.
 |===
 
 [[op_AbstractApduException_getCardResponse]]
@@ -975,7 +981,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0
-| Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active.
+| Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active. Carries the response data received from the card until the failure occurred.
 |===
 
 [[type_ParseException]]
@@ -1000,7 +1006,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0
-| Purpose  | Indicates that the communication with the reader has failed during the execution of a card request.
+| Purpose  | Indicates that the communication with the reader has failed during the execution of a card request. Carries the response data received from the card until the failure occurred.
 |===
 
 [[type_UnexpectedStatusWordException]]
@@ -1013,7 +1019,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Namespace  | `card`
 | Extends  | <<type_AbstractApduException,`AbstractApduException`>>
 | Since    | 1.0
-| Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set.
+| Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set. Carries the response data received from the card until that status word was received.
 |===
 
 // =============================================================================
