@@ -151,6 +151,10 @@ Each interface, class, enumeration and exception defined in this document is des
 | See also   | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
+The *Purpose* row states, in one or two sentences, the responsibility of the type and the way an instance is
+obtained. Any content that requires structure -- rules, lists, notes, nested tables or examples -- is placed as
+prose below the table, because table cells render inline content only.
+
 ==== Operation tables
 
 Each operation defined in this document is described by a table of the form:
