@@ -152,8 +152,8 @@ Each interface, class, enumeration and exception defined in this document is des
 |===
 
 The *Purpose* row states, in one or two sentences, the responsibility of the type and the way an instance is
-obtained. Any content that requires structure -- rules, lists, notes, nested tables or examples -- is placed as
-prose below the table, because table cells render inline content only.
+obtained. It is meant to be scanned, not read: any content that requires structure or depth -- rules, lists,
+notes, value tables or examples -- is placed as prose below the table.
 
 ==== Operation tables
 
