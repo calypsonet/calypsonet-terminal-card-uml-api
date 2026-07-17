@@ -205,6 +205,12 @@ is backward-compatible per that API's evolution policy.
 | [[ref_iso7816]] [ISO/IEC 7816]
 | https://www.iso.org[_Identification cards -- Integrated circuit cards_].
 
+| [[ref_iso14443]] [ISO/IEC 14443]
+| https://www.iso.org[_Identification cards -- Contactless integrated circuit cards -- Proximity cards_].
+
+| [[ref_pcsc]] [PC/SC]
+| https://pcscworkgroup.com[_Interoperability Specification for ICCs and Personal Computer Systems_].
+
 | [[ref_cna_tr]] [CNA-TR-API]
 | https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_], version {ver-cna-tr}, {organization}.
 |===
@@ -518,10 +524,16 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Signature   | `getPowerOnData() -> string?`
 | Since       | 1.0
 | Description
-| Returns the card's power-on data as collected by the reader at insertion. For a contact reader, this is the
-  ISO/IEC 7816 Answer To Reset (ATR). For a contactless reader, the reader decides what this data is (virtual ATR,
-  anti-collision elements, proprietary representation). The data is exposed as a `string` that MAY be a
-  hexadecimal string or any other relevant representation.
+| Returns the card's power-on data, that is, the data retrieved by the reader when the card is inserted. For a
+  contact reader, this is the Answer To Reset (ATR) defined by <<ref_iso7816,ISO/IEC 7816>>.
+
+  For a contactless reader, the reader decides what this data is. Some contactless readers provide a virtual ATR
+  (partially standardised by the <<ref_pcsc,PC/SC>> standard), but other devices MAY have their own definition,
+  including for example elements from the anti-collision stage of the <<ref_iso14443,ISO/IEC 14443>> protocol
+  (ATQA, ATQB, ATS, SAK, etc.) or any proprietary definition.
+
+  As this data varies from one reader to another, it is exposed as a `string`, which MAY be a hexadecimal string
+  or any other relevant representation.
 | Returns     | The non-empty power-on data, or `null` if no power-on data is available.
 | Throws      | None.
 |===
@@ -678,7 +690,9 @@ variant.
 |===
 | Signature   | `getApdu() -> byte array`
 | Since       | 1.0
-| Description | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`).
+| Description
+| Returns the bytes of the APDU command (header and, when applicable, data field and `Le`). For case 4 APDU
+  commands, the `Le` field is mandatory and MUST be set to `00h`.
 | Returns     | A `byte array` of at least 4 bytes.
 | Throws      | None.
 |===
