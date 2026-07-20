@@ -26,9 +26,8 @@ v3.0.0-SNAPSHOT, {docdate}
 :appendix-caption: Appendix
 :organization: Calypso Networks Association
 :spec-name: Terminal Card API
-:spec-id: CNA-TCD-API
-:doc-ref: YYMMDD-SP-CNATerminalAPI-Card
-:spec-version: 3.0.0-SNAPSHOT
+:spec-id: CNA-TC-API
+:spec-ref: YYMMDD-SP-CNATerminalAPI-Card
 :ver-cna-tr: 3.0
 
 [abstract]
@@ -48,14 +47,14 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 
 [cols="1h,3", grid=rows, frame=all]
 |===
-| Reference           | {doc-ref}
+| Reference           | {spec-ref}
 | Short name          | {spec-id}
-| Version             | {spec-version}
+| Version             | {revnumber}
 | Editor              | {organization}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
-NOTE: The present document specifies the {spec-version} of the {spec-name}. It defines a single, coherent
+NOTE: The present document specifies the {revnumber} of the {spec-name}. It defines a single, coherent
 baseline against which conforming implementations are evaluated; the *Since* column indicates the version in
 which each member was introduced.
 

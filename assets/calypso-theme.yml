@@ -67,14 +67,14 @@ header:
       content: image:logo.svg[pdfwidth=1.0in]
       valign: center
     right:
-      content: '{spec-name} -- {spec-version}'
+      content: '{spec-name} -- {revnumber}'
       valign: center
   verso:
     left:
       content: image:logo.svg[pdfwidth=1.0in]
       valign: center
     right:
-      content: '{spec-name} -- {spec-version}'
+      content: '{spec-name} -- {revnumber}'
       valign: center
 
 footer:
