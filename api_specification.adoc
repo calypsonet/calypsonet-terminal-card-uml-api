@@ -73,6 +73,18 @@ NOTE: The present document specifies the {revnumber} of the {spec-name}. It defi
 baseline against which conforming implementations are evaluated; the *Since* column indicates the version in
 which each member was introduced.
 
+[discrete]
+== Revision List
+
+[cols="^.^1,4", options="header"]
+|===
+| Version / Date | Modifications
+
+| *v{revnumber}* +
+{revdate}
+| Baseline.
+|===
+
 // =============================================================================
 == Introduction
 
