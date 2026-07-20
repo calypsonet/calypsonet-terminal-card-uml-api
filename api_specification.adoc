@@ -1,5 +1,21 @@
 = Specification: CNA Terminal API -- Card
 Calypso Networks Association <https://calypsonet.org>
+//
+// Document identity
+:organization: Calypso Networks Association
+:spec-name: Terminal Card API
+:spec-id: CNA-TC-API
+:spec-ref: YYMMDD-SP-CNATerminalAPI-Card
+//
+// Revision
+:revnumber: 3.0.0-SNAPSHOT
+:revdate: 2026-07-20
+:reproducible:
+//
+// Referenced specifications
+:ver-cna-tr: 3.0
+//
+// Output & rendering
 :doctype: book
 :toc: left
 :toclevels: 4
@@ -7,30 +23,26 @@ Calypso Networks Association <https://calypsonet.org>
 :sectnumlevels: 4
 :sectanchors:
 :sectlinks:
-:data-uri:
+:experimental:
+:xrefstyle: short
 :icons: font
-:rouge-style: github
 :source-highlighter: rouge
+:rouge-style: github
+:data-uri:
+//
+// Assets & theming
 :docinfodir: {docdir}/assets
 :docinfo: shared
 :imagesoutdir: {docdir}/gen
 :pdf-themesdir: {docdir}/assets
 :pdf-theme: calypso
 :pdf-fontsdir: {docdir}/assets/fonts
-:experimental:
-:xrefstyle: short
+//
+// Captions
 :figure-caption: Figure
 :table-caption: Table
 :example-caption: Example
 :appendix-caption: Appendix
-:organization: Calypso Networks Association
-:spec-name: Terminal Card API
-:spec-id: CNA-TC-API
-:spec-ref: YYMMDD-SP-CNATerminalAPI-Card
-:revnumber: 3.0.0-SNAPSHOT
-:revdate: 2026-07-20
-:reproducible:
-:ver-cna-tr: 3.0
 
 [abstract]
 == Abstract
