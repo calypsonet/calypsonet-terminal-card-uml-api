@@ -1,6 +1,5 @@
 = Specification: CNA Terminal API -- Card
 Calypso Networks Association <https://calypsonet.org>
-v3.0.0-SNAPSHOT, {docdate}
 :doctype: book
 :toc: left
 :toclevels: 4
@@ -28,6 +27,9 @@ v3.0.0-SNAPSHOT, {docdate}
 :spec-name: Terminal Card API
 :spec-id: CNA-TC-API
 :spec-ref: YYMMDD-SP-CNATerminalAPI-Card
+:revnumber: 3.0.0-SNAPSHOT
+:revdate: 2026-07-20
+:reproducible:
 :ver-cna-tr: 3.0
 
 [abstract]
