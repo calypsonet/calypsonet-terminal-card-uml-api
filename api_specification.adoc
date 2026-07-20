@@ -1,4 +1,4 @@
-= Terminal Card API -- Specification
+= Specification: CNA Terminal API -- Card
 Calypso Networks Association <https://calypsonet.org>
 v3.0.0-SNAPSHOT, {docdate}
 :doctype: book

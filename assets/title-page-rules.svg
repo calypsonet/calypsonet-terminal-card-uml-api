@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="595" height="842" viewBox="0 0 595 842">
+  <!-- Header above the title -->
+  <line x1="80" y1="440" x2="515" y2="440" stroke="#9d9d9d" stroke-width="0.5"/>
+  <!-- Text below the title -->
+  <line x1="80" y1="580" x2="515" y2="580" stroke="#9d9d9d" stroke-width="0.5"/>
+</svg>
+

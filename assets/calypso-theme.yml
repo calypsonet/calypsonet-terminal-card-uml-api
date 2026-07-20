@@ -2,6 +2,8 @@ extends: default
 
 page:
   margin: [1.0in, 0.67in, 0.67in, 0.67in]
+  numbering:
+    start-at: title
 
 font:
   catalog:
@@ -23,19 +25,37 @@ base:
   font-size: 10.5
   font-color: #333333
 
+role:
+  color-calypso:
+    font-color: #039efd
+
 title_page:
   align: center
+  background-image: image:title-page-rules.svg[]
   logo:
     align: center
     image: image:logo.svg[pdfwidth=4.0in]
-    top: 20%
+    top: 30%
   title:
     align: center
-    font-color: #039efd
-  authors:
+    font-size: 14
+    font-color: #OOO
+    text-transform: uppercase
+  subtitle:
     align: center
+    font-size: 18
+    font-color: #039efd
+    margin-top: 15
+    font-style: normal
+  authors:
+    display: none
+    align: center
+    margin-top: 15
   revision:
     align: center
+    margin-top: 15
+    font-style: italic
+    font-color: #9d9d9d
 
 heading:
   font-color: #039efd
@@ -54,49 +74,47 @@ table:
     background-color: #f2f3f4
     border-bottom-width: 0.5
 
+running-content:
+  start-at: title
+
 header:
-  height: 0.6in
-  border-color: #039efd
+  height: 0.8in
+  border-color: #9d9d9d
   border-width: 0.5
   padding: [16, 0, 4, 0]
   font-family: Montserrat
-  font-size: 9
-  start-at: body
-  recto:
+  font-size: 7
+  font-color: #9d9d9d
+  recto: &header-content
     left:
-      content: image:logo.svg[pdfwidth=1.0in]
+      content: image:logo.svg[pdfwidth=1.5in]
       valign: center
     right:
-      content: '{spec-name} -- {revnumber}'
+      content: |
+        SPECIFICATION +
+        Public +
+        {spec-name} +
+        _{spec-ref}_
       valign: center
-  verso:
-    left:
-      content: image:logo.svg[pdfwidth=1.0in]
-      valign: center
-    right:
-      content: '{spec-name} -- {revnumber}'
-      valign: center
+  verso: *header-content
 
 footer:
   height: 0.4in
-  border-color: #039efd
+  border-color: #9d9d9d
   border-width: 0.5
   padding: [4, 0, 4, 0]
   font-family: Montserrat
-  font-size: 8
-  font-color: #6b7280
-  start-at: body
-  recto:
+  font-size: 7
+  font-color: #9d9d9d
+  recto: &footer-content
     left:
-      content: '{revdate}'
+      content: |
+        Version {nbsp} {revnumber} +
+        Date {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} {revdate}
       valign: center
     right:
-      content: '{page-number} / {page-count}'
+      content: |
+        [.color-calypso]#{page-number} / {page-count}# +
+        _© Calypso Networks Association 2026 -- Reproduction is prohibited without prior written agreement_
       valign: center
-  verso:
-    left:
-      content: '{revdate}'
-      valign: center
-    right:
-      content: '{page-number} / {page-count}'
-      valign: center
+  verso: *footer-content
