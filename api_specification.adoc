@@ -228,7 +228,7 @@ is backward-compatible per that API's evolution policy.
 | Reference | Document
 
 | [[ref_cna_tr]] [CNA-TR-API]
-| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_CNA Terminal API -- Reader_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
 |===
 
 ==== Normative References
