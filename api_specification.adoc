@@ -39,7 +39,7 @@ Calypso Networks Association <https://calypsonet.org>
 :pdf-fontsdir: {docdir}/assets/fonts
 //
 // Captions
-:appendix-caption: Appendix
+:appendix-caption: Annex
 :example-caption: Example
 :figure-caption: Figure
 :table-caption: Table
@@ -218,10 +218,20 @@ synchronisation results in undefined behaviour. Distinct instances MAY be used c
 
 === References and Resources
 
+==== Calypso References
+
 References to CNA Terminal APIs designate the indicated *major* version; any later release within the same major
 is backward-compatible per that API's evolution policy.
 
-==== Normative references
+[cols="1,4", options="header"]
+|===
+| Reference | Document
+
+| [[ref_cna_tr]] [CNA-TR-API]
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
+|===
+
+==== Normative References
 
 [cols="1,4", options="header"]
 |===
@@ -241,12 +251,9 @@ is backward-compatible per that API's evolution policy.
 
 | [[ref_pcsc]] [PC/SC]
 | https://pcscworkgroup.com[_Interoperability Specification for ICCs and Personal Computer Systems_].
-
-| [[ref_cna_tr]] [CNA-TR-API]
-| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_Terminal Reader API Specification_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
 |===
 
-==== External resources
+==== External Resources
 
 [cols="1,3", options="header"]
 |===
@@ -258,9 +265,9 @@ is backward-compatible per that API's evolution policy.
 |===
 
 // =============================================================================
-== Terms, Definitions and Abbreviations
+== Glossary and Acronyms
 
-=== Terms and Definitions
+=== Glossary
 
 [cols="1,4", options="header"]
 |===
@@ -277,7 +284,7 @@ is backward-compatible per that API's evolution policy.
 | SPI               | Service Provider Interface -- a set of interfaces designed to be implemented by an extension module.
 |===
 
-=== Abbreviations
+=== Acronyms
 
 [cols="1,4", options="header"]
 |===
