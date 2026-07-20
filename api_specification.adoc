@@ -2,10 +2,10 @@
 Calypso Networks Association <https://calypsonet.org>
 //
 // Document identity
-:organization: Calypso Networks Association
 :spec-name: Terminal Card API
 :spec-id: CNA-TC-API
 :spec-ref: YYMMDD-SP-CNATerminalAPI-Card
+:organization: Calypso Networks Association
 //
 // Revision
 :revnumber: 3.0.0-SNAPSHOT
@@ -23,11 +23,11 @@ Calypso Networks Association <https://calypsonet.org>
 :sectnumlevels: 4
 :sectanchors:
 :sectlinks:
-:experimental:
 :xrefstyle: short
-:icons: font
 :source-highlighter: rouge
 :rouge-style: github
+:icons: font
+:experimental:
 :data-uri:
 //
 // Assets & theming
@@ -39,10 +39,10 @@ Calypso Networks Association <https://calypsonet.org>
 :pdf-fontsdir: {docdir}/assets/fonts
 //
 // Captions
+:appendix-caption: Appendix
+:example-caption: Example
 :figure-caption: Figure
 :table-caption: Table
-:example-caption: Example
-:appendix-caption: Appendix
 
 [abstract]
 == Abstract
