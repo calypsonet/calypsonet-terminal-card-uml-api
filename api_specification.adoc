@@ -664,7 +664,10 @@ variant.
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
-| `transmitCardRequest(cardRequest: CardRequestSpi, smartCard: SmartCardSpi) -> CardResponseApi`
+| `transmitCardRequest(` +
+`{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
+`{nbsp}{nbsp}smartCard: SmartCardSpi` +
+`) -> CardResponseApi`
 | Since       | 3.0
 | Description
 | Transmits the provided <<type_CardRequestSpi,`CardRequestSpi`>> targeting the smart card identified by
@@ -695,7 +698,10 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
-| `transmitCardRequestAndCloseChannel(cardRequest: CardRequestSpi, multichannelSmartCard: MultichannelSmartCardSpi) -> CardResponseApi`
+| `transmitCardRequestAndCloseChannel(` +
+`{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
+`{nbsp}{nbsp}multichannelSmartCard: MultichannelSmartCardSpi` +
+`) -> CardResponseApi`
 | Since       | 3.0
 | Description
 | Transmits the provided request targeting the smart card identified by `multichannelSmartCard` and, upon
