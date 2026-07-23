@@ -20,7 +20,7 @@ Calypso Networks Association <https://calypsonet.org>
 :toc: left
 :toclevels: 4
 :sectnums:
-:sectnumlevels: 4
+:sectnumlevels: 3
 :sectanchors:
 :sectlinks:
 :xrefstyle: short
@@ -43,6 +43,7 @@ Calypso Networks Association <https://calypsonet.org>
 :example-caption: Example
 :figure-caption: Figure
 :table-caption: Table
+:!chapter-signifier:
 
 [abstract]
 == Abstract

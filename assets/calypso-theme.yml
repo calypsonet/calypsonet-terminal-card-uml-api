@@ -22,7 +22,7 @@ font:
 
 base:
   font-family: Montserrat
-  font-size: 10.5
+  font-size: 9
   font-color: #333333
 
 role:
@@ -34,18 +34,19 @@ title_page:
   background-image: image:title-page-rules.svg[]
   logo:
     align: center
-    image: image:logo.svg[pdfwidth=4.0in]
-    top: 30%
+    image: image:logo-product.svg[pdfwidth=4.0in]
+    top: 45%
   title:
     align: center
     font-size: 14
     font-color: #OOO
     text-transform: uppercase
+    top: 40%
   subtitle:
     align: center
     font-size: 18
     font-color: #039efd
-    margin-top: 15
+    margin-top: 70
     font-style: normal
   authors:
     display: none
@@ -57,21 +58,56 @@ title_page:
     font-style: italic
     font-color: #9d9d9d
 
+toc-h2:
+  font-color: #000000
+
+toc-h3:
+  font-color: #EF8B3A
+
+toc-h4:
+  font-color: 9D9D9D
+  font-style: italic
+
+toc-h5:
+  font-color: #039efd
+  font-style: italic
+
 heading:
   font-color: #039efd
   font-style: normal
 
+heading-h2:
+  font-color: #000000
+
+heading-h3:
+  font-color: #EF8B3A
+
+heading-h4:
+  font-color: #9D9D9D
+  font-style: italic
+
+heading-h5:
+  font-color: #039efd
+  font-style: bold_italic
+
 code:
   font-family: JetBrains Mono
-  font-size: 8.5
+  font-size: 8
+
+literal:
+  font-family: JetBrains Mono
+  font-size: 8
+  font-color: #000000
 
 link:
   font-color: #039efd
   text-decoration: underline
 
 table:
+  font-size: 8
   head:
-    background-color: #f2f3f4
+    background-color: #039efd
+    font-color: #ffffff
     border-bottom-width: 0.5
 
 running-content:

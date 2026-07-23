@@ -1,15 +1,44 @@
+<!-- Web fonts from Google Fonts: Montserrat (body & headings), JetBrains Mono (code). -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
 <style>
+/* ==========================================================================
+   Typography — force Montserrat on every textual element, overriding
+   Asciidoctor's default font stack.
+   ========================================================================== */
 body, #content, p, li, td, th, dt, dd, .admonitionblock td.content,
 h1, h2, h3, h4, h5, h6, #toctitle, .title {
     font-family: 'Montserrat', sans-serif !important;
 }
-h1, h2, h3, h4, h5, h6, a.link {
+/* Heading & TOC colour scale (CNA brand palette). Each level shares its colour
+   with the matching TOC entry: h1/h5 = brand blue, h2 = black, h3 = orange,
+   h4 = grey italic, deeper section levels = blue italic. */
+h1, h1 a.link {
     color: #039efd !important;
 }
+h2, h2 a.link, .sectlevel1>li>a {
+    color: #000000 !important;
+}
+h3, h3 a.link, .sectlevel2>li>a {
+    color: #EF8B3A !important;
+}
+h4, h4 a.link, .sectlevel3>li>a {
+    color: #9D9D9D !important;
+    font-style: italic !important;
+}
+h5, h5 a.link {
+    color: #039efd !important;
+    font-weight: bold !important;
+    font-style: italic !important;
+}
+.sectlevel4>li>a {
+    color: #039efd !important;
+    font-style: italic !important;
+}
+/* Document header — centred title with the CNA logo above it. The logo is an
+   inline base64 SVG so the rendered HTML stays self-contained (no external asset). */
 #header h1, #header .details {
     display: block;
     text-align: center;
@@ -24,16 +53,19 @@ h1, h2, h3, h4, h5, h6, a.link {
     background-position: center;
     margin-bottom: 1em;
 }
+/* Extra spacing below the author / revision details line. */
 #header .details {
     padding-bottom: 4em !important;
 }
+/* Links & inline code. */
 a {
     color: #039efd;
 }
 code {
-    color: #ba3925;
+    color: #000000;
     background: none !important;
 }
+/* Tables — smaller base font for the dense API tables. */
 table {
     font-size: 0.92em;
 }
@@ -46,20 +78,23 @@ table.tableblock td .content ol,
 table.tableblock td .content li {
     font-size: inherit;
 }
-table.tableblock td code {
-    word-break: break-word;
+/* Header row: CNA brand-blue background with white text. */
+table.tableblock th, table.tableblock th p {
+    background-color: #039efd !important;
+    color: #ffffff !important;
 }
-table th {
-    background-color: #f2f3f4 !important;
-}
+/* Code — monospace font and tighter size for listings and literal blocks. */
 pre, code, .listingblock pre, .literalblock pre, .inlineblock code {
     font-family: 'JetBrains Mono', monospace !important;
     font-size: 0.85em;
 }
+/* Footer — brand-blue band. */
 #footer {
     background-color: #039efd;
     color: #ffffff;
 }
+/* Wide screens (>= 768px): pin the TOC as a fixed 25em left sidebar, offset the
+   body accordingly, and let header / content / footer span the full width. */
 @media screen and (min-width: 768px) {
     #toc.toc2 {
         width: 25em !important;
