@@ -339,7 +339,7 @@ public-facing interface of the *Terminal Reader API*. Specifically:
 
 === Logical namespaces
 
-[cols="1,1,4", options="header"]
+[cols=".^1,^.^3,.^5", options="header"]
 |===
 | Namespace           | Role     | Summary
 
