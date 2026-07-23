@@ -407,7 +407,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 
 ===== Constants
 
-[cols="1,1,1,4", options="header"]
+[cols=".^1,^.^1,^.^1,.^4", options="header"]
 |===
 | Name      | Type     | Since | Description
 
