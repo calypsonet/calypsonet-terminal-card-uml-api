@@ -167,7 +167,7 @@ as-is in the UML class diagram (<<sec_class_diagram>>).
 
 Each interface, class, enumeration and exception defined in this document is described by a table of the form:
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name       | The type's normalized name.
 | Kind       | The category of the type (interface, class, enumeration, exception, etc.).
@@ -187,7 +187,7 @@ notes, value tables or examples -- is placed as prose below the table.
 
 Each operation defined in this document is described by a table of the form:
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | The operation's language-agnostic signature.
 | Since       | The version of the API in which the operation was introduced.
@@ -396,7 +396,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 [[type_CardApiProperties]]
 ==== Card API Properties
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardApiProperties`
 | Kind     | Final class
@@ -424,7 +424,7 @@ The `CardApiProperties` type cannot be instantiated; it exposes only static prop
 [[type_ApduResponseApi]]
 ==== APDU Response API
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `ApduResponseApi`
 | Kind     | Interface (Serializable)
@@ -439,7 +439,7 @@ Instances are serialisable so that they can be transported across distributed bo
 [[op_ApduResponseApi_getApdu]]
 ===== Get APDU
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getApdu() -> byte array`
 | Since       | 1.0
@@ -451,7 +451,7 @@ Instances are serialisable so that they can be transported across distributed bo
 [[op_ApduResponseApi_getApduExchangeDuration]]
 ===== Get APDU Exchange Duration
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getApduExchangeDuration() -> long?`
 | Since       | 3.0
@@ -465,7 +465,7 @@ Instances are serialisable so that they can be transported across distributed bo
 [[op_ApduResponseApi_getDataOut]]
 ===== Get Data Out
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getDataOut() -> byte array`
 | Since       | 1.0
@@ -477,7 +477,7 @@ Instances are serialisable so that they can be transported across distributed bo
 [[op_ApduResponseApi_getStatusWord]]
 ===== Get Status Word
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getStatusWord() -> integer`
 | Since       | 1.0
@@ -489,7 +489,7 @@ Instances are serialisable so that they can be transported across distributed bo
 [[type_CardResponseApi]]
 ==== Card Response API
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardResponseApi`
 | Kind     | Interface (Serializable)
@@ -506,7 +506,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[op_CardResponseApi_getApduResponses]]
 ===== Get APDU Responses
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getApduResponses() -> list<ApduResponseApi>`
 | Since       | 1.0
@@ -518,7 +518,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[type_CardSelectionResponseApi]]
 ==== Card Selection Response API
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardSelectionResponseApi`
 | Kind     | Interface
@@ -531,7 +531,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[op_CardSelectionResponseApi_getCardResponse]]
 ===== Get Card Response
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCardResponse() -> CardResponseApi?`
 | Since       | 1.0
@@ -543,7 +543,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[op_CardSelectionResponseApi_getChannel]]
 ===== Get Channel
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getChannel() -> integer`
 | Since       | 3.0
@@ -558,7 +558,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[op_CardSelectionResponseApi_getPowerOnData]]
 ===== Get Power On Data
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getPowerOnData() -> string?`
 | Since       | 1.0
@@ -580,7 +580,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[op_CardSelectionResponseApi_getSelectApplicationResponse]]
 ===== Get Select Application Response
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getSelectApplicationResponse() -> ApduResponseApi?`
 | Since       | 1.0
@@ -592,7 +592,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[op_CardSelectionResponseApi_hasMatched]]
 ===== Has Matched
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `hasMatched() -> boolean`
 | Since       | 1.0
@@ -604,7 +604,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 [[type_ProxyReaderApi]]
 ==== Proxy Reader API
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `ProxyReaderApi`
 | Kind     | Interface
@@ -645,7 +645,7 @@ variant.
 [[op_ProxyReaderApi_closeChannel]]
 ===== Close Channel
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) -> void`
 | Since       | 3.0
@@ -661,7 +661,7 @@ variant.
 [[op_ProxyReaderApi_transmitCardRequest]]
 ===== Transmit Card Request
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
 | `transmitCardRequest(cardRequest: CardRequestSpi, smartCard: SmartCardSpi) -> CardResponseApi`
@@ -692,7 +692,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_ProxyReaderApi_transmitCardRequestAndCloseChannel]]
 ===== Transmit Card Request And Close Channel
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
 | `transmitCardRequestAndCloseChannel(cardRequest: CardRequestSpi, multichannelSmartCard: MultichannelSmartCardSpi) -> CardResponseApi`
@@ -719,7 +719,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[type_ApduRequestSpi]]
 ==== APDU Request SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `ApduRequestSpi`
 | Kind     | Interface (SPI)
@@ -732,7 +732,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_ApduRequestSpi_getApdu]]
 ===== Get APDU
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getApdu() -> byte array`
 | Since       | 1.0
@@ -746,7 +746,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_ApduRequestSpi_getApduExchangeMaxDuration]]
 ===== Get APDU Exchange Max Duration
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getApduExchangeMaxDuration() -> long?`
 | Since       | 3.0
@@ -762,7 +762,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_ApduRequestSpi_getInfo]]
 ===== Get Info
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getInfo() -> string?`
 | Since       | 1.0
@@ -774,7 +774,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_ApduRequestSpi_getSuccessfulStatusWords]]
 ===== Get Successful Status Words
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getSuccessfulStatusWords() -> set<integer>`
 | Since       | 1.0
@@ -786,7 +786,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[type_CardRequestSpi]]
 ==== Card Request SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardRequestSpi`
 | Kind     | Interface (SPI)
@@ -799,7 +799,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_CardRequestSpi_getApduRequests]]
 ===== Get APDU Requests
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getApduRequests() -> list<ApduRequestSpi>`
 | Since       | 1.0
@@ -811,7 +811,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[op_CardRequestSpi_stopOnUnsuccessfulStatusWord]]
 ===== Stop On Unsuccessful Status Word
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `stopOnUnsuccessfulStatusWord() -> boolean`
 | Since       | 1.0
@@ -823,7 +823,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 [[type_CardSelectionExtensionSpi]]
 ==== Card Selection Extension SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardSelectionExtensionSpi`
 | Kind     | Interface (SPI)
@@ -838,7 +838,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_CardSelectionExtensionSpi_getCardSelectionRequest]]
 ===== Get Card Selection Request
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
 | Since       | 1.0
@@ -850,7 +850,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_CardSelectionExtensionSpi_parse]]
 ===== Parse
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
 | Since       | 1.0
@@ -864,7 +864,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_CardSelectionRequestSpi]]
 ==== Card Selection Request SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardSelectionRequestSpi`
 | Kind     | Interface (SPI)
@@ -877,7 +877,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_CardSelectionRequestSpi_getCardRequest]]
 ===== Get Card Request
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCardRequest() -> CardRequestSpi?`
 | Since       | 1.0
@@ -889,7 +889,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_CardSelectionRequestSpi_getSuccessfulSelectionStatusWords]]
 ===== Get Successful Selection Status Words
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getSuccessfulSelectionStatusWords() -> set<integer>`
 | Since       | 2.0
@@ -901,7 +901,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_MultichannelSmartCardSpi]]
 ==== Multichannel Smart Card SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `MultichannelSmartCardSpi`
 | Kind     | Interface (SPI)
@@ -914,7 +914,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_MultichannelSmartCardSpi_getChannel]]
 ===== Get Channel
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getChannel() -> integer`
 | Since       | 3.0
@@ -926,7 +926,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_SmartCardSpi]]
 ==== Smart Card SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `SmartCardSpi`
 | Kind     | Interface (SPI)
@@ -938,7 +938,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_SmartCardSpi_deactivate]]
 ===== Deactivate
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `deactivate() -> void`
 | Since       | 3.0
@@ -956,7 +956,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_AbstractApduException]]
 ==== Abstract APDU Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `AbstractApduException`
 | Kind     | Abstract checked exception
@@ -968,7 +968,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_AbstractApduException_getCardResponse]]
 ===== Get Card Response
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCardResponse() -> CardResponseApi?`
 | Since       | 1.0
@@ -980,7 +980,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[op_AbstractApduException_isCardResponseComplete]]
 ===== Is Card Response Complete
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `isCardResponseComplete() -> boolean`
 | Since       | 1.0
@@ -992,7 +992,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_ApduExchangeDurationExceededException]]
 ==== APDU Exchange Duration Exceeded Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `ApduExchangeDurationExceededException`
 | Kind     | Checked exception
@@ -1009,7 +1009,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_CardBrokenCommunicationException]]
 ==== Card Broken Communication Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardBrokenCommunicationException`
 | Kind     | Checked exception
@@ -1022,7 +1022,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_ParseException]]
 ==== Parse Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `ParseException`
 | Kind     | Checked exception
@@ -1034,7 +1034,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_ReaderBrokenCommunicationException]]
 ==== Reader Broken Communication Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `ReaderBrokenCommunicationException`
 | Kind     | Checked exception
@@ -1047,7 +1047,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[type_UnexpectedStatusWordException]]
 ==== Unexpected Status Word Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `UnexpectedStatusWordException`
 | Kind     | Checked exception
