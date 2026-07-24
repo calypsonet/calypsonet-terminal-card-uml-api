@@ -129,8 +129,8 @@ header:
       content: |
         SPECIFICATION +
         Public +
-        {spec-name} +
-        _{spec-ref}_
+        {doc-name} +
+        _{doc-ref}_
       valign: center
   verso: *header-content
 

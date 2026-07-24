@@ -2,9 +2,9 @@
 Calypso Networks Association <https://calypsonet.org>
 //
 // Document identity
-:spec-name: Terminal Card API
-:spec-id: CNA-TC-API
-:spec-ref: YYMMDD-SP-CNATerminalAPI-Card
+:doc-name: Terminal Card API
+:doc-id: CNA-TC-API
+:doc-ref: YYMMDD-SP-CNATerminalAPI-Card
 :organization: Calypso Networks Association
 //
 // Revision
@@ -48,12 +48,12 @@ Calypso Networks Association <https://calypsonet.org>
 [abstract]
 == Abstract
 
-This document is the official technical specification of the **{spec-name}** standardised
+This document is the official technical specification of the **{doc-name}** standardised
 by the **{organization}** (CNA).
 It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
-relationships and behavioural requirements that any conforming implementation of the {spec-name} MUST satisfy.
+relationships and behavioural requirements that any conforming implementation of the {doc-name} MUST satisfy.
 
-The {spec-name} is the *underside* of the *Terminal Reader API* (<<ref_cna_tr,CNA-TR-API>>). It defines the *internal*
+The {doc-name} is the *underside* of the *Terminal Reader API* (<<ref_cna_tr,CNA-TR-API>>). It defines the *internal*
 contract used by reader implementations and by card extension modules to exchange APDU-level data with cards,
 while the *Terminal Reader API* remains the public-facing surface used by terminal applications.
 
@@ -62,15 +62,15 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 
 [cols="^.^1h,.^3", grid=rows, frame=all]
 |===
-| Reference           | {spec-ref}
-| Short name          | {spec-id}
+| Reference           | {doc-ref}
+| Short name          | {doc-id}
 | Version             | {revnumber}
 | Revision date       | {revdate}
 | Editor              | {organization}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
-NOTE: The present document specifies the {revnumber} of the {spec-name}. It defines a single, coherent
+NOTE: The present document specifies the {revnumber} of the {doc-name}. It defines a single, coherent
 baseline against which conforming implementations are evaluated; the *Since* column indicates the version in
 which each member was introduced.
 
@@ -91,7 +91,7 @@ which each member was introduced.
 
 === Purpose
 
-The {spec-name} defines the *internal* contract by which:
+The {doc-name} defines the *internal* contract by which:
 
 * a *reader implementation* MUST expose an APDU transmission interface (the *proxy reader*) so that selection
   managers and card transaction managers can exchange data with cards in a uniform way,
@@ -353,7 +353,7 @@ public-facing interface of the *Terminal Reader API*. Specifically:
 
 === Multi-channel design
 
-The {spec-name} exposes the multi-channel capability of ISO/IEC 7816-4 cards through:
+The {doc-name} exposes the multi-channel capability of ISO/IEC 7816-4 cards through:
 
 * a dedicated SPI sub-type <<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>> that carries the channel
   number of each active smart card,
@@ -402,7 +402,7 @@ include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
 | Kind     | Final class
 | Namespace  | `card`
 | Since    | 1.0
-| Purpose  | Exposes the immutable properties of the {spec-name}.
+| Purpose  | Exposes the immutable properties of the {doc-name}.
 |===
 
 ===== Constants
