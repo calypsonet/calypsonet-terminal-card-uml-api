@@ -1,4 +1,4 @@
-= Specification: CNA Terminal API -- Card
+= {doc-type}: Card
 Calypso Networks Association <https://calypsonet.org>
 //
 // Document identity
