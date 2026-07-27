@@ -35,7 +35,7 @@ Calypso Networks Association <https://calypsonet.org>
 //
 // Assets & theming
 :docinfodir: {docdir}/assets
-:docinfo: shared
+:docinfo: shared-head
 :imagesoutdir: {docdir}/gen
 :pdf-themesdir: {docdir}/assets
 :pdf-theme: calypso
