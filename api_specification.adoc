@@ -5,6 +5,8 @@ Calypso Networks Association <https://calypsonet.org>
 :doc-name: Terminal Card API
 :doc-id: CNA-TC-API
 :doc-ref: YYMMDD-SP-CNATerminalAPI-Card
+:doc-type: Specification
+:doc-classification: Public
 :organization: Calypso Networks Association
 //
 // Revision
@@ -29,6 +31,7 @@ Calypso Networks Association <https://calypsonet.org>
 :icons: font
 :experimental:
 :data-uri:
+:webfonts!:
 //
 // Assets & theming
 :docinfodir: {docdir}/assets
