@@ -1,6 +1,6 @@
 @startuml
 title
-    <img:../assets/logo.svg{scale=0.2}>
+    <img:../assets/logo-calypso.svg{scale=0.2}>
 
     Terminal Card API 3.0.+ (2026-04-21)
 end title

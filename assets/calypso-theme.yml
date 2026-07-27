@@ -123,7 +123,7 @@ header:
   font-color: #9d9d9d
   recto: &header-content
     left:
-      content: image:logo.svg[pdfwidth=1.5in]
+      content: image:logo-calypso.svg[pdfwidth=1.5in]
       valign: center
     right:
       content: |
