@@ -695,8 +695,8 @@ variant.
 |===
 | Signature
 | `transmitCardRequest(` +
-`{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
-`{nbsp}{nbsp}smartCard: SmartCardSpi` +
+`{nbsp}{nbsp}{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
+`{nbsp}{nbsp}{nbsp}{nbsp}smartCard: SmartCardSpi` +
 `) -> CardResponseApi`
 | Since       | 3.0
 | Description
@@ -729,8 +729,8 @@ partial response, or keep strict control over the APDUs sent to the card (see
 |===
 | Signature
 | `transmitCardRequestAndCloseChannel(` +
-`{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
-`{nbsp}{nbsp}multichannelSmartCard: MultichannelSmartCardSpi` +
+`{nbsp}{nbsp}{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
+`{nbsp}{nbsp}{nbsp}{nbsp}multichannelSmartCard: MultichannelSmartCardSpi` +
 `) -> CardResponseApi`
 | Since       | 3.0
 | Description
