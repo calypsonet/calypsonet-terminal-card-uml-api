@@ -109,6 +109,13 @@ which each member was introduced.
 [discrete]
 == Revision List
 
+[NOTE]
+====
+This section lists the high-level changes per version. The complete, fine-grained
+changelog is maintained in the {doc-repo}/blob/HEAD/CHANGELOG.md[`CHANGELOG.md`]
+file at the root of the source repository.
+====
+
 [cols="^.^1,.^4", options="header"]
 |===
 | Version / Date | Modifications
