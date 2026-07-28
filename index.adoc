@@ -351,23 +351,9 @@ is backward-compatible per that API's evolution policy.
 === Functional positioning
 
 [plantuml, target=architecture-overview, format=svg]
-....
-@startuml
-skinparam shadowing false
-skinparam roundCorner 8
-
-component "Terminal Application" as App
-component "Terminal Reader API\n[CNA-TR-API]" as TR
-component "Card Extension\n(e.g. Calypso Card API)" as Ext
-component "Terminal Card API\n(this specification)" as TC #LightYellow
-component "Reader Implementation" as Drv
-
-App --> TR : public surface
-Ext --> TC : drives selection / dialog
-TR  ..> TC : adapter relationship
-Drv --> TC : implements
-@enduml
-....
+----
+include::uml/architecture-overview.puml[]
+----
 
 The *adapter relationship* depicted above (`TR ..> TC`) binds this specification to <<ref_cna_tr,CNA-TR-API>>: an
 implementation exposes each contract of this API through an adapter that also implements the corresponding
@@ -425,9 +411,9 @@ To enable software-level control of the APDU exchange execution time, this speci
 
 The following UML class diagram provides a visual representation of the types and relationships defined by this specification:
 
-[plantuml, target="api_class_diagram", format="svg"]
+[plantuml, target="class-diagram", format="svg"]
 ----
-include::api_class_diagram.puml[Terminal Card API class diagram, align=center]
+include::uml/class-diagram.puml[Terminal Card API class diagram, align=center]
 ----
 
 // =============================================================================
