@@ -83,10 +83,9 @@ role:
 # --- Title page --------------------------------------------------------------
 title_page:
   align: center
-  background-image: image:title-page-rules.svg[]
+  background-image: image:title-page-background.svg[]
   logo:
     align: center
-    image: image:logo-product.svg[pdfwidth=4.0in]
     top: 45%
   title:
     align: center
@@ -182,7 +181,7 @@ header:
   font-color: $brand_muted
   recto: &header-content
     left:
-      content: image:logo-calypso.svg[pdfwidth=1.5in]
+      content: image:logos/calypso.svg[pdfwidth=1.5in]
       valign: center
     right:
       content: |

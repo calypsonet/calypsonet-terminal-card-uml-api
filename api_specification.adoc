@@ -12,6 +12,7 @@
 :doc-id: CNA-TC-API
 :doc-ref: YYMMDD-SP-CNATerminalAPI-Card
 :doc-repo: https://github.com/calypsonet/calypsonet-terminal-card-uml-api
+include::assets/logos/_terminal-api.adoc[]
 //
 // Revision (bumped every edition)
 :revnumber: 3.0.0-SNAPSHOT
@@ -64,10 +65,13 @@
 // Assets & theming
 :docinfodir: {docdir}/assets
 :docinfo: shared-head
+:docinfo-subs: attributes
 :imagesoutdir: {docdir}/gen
 :pdf-themesdir: {docdir}/assets
-:pdf-theme: calypso
+:pdf-theme: pdf
 :pdf-fontsdir: {docdir}/assets/fonts
+// Web fonts (base64 woff2) — factored out of docinfo.html
+include::assets/fonts/_fonts.adoc[]
 //
 // Captions & sectioning
 :appendix-caption: Annex
