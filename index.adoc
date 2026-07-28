@@ -72,6 +72,8 @@ include::assets/logos/_terminal-api.adoc[]
 :pdf-fontsdir: {docdir}/assets/fonts
 // Web fonts (base64 woff2) — factored out of docinfo.html
 include::assets/fonts/_fonts.adoc[]
+// Favicon (HTML) — common to all Calypso documents
+include::assets/logos/_favicon.adoc[]
 //
 // Captions & sectioning
 :appendix-caption: Annex
