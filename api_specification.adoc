@@ -11,6 +11,7 @@
 :doc-classification: Public
 :doc-id: CNA-TC-API
 :doc-ref: YYMMDD-SP-CNATerminalAPI-Card
+:doc-repo: https://github.com/calypsonet/calypsonet-terminal-card-uml-api
 //
 // Revision (bumped every edition)
 :revnumber: 3.0.0-SNAPSHOT
@@ -97,6 +98,7 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 | Version             | {revnumber}
 | Revision date       | {revdate}
 | Editor              | {organization}
+| Source repository   | {doc-repo}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
