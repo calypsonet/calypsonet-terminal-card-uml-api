@@ -36,6 +36,7 @@ brand:
   muted: '9D9D9D'     # Calypso grey
   ink: '333333'       # body text
   codebg: 'F7F7F8'    # code background
+  example: 'EBEBEB'   # example block background
   black: '000000'
   white: 'FFFFFF'
 
@@ -166,6 +167,10 @@ table:
     background-color: $brand_primary
     font-color: $brand_white
     border-bottom-width: 0.5
+
+# --- Example blocks ----------------------------------------------------------
+example:
+  background-color: $brand_example
 
 # --- Running content (headers, footers, page numbers) ------------------------
 running-content:

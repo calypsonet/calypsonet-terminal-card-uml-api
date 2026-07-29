@@ -38,6 +38,7 @@
     --cna-muted:     #9D9D9D;   /* Calypso grey    */
     --cna-ink:       #333333;   /* body text       */
     --cna-code-bg:   #F7F7F8;   /* code background */
+    --cna-example:   #EBEBEB;   /* example block background */
     --cna-black:     #000000;
     --cna-white:     #FFFFFF;
 
@@ -214,6 +215,11 @@ table.tableblock th,
 table.tableblock th p {
     background-color: var(--cna-primary) !important;
     color: var(--cna-white) !important;
+}
+
+/* --- Example blocks ------------------------------------------------------ */
+.exampleblock>.content {
+    background-color: var(--cna-example);
 }
 
 /* --- Footer -------------------------------------------------------------- */
