@@ -66,7 +66,7 @@ include::assets/logos/_terminal-api.adoc[]
 :docinfodir: {docdir}/assets
 :docinfo: shared-head
 :docinfo-subs: attributes
-:imagesoutdir: {docdir}/gen
+:imagesoutdir: {docdir}/generated
 :pdf-themesdir: {docdir}/assets
 :pdf-theme: pdf
 :pdf-fontsdir: {docdir}/assets/fonts
