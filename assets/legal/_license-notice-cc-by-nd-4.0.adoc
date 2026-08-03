@@ -1,0 +1,38 @@
+// Legal notice — single source of truth for the copyright and license wording.
+// Rendered on the colophon page (page 2, right after the title page in the book
+// doctype). Included via the :doc-license-notice: attribute (defined in the
+// document header's "Per-spec identity" section); the file name carries the
+// license it holds (CC BY-ND 4.0).
+// Relies on the header attributes: {organization}, {email}, {doc-license},
+// {doc-license-short}, {doc-license-url}.
+//
+// The license roles are applied per block: the copyright line uses
+// `license-header`, the body uses `license-content`. In HTML the surrounding
+// [license] open block cascades the style via CSS, but Asciidoctor PDF does NOT
+// propagate a role set on an open block (`--`) to its children — it only honors
+// roles on leaf blocks (paragraphs, lists). Tagging each block keeps the styling
+// identical in both the HTML and PDF outputs.
+[.license-header]
+Copyright © {organization}, {email}.
+
+[.license-content]
+This specification is licensed under the *{doc-license}* ({doc-license-short}).
+
+[.license-content]
+You are free to *share* -- copy and redistribute this document in any medium or
+format for any purpose, even commercially -- under the following terms:
+
+[.license-content]
+* [.license-content]#*Attribution* -- You MUST give appropriate credit to the {organization},
+provide a link to the license, and indicate if changes were made. You MAY do so
+in any reasonable manner, but not in any way that suggests the {organization}
+endorses you or your use.#
+* [.license-content]#*NoDerivatives* -- If you remix, transform, or build upon this document, you
+MAY NOT distribute the modified material.#
+
+[.license-content]
+No additional restrictions -- You MAY NOT apply legal terms or technological
+measures that legally restrict others from doing anything the license permits.
+
+[.license-content]
+The full license text is available at {doc-license-url}.

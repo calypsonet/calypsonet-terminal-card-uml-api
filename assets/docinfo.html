@@ -135,6 +135,21 @@ body, h1, h2, h3, h4, h5, h6 {
     padding-bottom: 4em;
 }
 
+/* --- Colophon / license notice ------------------------------------------- */
+/* Front-matter colophon page: the copyright line (.license-header) and the
+   license body (.license-content, small grey italic). Mirror of the
+   `license-header` / `license-content` roles in pdf-theme.yml -- update both
+   files together. The roles are applied per block in the AsciiDoc source
+   because the [license] open block does not cascade role styling to its
+   children in the PDF output. */
+.license-header {
+    color: var(--cna-muted);
+}
+.license-content {
+    color: var(--cna-muted);
+    font-style: italic;
+}
+
 /* --- Heading & TOC color scale ------------------------------------------- */
 /* CNA brand palette. Each level shares its color with the matching TOC entry:
    h1/h5 = brand blue, h2 = black, h3 = orange, h4 = grey italic,

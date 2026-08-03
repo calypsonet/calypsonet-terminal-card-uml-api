@@ -74,10 +74,16 @@ base:
 # --- Custom roles ------------------------------------------------------------
 # Custom inline roles, applied as [.role]#text# (the positional [role]#text#
 # form works too — that is what the apdu extension emits):
-#   color-primary  - brand-blue text; used by the footer page counter.
-#   text-uppercase - upper-cases text; used by the header document type.
-#   silver         - greyed-out text; apdu extension (optional / de-emphasised).
-#   red            - error text; apdu extension (missing or invalid rows).
+#   color-primary   - brand-blue text; used by the footer page counter.
+#   text-uppercase  - upper-cases text; used by the header document type.
+#   silver          - greyed-out text; apdu extension (optional / de-emphasised).
+#   red             - error text; apdu extension (missing or invalid rows).
+#   license-header  - copyright line of the colophon page (muted grey).
+#   license-content - license body of the colophon page (muted grey italic).
+# The two license-* roles are applied per block in the AsciiDoc source: the
+# [license] open block does not cascade role styling to its children in the PDF
+# output. They mirror the .license-header / .license-content rules in
+# docinfo.html (HTML output) — update both files together.
 role:
   color-primary:
     font-color: $brand_primary
@@ -90,6 +96,11 @@ role:
     font-color: '909090'
   red:
     font-color: 'BF0000'
+  license-header:
+    font-color: $brand_muted
+  license-content:
+    font-color: $brand_muted
+    font-style: italic
 
 # --- Title page --------------------------------------------------------------
 title_page:

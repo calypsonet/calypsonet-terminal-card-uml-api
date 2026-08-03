@@ -13,6 +13,10 @@
 :doc-ref: YYMMDD-SP-CNATerminalAPI-Card
 :doc-repo: https://github.com/calypsonet/calypsonet-terminal-card-uml-api
 include::assets/logos/_terminal-api.adoc[]
+:doc-license: Creative Commons Attribution-NoDerivatives 4.0 International
+:doc-license-short: CC BY-ND 4.0
+:doc-license-url: https://creativecommons.org/licenses/by-nd/4.0/
+:doc-license-notice: assets/legal/_license-notice-cc-by-nd-4.0.adoc
 //
 // Revision (bumped every edition)
 :revnumber: 3.0.0-SNAPSHOT
@@ -49,6 +53,9 @@ include::assets/logos/_terminal-api.adoc[]
 // Output & rendering
 :doctype: book
 :toc: left
+// PDF only: switch the TOC to manual placement so the colophon can sit between
+// the title page and the TOC (see the `toc::[]` macro after the colophon).
+ifdef::backend-pdf[:toc: macro]
 :toclevels: 4
 :sectnums:
 :sectnumlevels: 3
@@ -74,6 +81,9 @@ include::assets/logos/_terminal-api.adoc[]
 include::assets/fonts/_fonts.adoc[]
 // Favicon (HTML) — common to all Calypso documents
 include::assets/logos/_favicon.adoc[]
+// Legal icons — common to all Calypso documents
+include::assets/logos/_web.adoc[]
+include::assets/logos/_mail.adoc[]
 //
 // Captions & sectioning
 :appendix-caption: Annex
@@ -81,6 +91,41 @@ include::assets/logos/_favicon.adoc[]
 :figure-caption: Figure
 :table-caption: Table
 :!chapter-signifier:
+
+// Colophon (legal notice). A discrete heading keeps it out of the TOC in both
+// outputs. In the PDF it is the first content after the title page (page 2);
+// the TOC is then rendered right after it via the `toc::[]` macro below.
+[discrete]
+== Link and Contact
+
+[cols="^.^1,^.^2,^.^1,^.^2", frame=none, grid=none, stripes=none]
+|===
+| {icon-web-image}
+| Website +
+https://calypsonet.org
+| {icon-mail-image}
+| Support +
+support@calypsonet.org
+|===
+
+// PDF only: transparent SVG spacer that pushes the license notice down so it
+// sits just above the page footer of the colophon page. Asciidoctor PDF has no
+// dynamic "anchor to bottom", so the gap is a FIXED height controlled by the
+// `pdfwidth` value below (the SVG is a 1:1 square, so its rendered height equals
+// pdfwidth). Adjust that single value if the content above/below changes.
+ifdef::backend-pdf[]
+:spacer-datauri: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9Im5vbmUiLz48L3N2Zz4=
+image::{spacer-datauri}[pdfwidth=380pt]
+endif::[]
+
+include::{doc-license-notice}[]
+
+// PDF only: render the TOC after the colophon so the page order is
+// title page -> colophon -> TOC.
+ifdef::backend-pdf[]
+<<<
+toc::[]
+endif::[]
 
 [abstract]
 == Abstract
@@ -105,7 +150,7 @@ while the *Terminal Reader API* remains the public-facing surface used by termin
 | Revision date       | {revdate}
 | Editor              | {organization}
 | Source repository   | {doc-repo}
-| Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
+| Reference license   | {doc-license} ({doc-license-short})
 |===
 
 NOTE: The present document specifies the {revnumber} of the {doc-name}. It defines a single, coherent
@@ -1093,11 +1138,3 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since    | 1.0
 | Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set. Carries the response data received from the card until that status word was received.
 |===
-
-// =============================================================================
-[appendix]
-== Copyright and License
-
-Copyright (c) {organization}, https://calypsonet.org.
-
-This specification is distributed under the terms of the *Eclipse Public License -- v 2.0* (EPL-2.0). See https://www.eclipse.org/legal/epl-2.0/ for the license text.
