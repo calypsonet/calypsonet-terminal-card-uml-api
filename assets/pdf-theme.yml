@@ -72,14 +72,24 @@ base:
   font-color: $brand_ink
 
 # --- Custom roles ------------------------------------------------------------
-# Custom inline roles, applied as [.role]#text#:
+# Custom inline roles, applied as [.role]#text# (the positional [role]#text#
+# form works too — that is what the apdu extension emits):
 #   color-primary  - brand-blue text; used by the footer page counter.
 #   text-uppercase - upper-cases text; used by the header document type.
+#   silver         - greyed-out text; apdu extension (optional / de-emphasised).
+#   red            - error text; apdu extension (missing or invalid rows).
 role:
   color-primary:
     font-color: $brand_primary
   text-uppercase:
     text-transform: uppercase
+  # Neither is a brand colour: both mirror Asciidoctor's default HTML colour
+  # roles (`.silver` #909090, `.red` #bf0000) so the extension's greyed / error
+  # markers look the same in PDF and HTML.
+  silver:
+    font-color: '909090'
+  red:
+    font-color: 'BF0000'
 
 # --- Title page --------------------------------------------------------------
 title_page:
