@@ -149,6 +149,14 @@ body, h1, h2, h3, h4, h5, h6 {
     color: var(--cna-muted);
     font-style: italic;
 }
+/* Colophon "Link and Contact" icons: fixed height in the HTML output only.
+   (The PDF sizes them via the `pdfwidth` attribute on the image macro; this
+   role is ignored there.) Applied through the `colophon-icon` role set on the
+   {icon-web-image} / {icon-mail-image} inline images. Horizontal alignment is
+   handled by the AsciiDoc column spec in _colophon.adoc, not here. */
+.image.colophon-icon img {
+    height: 4em;
+}
 
 /* --- Heading & TOC color scale ------------------------------------------- */
 /* CNA brand palette. Each level shares its color with the matching TOC entry:

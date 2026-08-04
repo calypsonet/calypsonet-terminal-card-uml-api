@@ -9,7 +9,10 @@
 [discrete]
 == Link and Contact
 
-[cols="^.^1,^.^2,^.^1,^.^2", frame=none, grid=none, stripes=none]
+// Icon columns (1 & 3) are right-aligned (>) so each icon sits next to its
+// adjacent label column; text columns (2 & 4) stay centered. `.^` keeps every
+// cell vertically centered.
+[cols=">.^1,^.^2,>.^1,^.^2", frame=none, grid=none, stripes=none]
 |===
 | {icon-web-image}
 | Website +
