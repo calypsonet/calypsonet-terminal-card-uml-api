@@ -77,10 +77,10 @@ ifdef::backend-pdf[:toc: macro]
 // Web fonts (base64 woff2) — factored out of docinfo.html
 include::assets/fonts/_fonts.adoc[]
 // Favicon (HTML) — common to all Calypso documents
-include::assets/logos/_favicon.adoc[]
+include::assets/layout/_favicon.adoc[]
 // Legal icons — common to all Calypso documents
-include::assets/logos/_web.adoc[]
-include::assets/logos/_mail.adoc[]
+include::assets/layout/_web.adoc[]
+include::assets/layout/_mail.adoc[]
 //
 // Captions & sectioning
 :appendix-caption: Annex
