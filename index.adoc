@@ -13,10 +13,7 @@
 :doc-ref: YYMMDD-SP-CNATerminalAPI-Card
 :doc-repo: https://github.com/calypsonet/calypsonet-terminal-card-uml-api
 include::assets/logos/_terminal-api.adoc[]
-:doc-license: Creative Commons Attribution-NoDerivatives 4.0 International
-:doc-license-short: CC BY-ND 4.0
-:doc-license-url: https://creativecommons.org/licenses/by-nd/4.0/
-:doc-license-notice: assets/legal/_license-notice-cc-by-nd-4.0.adoc
+include::assets/legal/_license-cc-by-nd-4.0.adoc[]
 //
 // Revision (bumped every edition)
 :revnumber: 3.0.0-SNAPSHOT
@@ -115,7 +112,7 @@ support@calypsonet.org
 // pdfwidth). Adjust that single value if the content above/below changes.
 ifdef::backend-pdf[]
 include::assets/layout/_spacer.adoc[]
-image::{spacer-datauri}[pdfwidth=300pt]
+image::{spacer-datauri}[pdfwidth={spacer-pdfwidth}]
 endif::[]
 
 include::{doc-license-notice}[]
