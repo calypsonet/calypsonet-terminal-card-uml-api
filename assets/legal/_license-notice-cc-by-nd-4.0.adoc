@@ -35,4 +35,13 @@ No additional restrictions -- You MAY NOT apply legal terms or technological
 measures that legally restrict others from doing anything the license permits.
 
 [.license-content]
+*Implementation grant* -- The *NoDerivatives* condition above applies to this
+specification *document* only -- its text, tables and diagrams. It does *not*
+restrict the use of the technical information the document contains. The
+{organization} hereby grants everyone an irrevocable, worldwide, royalty-free
+permission to use the information contained in this specification to design,
+develop, and distribute software implementations of this API, in any
+programming language, under the license of their choice.
+
+[.license-content]
 The full license text is available at {doc-license-url}.
