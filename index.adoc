@@ -89,40 +89,9 @@ include::assets/logos/_mail.adoc[]
 :table-caption: Table
 :!chapter-signifier:
 
-// Colophon (legal notice). A discrete heading keeps it out of the TOC in both
-// outputs. In the PDF it is the first content after the title page (page 2);
-// the TOC is then rendered right after it via the `toc::[]` macro below.
-[discrete]
-== Link and Contact
-
-[cols="^.^1,^.^2,^.^1,^.^2", frame=none, grid=none, stripes=none]
-|===
-| {icon-web-image}
-| Website +
-https://calypsonet.org
-| {icon-mail-image}
-| Support +
-support@calypsonet.org
-|===
-
-// PDF only: transparent SVG spacer that pushes the license notice down so it
-// sits just above the page footer of the colophon page. Asciidoctor PDF has no
-// dynamic "anchor to bottom", so the gap is a FIXED height controlled by the
-// `pdfwidth` value below (the SVG is a 1:1 square, so its rendered height equals
-// pdfwidth). Adjust that single value if the content above/below changes.
-ifdef::backend-pdf[]
-include::assets/layout/_spacer.adoc[]
-image::{spacer-datauri}[pdfwidth={spacer-pdfwidth}]
-endif::[]
-
-include::{doc-license-notice}[]
-
-// PDF only: render the TOC after the colophon so the page order is
-// title page -> colophon -> TOC.
-ifdef::backend-pdf[]
-<<<
-toc::[]
-endif::[]
+// Colophon (legal notice) — shared "Link and Contact" front matter. See
+// assets/layout/_colophon.adoc.
+include::assets/layout/_colophon.adoc[]
 
 [abstract]
 == Abstract
