@@ -1,0 +1,15 @@
+@startuml
+skinparam shadowing false
+skinparam roundCorner 8
+
+component "Terminal Application" as App
+component "Terminal Reader API\n[CNA-TR-API]" as TR
+component "Card Extension\n(e.g. Calypso Card API)" as Ext
+component "Terminal Card API\n(this specification)" as TC #LightYellow
+component "Reader Implementation" as Drv
+
+App --> TR : public surface
+Ext --> TC : drives selection / dialog
+TR  ..> TC : adapter relationship
+Drv --> TC : implements
+@enduml

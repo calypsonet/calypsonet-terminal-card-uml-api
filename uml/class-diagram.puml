@@ -1,8 +1,8 @@
 @startuml
 title
-    <img:../assets/logo.svg{scale=0.2}>
+    <img:assets/logos/calypso.svg{scale=0.2}>
 
-    Terminal Card API 2.0.+ (2023-06-19)
+    Terminal Card API 3.0.+ (2026-04-21)
 end title
 
 ' == THEME ==
@@ -54,19 +54,36 @@ hide <<grey>> stereotype
 
 ' == CONTENT ==
 
+legend top
+    * __Text__
+    *** <color:blue><b>New element added since the last version
+    *** <color:red><s><b>Element marked as deprecated since the last version
+    *** <s><b>Element marked as deprecated
+    *** <color:grey><b>Work in progress...
+    * __Object__
+    *** <back:#EBF5FB><color:#3498DB><b>Factory or interface provided by the factory
+    *** <back:#FEFECE><color:#D4AC0D><b>Interface that cannot be instantiated directly by the factory
+    *** <back:#FDEDEC><color:#E74C3C><b>SPI (Service Provider Interface) to be provided by the end-user
+    *** <back:#E9F7EF><color:#27AE60><b>Class, enum or exception
+end legend
+
 package "card" as card {
 
 ' SPI
 package "spi" as spi {
-    +interface "<color:blue>CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
+    +interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
         +CardSelectionRequestSpi getCardSelectionRequest ()
         +SmartCardSpi parse (CardSelectionResponseApi cardSelectionResponseApi)
     }
     +interface SmartCardSpi <<red>> {
+        +<color:blue>void deactivate ()
+    }
+    +interface "<color:blue>MultichannelSmartCardSpi" as MultichannelSmartCardSpi <<red>> extends SmartCardSpi {
+        +<color:blue>int getChannel ()
     }
     ' REQUEST
     +interface CardSelectionRequestSpi <<red>> {
-        +<color:blue>Set<Integer> getSuccessfulSelectionStatusWords ()
+        +Set<Integer> getSuccessfulSelectionStatusWords ()
         +CardRequestSpi getCardRequest ()
     }
     +interface CardRequestSpi <<red>> {
@@ -77,29 +94,29 @@ package "spi" as spi {
         +byte[] getApdu ()
         +Set<Integer> getSuccessfulStatusWords ()
         +String getInfo ()
+        +<color:blue>Long getApduExchangeMaxDuration ()
     }
 }
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** String VERSION
 }
-+class "<<Exception>>\n<color:blue>**final** ParseException" as ParseException <<green>> {
-    +ParseException (String message)
-    +ParseException (String message, Throwable cause)
++class "<<Exception>>\nParseException" as ParseException <<green>> {
 }
 +interface ProxyReaderApi {
     --
-    +CardResponseApi transmitCardRequest (
-        \tCardRequestSpi cardRequest,
-        \tChannelControl channelControl)
+    +<color:blue>CardResponseApi transmitCardRequest (
+        \t<color:blue>CardRequestSpi cardRequest,
+        \t<color:blue>SmartCardSpi smartCard)
 
-    +void releaseChannel ()
-}
-+enum ChannelControl <<green>> {
-    KEEP_OPEN
-    CLOSE_AFTER
+    +<color:blue>CardResponseApi transmitCardRequestAndCloseChannel (
+        \t<color:blue>CardRequestSpi cardRequest,
+        \t<color:blue>MultichannelSmartCardSpi multichannelSmartCard)
+
+    +<color:blue>void closeChannel (MultichannelSmartCardSpi multichannelSmartCard)
 }
 ' RESPONSE
 +interface CardSelectionResponseApi {
+    +<color:blue>int getChannel ()
     +String getPowerOnData ()
     +ApduResponseApi getSelectApplicationResponse ()
     +boolean hasMatched ()
@@ -107,49 +124,25 @@ package "spi" as spi {
 }
 +interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
     +List<ApduResponseApi> getApduResponses ()
-    +boolean isLogicalChannelOpen ()
 }
 +interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
     +byte[] getApdu ()
     +byte[] getDataOut ()
     +int getStatusWord ()
+    +<color:blue>Long getApduExchangeDuration ()
 }
 
 +abstract class "<<Exception>>\nAbstractApduException" as AbstractApduException <<green>> {
-    --
-    #AbstractApduException (
-        \tCardResponseApi cardResponseApi,
-        \tboolean isCardResponseComplete,
-        \tString message)
-    #AbstractApduException (
-        \tCardResponseApi cardResponseApi,
-        \tboolean isCardResponseComplete,
-        \tString message,
-        \tThrowable cause)
-
     +CardResponseApi getCardResponse ()
     +boolean isCardResponseComplete ()
 }
-+class "**final** ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
-    --
-    +ReaderBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message)
-    +ReaderBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message, Throwable cause)
++class "ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
 }
-+class "**final** CardBrokenCommunicationException" as CardBrokenCommunicationException <<green>> extends AbstractApduException {
-    --
-    +CardBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message)
-    +CardBrokenCommunicationException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message, Throwable cause)
++class "CardBrokenCommunicationException" as CardBrokenCommunicationException <<green>> extends AbstractApduException {
 }
-+class "**final** UnexpectedStatusWordException" as UnexpectedStatusWordException <<green>> extends AbstractApduException {
-    --
-    +UnexpectedStatusWordException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message)
-    +UnexpectedStatusWordException (CardResponseApi cardResponseApi
-        \tboolean isCardResponseComplete, String message, Throwable cause)
++class "UnexpectedStatusWordException" as UnexpectedStatusWordException <<green>> extends AbstractApduException {
+}
++class "<color:blue>ApduExchangeDurationExceededException" as ApduExchangeDurationExceededException <<green>> extends AbstractApduException {
 }
 
 }
@@ -173,7 +166,8 @@ CardResponseApi ..> ApduResponseApi #C_LINK : provide >
 AbstractApduException *-up- "0..1" CardResponseApi #C_LINK
 
 ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
-ProxyReaderApi .up.> ChannelControl #C_USE : use >
+ProxyReaderApi .up.> SmartCardSpi #C_USE : use >
+ProxyReaderApi .left.> MultichannelSmartCardSpi #C_USE : use >
 
 ProxyReaderApi .right.> CardResponseApi #C_LINK : provide >
 ProxyReaderApi ..> AbstractApduException #C_THROW : throw >
