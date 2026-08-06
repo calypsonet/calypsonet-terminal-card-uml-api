@@ -200,6 +200,12 @@ table:
 example:
   background-color: $brand_example
 
+# --- Images ------------------------------------------------------------------
+# Center every block image (diagrams, figures). HTML counterpart: the
+# `.imageblock > .content` centering rule in docinfo.html -- update both.
+image:
+  align: center
+
 # --- Running content (headers, footers, page numbers) ------------------------
 running-content:
   start-at: title
