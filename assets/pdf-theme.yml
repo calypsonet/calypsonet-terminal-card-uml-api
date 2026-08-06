@@ -167,6 +167,7 @@ heading-h5:
 # Applies to every captioned block below (figures, tables, examples, listings).
 # HTML counterpart: the `.title` centering rule in docinfo.html -- update both.
 caption:
+  font-color: $brand_muted
   align: center
 
 # --- Code and literal blocks -------------------------------------------------
