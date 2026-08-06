@@ -428,7 +428,7 @@ The following UML class diagram provides a visual representation of the types an
 .{doc-name} -- UML Class Diagram
 [plantuml, target="class-diagram", format="svg"]
 ----
-include::uml/class-diagram.puml[Terminal Card API class diagram, align=center]
+include::uml/class-diagram.puml[Terminal Card API class diagram]
 ----
 
 // =============================================================================
