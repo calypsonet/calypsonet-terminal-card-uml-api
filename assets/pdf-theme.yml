@@ -62,8 +62,10 @@ font:
     # "M+ 1mn" is the monospaced font of the default theme: aliasing it
     # ensures everything inheriting from it renders with JetBrains Mono.
     "M+ 1mn": *jetbrains
-  # Fallback font for glyphs missing from the current font.
-  fallbacks: [Montserrat]
+  # Fallback font for glyphs missing from the base font (Montserrat).
+  # JetBrains Mono supplies the geometric symbols Montserrat lacks -- notably
+  # the nested unordered-list markers (white bullet U+25E6, small square U+25AA).
+  fallbacks: [JetBrains Mono]
 
 # --- Base styles -------------------------------------------------------------
 base:
