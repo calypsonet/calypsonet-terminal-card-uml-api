@@ -1,0 +1,6 @@
+  - version: "2.0.0"
+    status: stable
+    files:
+      diagram:
+        name: "api_class_diagram.svg"
+        size: "71 kB"
