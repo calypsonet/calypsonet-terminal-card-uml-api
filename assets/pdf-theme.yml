@@ -163,6 +163,12 @@ heading-h5:
   font-color: $brand_primary
   font-style: bold_italic
 
+# --- Block captions ----------------------------------------------------------
+# Applies to every captioned block below (figures, tables, examples, listings).
+# HTML counterpart: the `.title` centering rule in docinfo.html -- update both.
+caption:
+  align: center
+
 # --- Code and literal blocks -------------------------------------------------
 # asciidoctor-pdf styles literal blocks (....) like listing/source blocks (----):
 # both take the code background below, so verbatim content is consistent in the

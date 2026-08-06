@@ -197,6 +197,17 @@ h5 > a {
     font-style: italic;
 }
 
+/* --- Block captions ------------------------------------------------------ */
+/* Center the title of every captioned block (figure / table / listing ...).
+   PDF counterpart: the `caption: align: center` key in pdf-theme.yml -- update both. */
+.imageblock > .title,
+table.tableblock > caption.title,
+.listingblock > .title,
+.literalblock > .title,
+.exampleblock > .title {
+    text-align: center;
+}
+
 /* --- Code & literal ------------------------------------------------------ */
 /* Brand monospace font for all pre/code. Font sizes are intentionally left to
    Asciidoctor's defaults: it sizes inline code and listing / literal blocks with

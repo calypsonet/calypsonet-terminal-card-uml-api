@@ -1,3 +1,6 @@
 /generated/
 /index.html
 /index.pdf
+# Draw IO backups
+*.drawio.bkp
+*.drawio.dtmp
