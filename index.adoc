@@ -363,6 +363,7 @@ is backward-compatible per that API's evolution policy.
 
 === Functional positioning
 
+.{doc-name} -- Architecture Overview
 [plantuml, target=architecture-overview, format=svg]
 ----
 include::uml/architecture-overview.puml[]
@@ -424,9 +425,10 @@ To enable software-level control of the APDU exchange execution time, this speci
 
 The following UML class diagram provides a visual representation of the types and relationships defined by this specification:
 
+.{doc-name} -- UML Class Diagram
 [plantuml, target="class-diagram", format="svg"]
 ----
-include::uml/class-diagram.puml[Terminal Card API class diagram, align=center]
+include::uml/class-diagram.puml[Terminal Card API class diagram]
 ----
 
 // =============================================================================

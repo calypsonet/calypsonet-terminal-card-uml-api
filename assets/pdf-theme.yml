@@ -62,8 +62,10 @@ font:
     # "M+ 1mn" is the monospaced font of the default theme: aliasing it
     # ensures everything inheriting from it renders with JetBrains Mono.
     "M+ 1mn": *jetbrains
-  # Fallback font for glyphs missing from the current font.
-  fallbacks: [Montserrat]
+  # Fallback font for glyphs missing from the base font (Montserrat).
+  # JetBrains Mono supplies the geometric symbols Montserrat lacks -- notably
+  # the nested unordered-list markers (white bullet U+25E6, small square U+25AA).
+  fallbacks: [JetBrains Mono]
 
 # --- Base styles -------------------------------------------------------------
 base:
@@ -163,6 +165,13 @@ heading-h5:
   font-color: $brand_primary
   font-style: bold_italic
 
+# --- Block captions ----------------------------------------------------------
+# Applies to every captioned block below (figures, tables, examples, listings).
+# HTML counterpart: the `.title` centering rule in docinfo.html -- update both.
+caption:
+  font-color: $brand_muted
+  align: center
+
 # --- Code and literal blocks -------------------------------------------------
 # asciidoctor-pdf styles literal blocks (....) like listing/source blocks (----):
 # both take the code background below, so verbatim content is consistent in the
@@ -192,6 +201,12 @@ table:
 # --- Example blocks ----------------------------------------------------------
 example:
   background-color: $brand_example
+
+# --- Images ------------------------------------------------------------------
+# Center every block image (diagrams, figures). HTML counterpart: the
+# `.imageblock > .content` centering rule in docinfo.html -- update both.
+image:
+  align: center
 
 # --- Running content (headers, footers, page numbers) ------------------------
 running-content:
