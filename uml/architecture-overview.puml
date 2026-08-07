@@ -1,6 +1,4 @@
 @startuml
-skinparam shadowing false
-skinparam roundCorner 8
 
 component "Terminal Application" as App
 component "Terminal Reader API\n[CNA-TR-API]" as TR
