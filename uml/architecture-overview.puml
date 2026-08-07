@@ -1,9 +1,42 @@
 @startuml
 
+' == THEME (component) ==
+
+' Shared brand palette (same values as the class diagrams)
+!define C_YELLOW FEFECE
+!define C_RED    FDEDEC
+!define C_PURPLE F4ECF7
+!define C_BLUE   EBF5FB
+!define C_GREEN  E9F7EF
+!define C_GREY   EAECEE
+
+skinparam defaultTextAlignment center
+
+' Fine, neutral connectors (no thick line, no vivid color)
+
+skinparam component {
+    ' default fill
+    BackgroundColor #C_BLUE
+    ' Contrast handled by background only:
+    BackgroundColor<<yellow>>   #C_YELLOW
+    BackgroundColor<<green>>  #C_GREEN
+    BackgroundColor<<red>>    #C_RED
+    BackgroundColor<<purple>> #C_PURPLE
+    BackgroundColor<<grey>>   #C_GREY
+}
+' Keep only the color, not the «stereotype» label:
+hide <<yellow>> stereotype
+hide <<green>> stereotype
+hide <<red>> stereotype
+hide <<purple>> stereotype
+hide <<grey>> stereotype
+
+' == CONTENT ==
+
 component "Terminal Application" as App
 component "Terminal Reader API\n[CNA-TR-API]" as TR
 component "Card Extension\n(e.g. Calypso Card API)" as Ext
-component "Terminal Card API\n(this specification)" as TC #LightYellow
+component "Terminal Card API\n(this specification)" as TC <<yellow>>
 component "Reader Implementation" as Drv
 
 App --> TR : public surface
