@@ -216,7 +216,7 @@ as-is in the UML class diagram (<<sec_class_diagram>>).
 | `list<T>`       | Ordered collection of `T` values, may contain duplicates.        | `List<T>`, `Vec<T>`.
 | `set<T>`        | Unordered collection of unique `T` values.                       | `Set<T>`, `HashSet<T>`.
 | `T?`            | Nullable value: either a `T` value or the absence of value (`null`). | `Integer` (boxed), `Optional<T>`, `T?`.
-| `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+| `unit`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
 |===
 
 ==== Type tables
@@ -691,7 +691,7 @@ variant.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) -> void`
+| Signature   | `closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) -> unit`
 | Since       | 3.0
 | Description
 | Closes the logical channel of the smart card identified by `multichannelSmartCard` and deactivates the smart
@@ -990,7 +990,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `deactivate() -> void`
+| Signature   | `deactivate() -> unit`
 | Since       | 3.0
 | Description
 | Marks this smart card as no longer active. After this operation has returned, the corresponding `SmartCard`
