@@ -72,33 +72,33 @@ package "card" as card {
 ' SPI
 package "spi" as spi {
     +interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
-        +getCardSelectionRequest() -> CardSelectionRequestSpi
-        +parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi
+        +getCardSelectionRequest() → CardSelectionRequestSpi
+        +parse(cardSelectionResponseApi: CardSelectionResponseApi) → SmartCardSpi
     }
     +interface SmartCardSpi <<red>> {
-        +<color:blue>deactivate() -> unit
+        +<color:blue>deactivate() → Unit
     }
     +interface "<color:blue>MultichannelSmartCardSpi" as MultichannelSmartCardSpi <<red>> extends SmartCardSpi {
-        +<color:blue>getChannel() -> integer
+        +<color:blue>getChannel() → Int
     }
     ' REQUEST
     +interface CardSelectionRequestSpi <<red>> {
-        +getSuccessfulSelectionStatusWords() -> set<integer>
-        +getCardRequest() -> CardRequestSpi?
+        +getSuccessfulSelectionStatusWords() → Set<Int>
+        +getCardRequest() → CardRequestSpi?
     }
     +interface CardRequestSpi <<red>> {
-        +getApduRequests() -> list<ApduRequestSpi>
-        +stopOnUnsuccessfulStatusWord() -> boolean
+        +getApduRequests() → List<ApduRequestSpi>
+        +stopOnUnsuccessfulStatusWord() → Boolean
     }
     +interface ApduRequestSpi <<red>> {
-        +getApdu() -> byte array
-        +getSuccessfulStatusWords() -> set<integer>
-        +getInfo() -> string?
-        +<color:blue>getApduExchangeMaxDuration() -> long?
+        +getApdu() → ByteArray
+        +getSuccessfulStatusWords() → Set<Int>
+        +getInfo() → String?
+        +<color:blue>getApduExchangeMaxDuration() → Long?
     }
 }
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
-    +{static} **final** VERSION: string
+    +{static} **final** VERSION: String
 }
 +class "<<Exception>>\nParseException" as ParseException <<green>> {
 }
@@ -106,35 +106,35 @@ package "spi" as spi {
     --
     +<color:blue>transmitCardRequest(
         \t<color:blue>cardRequest: CardRequestSpi,
-        \t<color:blue>smartCard: SmartCardSpi) -> CardResponseApi
+        \t<color:blue>smartCard: SmartCardSpi) → CardResponseApi
 
     +<color:blue>transmitCardRequestAndCloseChannel(
         \t<color:blue>cardRequest: CardRequestSpi,
-        \t<color:blue>multichannelSmartCard: MultichannelSmartCardSpi) -> CardResponseApi
+        \t<color:blue>multichannelSmartCard: MultichannelSmartCardSpi) → CardResponseApi
 
-    +<color:blue>closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) -> unit
+    +<color:blue>closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) → Unit
 }
 ' RESPONSE
 +interface CardSelectionResponseApi {
-    +<color:blue>getChannel() -> integer
-    +getPowerOnData() -> string?
-    +getSelectApplicationResponse() -> ApduResponseApi?
-    +hasMatched() -> boolean
-    +getCardResponse() -> CardResponseApi?
+    +<color:blue>getChannel() → Int
+    +getPowerOnData() → String?
+    +getSelectApplicationResponse() → ApduResponseApi?
+    +hasMatched() → Boolean
+    +getCardResponse() → CardResponseApi?
 }
 +interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
-    +getApduResponses() -> list<ApduResponseApi>
+    +getApduResponses() → List<ApduResponseApi>
 }
 +interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
-    +getApdu() -> byte array
-    +getDataOut() -> byte array
-    +getStatusWord() -> integer
-    +<color:blue>getApduExchangeDuration() -> long?
+    +getApdu() → ByteArray
+    +getDataOut() → ByteArray
+    +getStatusWord() → Int
+    +<color:blue>getApduExchangeDuration() → Long?
 }
 
 +abstract class "<<Exception>>\nAbstractApduException" as AbstractApduException <<green>> {
-    +getCardResponse() -> CardResponseApi?
-    +isCardResponseComplete() -> boolean
+    +getCardResponse() → CardResponseApi?
+    +isCardResponseComplete() → Boolean
 }
 +class "ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
 }
