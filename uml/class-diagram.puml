@@ -100,7 +100,9 @@ package "spi" as spi {
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** VERSION: String
 }
-+class "<<errors>>\nParse" as Parse <<green>> {
++exception "<i>«error»\nParse" as Parse <<purple>>  {
+    +val message: String
+    +val cause: Any?
 }
 +interface ProxyReaderApi {
     --
@@ -132,17 +134,11 @@ package "spi" as spi {
     +<color:blue>getApduExchangeDuration() → Long?
 }
 
-+abstract class "<<errors>>\nAbstractApdu" as AbstractApdu <<green>> {
-    +getCardResponse() → CardResponseApi?
-    +isCardResponseComplete() → Boolean
-}
-+class "ReaderBrokenCommunication" as ReaderBrokenCommunication <<green>> extends AbstractApdu {
-}
-+class "CardBrokenCommunication" as CardBrokenCommunication <<green>> extends AbstractApdu {
-}
-+class "UnexpectedStatusWord" as UnexpectedStatusWord <<green>> extends AbstractApdu {
-}
-+class "<color:blue>ApduExchangeDurationExceeded" as ApduExchangeDurationExceeded <<green>> extends AbstractApdu {
++exception "<i>«error»\nReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<purple>>  {
+    +val message: String
+    +val cause: Any?
+    +val cardResponse: CardResponseApi?
+    +val isCardResponseComplete: Boolean
 }
 
 }
@@ -163,14 +159,14 @@ CardSelectionResponseApi ..> CardResponseApi #C_LINK : provide >
 
 CardResponseApi ..> ApduResponseApi #C_LINK : provide >
 
-AbstractApdu *-up- "0..1" CardResponseApi #C_LINK
+errors *-up- "0..1" CardResponseApi #C_LINK
 
 ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
 ProxyReaderApi .up.> SmartCardSpi #C_USE : use >
 ProxyReaderApi .left.> MultichannelSmartCardSpi #C_USE : use >
 
 ProxyReaderApi .right.> CardResponseApi #C_LINK : provide >
-ProxyReaderApi ..> AbstractApdu #C_THROW : throw >
+ProxyReaderApi ..> errors #C_THROW : throw >
 
 ' == LAYOUT ==
 
