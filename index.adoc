@@ -255,7 +255,7 @@ Each operation defined in this document is described by a table of the form:
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
-| Pre-conditions | The conditions the caller MUST satisfy before invoking the operation, each prefixed by its nature. Present only when applicable.
+| Pre-conditions | The conditions the caller MUST satisfy before invoking the operation, each prefixed by its nature.
 | Errors      | A list of error conditions a correct caller must handle, each mapped to a specific error type.
 | See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
@@ -500,6 +500,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Since       | 1.0
 | Description | Returns the raw response bytes received from the card, *including* the status word.
 | Returns     | A `ByteArray` of at least 2 bytes.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -514,6 +515,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Returns the effective duration of the APDU exchange, in *milliseconds*, as measured by the underlying reader
   implementation.
 | Returns     | The measured duration in milliseconds, or `null` if the reader does not provide the measurement.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -526,6 +528,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Since       | 1.0
 | Description | Returns the data part of the response (excluding the status word).
 | Returns     | A `ByteArray`; empty if the response carries no data.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -538,6 +541,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | Since       | 1.0
 | Description | Returns the status word as an `Int` between `0000h` and `FFFFh`.
 | Returns     | An `Int` in the range `[0x0000, 0xFFFF]`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -567,6 +571,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Since       | 1.0
 | Description | Returns the responses received for the executed APDU requests, in the same order in which the requests were submitted.
 | Returns     | A `List`; empty if there is no response.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -592,6 +597,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Since       | 1.0
 | Description | Returns the responses received for any additional commands attached to the selection case.
 | Returns     | The grouped response (<<type_CardResponseApi,`CardResponseApi`>>), or `null` if no additional command was executed.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -607,6 +613,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
   selection scenario this is `0`. For a multi-channel selection scenario, the channel may be any value
   supported by the underlying ISO/IEC 7816-4 card.
 | Returns     | A non-negative `Int`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -629,6 +636,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
   As this data varies from one reader to another, it is exposed as a `String`, which MAY be a hexadecimal string
   or any other relevant representation.
 | Returns     | The non-empty power-on data, or `null` if no power-on data is available.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -641,6 +649,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Since       | 1.0
 | Description | Returns the response received from the card to the *Select Application* command.
 | Returns     | The response (<<type_ApduResponseApi,`ApduResponseApi`>>), or `null` if no *Select Application* command was executed.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -653,6 +662,7 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 | Since       | 1.0
 | Description | Indicates whether the inserted card matches the selection filters.
 | Returns     | `true` if the card matched, `false` otherwise.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -804,6 +814,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`). For case 4 APDU
   commands, the `Le` field is mandatory and MUST be set to `00h`.
 | Returns     | A `ByteArray` of at least 4 bytes.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -820,6 +831,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
   <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> if it exceeds this
   bound.
 | Returns     | The maximum duration in milliseconds, or `null` if no bound is defined for this request.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -832,6 +844,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Since       | 1.0
 | Description | Returns an informational string describing the APDU, used by implementations for logging and error messages.
 | Returns     | The non-empty informational `String`, or `null` if no information has been defined.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -844,6 +857,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Since       | 1.0
 | Description | Returns the set of status words that MUST be considered successful for this APDU.
 | Returns     | A non-empty `Set` of status words, containing at least `9000h`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -869,6 +883,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Since       | 1.0
 | Description | Returns the ordered list of APDU requests to be executed.
 | Returns     | A non-empty `List`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -881,6 +896,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Since       | 1.0
 | Description | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
 | Returns     | `true` to stop on the first failure, `false` to continue regardless.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -908,6 +924,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 1.0
 | Description | Returns the request to use when executing this selection case.
 | Returns     | A <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -948,6 +965,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 1.0
 | Description | Returns the optional follow-up card request to execute after a successful selection.
 | Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -960,6 +978,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 2.0
 | Description | Returns the set of status words that MUST be considered successful for this selection case.
 | Returns     | A non-empty `Set` of status words, containing at least `9000h`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -985,6 +1004,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 3.0
 | Description | Returns the logical channel number on which this smart card has been placed.
 | Returns     | A non-negative `Int`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -1012,6 +1032,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
   exposed to the application via <<ref_cna_tr,CNA-TR-API>> MUST report `isActive() == false`.
 
   MUST be idempotent: calling it twice MUST have the same observable effect as calling it once.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -1039,6 +1060,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 1.0
 | Description | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
 | Returns     | A <<type_CardResponseApi,`CardResponseApi`>>, or `null`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -1051,6 +1073,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Since       | 1.0
 | Description | Indicates whether the embedded card response is complete (every prepared APDU produced a response) or partial.
 | Returns     | `true` if complete, `false` if partial.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
