@@ -64,7 +64,7 @@ legend top
     *** <back:#EBF5FB><color:#3498DB><b>Factory or interface provided by the factory
     *** <back:#FEFECE><color:#D4AC0D><b>Interface that cannot be instantiated directly by the factory
     *** <back:#FDEDEC><color:#E74C3C><b>SPI (Service Provider Interface) to be provided by the end-user
-    *** <back:#E9F7EF><color:#27AE60><b>Class, enum or exception
+    *** <back:#E9F7EF><color:#27AE60><b>Class, enum or error
 end legend
 
 package "card" as card {
@@ -100,7 +100,7 @@ package "spi" as spi {
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** VERSION: String
 }
-+class "<<Exception>>\nParseException" as ParseException <<green>> {
++class "<<errors>>\nParse" as Parse <<green>> {
 }
 +interface ProxyReaderApi {
     --
@@ -132,24 +132,24 @@ package "spi" as spi {
     +<color:blue>getApduExchangeDuration() → Long?
 }
 
-+abstract class "<<Exception>>\nAbstractApduException" as AbstractApduException <<green>> {
++abstract class "<<errors>>\nAbstractApdu" as AbstractApdu <<green>> {
     +getCardResponse() → CardResponseApi?
     +isCardResponseComplete() → Boolean
 }
-+class "ReaderBrokenCommunicationException" as ReaderBrokenCommunicationException <<green>> extends AbstractApduException {
++class "ReaderBrokenCommunication" as ReaderBrokenCommunication <<green>> extends AbstractApdu {
 }
-+class "CardBrokenCommunicationException" as CardBrokenCommunicationException <<green>> extends AbstractApduException {
++class "CardBrokenCommunication" as CardBrokenCommunication <<green>> extends AbstractApdu {
 }
-+class "UnexpectedStatusWordException" as UnexpectedStatusWordException <<green>> extends AbstractApduException {
++class "UnexpectedStatusWord" as UnexpectedStatusWord <<green>> extends AbstractApdu {
 }
-+class "<color:blue>ApduExchangeDurationExceededException" as ApduExchangeDurationExceededException <<green>> extends AbstractApduException {
++class "<color:blue>ApduExchangeDurationExceeded" as ApduExchangeDurationExceeded <<green>> extends AbstractApdu {
 }
 
 }
 
 ' Associations
 
-CardSelectionExtensionSpi .right.> ParseException #C_THROW : throw >
+CardSelectionExtensionSpi .right.> Parse #C_THROW : throw >
 CardSelectionExtensionSpi ..> SmartCardSpi #C_LINK : provide >
 CardSelectionExtensionSpi ..> CardSelectionRequestSpi #C_LINK : provide >
 CardSelectionExtensionSpi ..> CardSelectionResponseApi #C_USE : use >
@@ -163,18 +163,18 @@ CardSelectionResponseApi ..> CardResponseApi #C_LINK : provide >
 
 CardResponseApi ..> ApduResponseApi #C_LINK : provide >
 
-AbstractApduException *-up- "0..1" CardResponseApi #C_LINK
+AbstractApdu *-up- "0..1" CardResponseApi #C_LINK
 
 ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
 ProxyReaderApi .up.> SmartCardSpi #C_USE : use >
 ProxyReaderApi .left.> MultichannelSmartCardSpi #C_USE : use >
 
 ProxyReaderApi .right.> CardResponseApi #C_LINK : provide >
-ProxyReaderApi ..> AbstractApduException #C_THROW : throw >
+ProxyReaderApi ..> AbstractApdu #C_THROW : throw >
 
 ' == LAYOUT ==
 
-ApiProperties -[hidden]- ParseException
+ApiProperties -[hidden]- Parse
 
 ' == STYLE ==
 

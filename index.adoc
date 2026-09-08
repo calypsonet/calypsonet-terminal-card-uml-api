@@ -99,7 +99,7 @@ include::assets/layout/_colophon.adoc[]
 This document is the official technical specification of the **{doc-name}** standardised
 by the **{organization}** (CNA).
 It defines, in a language-agnostic way (using a notation inspired by the Kotlin language), the interfaces,
-classes, enumerations, exceptions, structural relationships and behavioural requirements that any conforming
+classes, enumerations, errors, structural relationships and behavioural requirements that any conforming
 implementation of the {doc-name} MUST satisfy.
 
 The {doc-name} is the *underside* of the *Terminal Reader API* (<<ref_cna_tr,CNA-TR-API>>). It defines the *internal*
@@ -154,7 +154,7 @@ The {doc-name} defines the *internal* contract by which:
   managers and card transaction managers can exchange data with cards in a uniform way,
 * a *card extension* MUST expose its selection process (request preparation and response parsing) so that the
   selection manager defined by <<ref_cna_tr,CNA-TR-API>> can drive it,
-* APDU-level exceptions carry the responses already received before the failure together with any duration
+* APDU-level errors carry the responses already received before the failure together with any duration
   information required to enforce the APDU exchange execution-time bounds.
 
 The API is *internal*: terminal applications MUST NOT use it directly. It is the contract that allows reader
@@ -171,7 +171,7 @@ This specification covers:
   closure operations,
 * the SPI implemented by card extensions to drive selection,
 * the SPI implemented by card extensions to represent a selected smart card, including the multi-channel variant,
-* the family of exceptions raised at APDU exchange level.
+* the family of errors raised at APDU exchange level.
 
 The following topics are *out of scope*:
 
@@ -186,7 +186,7 @@ A software product conforms to this specification if and only if:
 
 . it implements every interface and class defined in <<sec_specification>> with the operations and semantics
   prescribed in this document,
-. it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
+. it raises errors exclusively of the types defined in <<sec_errors>> for the situations described,
 . it preserves the structural relationships described in <<sec_architecture>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
@@ -226,12 +226,12 @@ semantic intent rather than the syntactic form.
 
 ==== Type tables
 
-Each interface, class, enumeration and exception defined in this document is described by a table of the form:
+Each interface, class, enumeration and error defined in this document is described by a table of the form:
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name       | The type's normalized name.
-| Kind       | The category of the type (interface, class, enumeration, exception, etc.).
+| Kind       | The category of the type (interface, class, enumeration, error, etc.).
 | Namespace  | The namespace in which the type is defined.
 | Extends    | The type extended by this type, when applicable.
 | Implements | The interface implemented by this type, when applicable.
@@ -255,7 +255,7 @@ Each operation defined in this document is described by a table of the form:
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
-| Throws      | A list of exceptional conditions, each mapped to a specific exception type.
+| Throws      | A list of error conditions, each mapped to a specific error type.
 | See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
@@ -265,8 +265,8 @@ To avoid repetition, the following rules apply to every operation table in <<sec
 not restated for each operation:
 
 * *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter MUST be non-`null`. An
-  implementation MUST raise `IllegalArgumentException` if a `null` value is supplied. This implicit `null` check is
-  not repeated in the *Throws* row, which states `None.` when no other exception can occur.
+  implementation MUST raise `IllegalArgumentError` if a `null` value is supplied. This implicit `null` check is
+  not repeated in the *Throws* row, which states `None.` when no other error can occur.
 * *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
   operation returns a non-`null` value.
 * *Collections.* Unless the return type is marked nullable (`T?`), an operation whose return type is a collection
@@ -392,8 +392,8 @@ public-facing interface of the *Terminal Reader API*. Specifically:
 | Namespace           | Role     | Summary
 
 | `card`            | Public API (internal-only audience)
-| Properties, parse exception, data carriers (APDU response, card response, selection response), proxy-reader
-  interface and exceptions.
+| Properties, parse error, data carriers (APDU response, card response, selection response), proxy-reader
+  interface and errors.
 
 | `card.spi`        | SPI
 | Data carriers and contracts implemented by card extensions.
@@ -422,8 +422,8 @@ To enable software-level control of the APDU exchange execution time, this speci
   (<<op_ApduRequestSpi_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>),
 * an *optional* per-response effective duration on <<type_ApduResponseApi,`ApduResponseApi`>>
   (<<op_ApduResponseApi_getApduExchangeDuration,`getApduExchangeDuration`>>),
-* a dedicated exception <<type_ApduExchangeDurationExceededException,
-  `ApduExchangeDurationExceededException`>> raised when the effective duration exceeds the declared bound.
+* a dedicated error <<type_ApduExchangeDurationExceeded,
+  `ApduExchangeDurationExceeded`>> raised when the effective duration exceeds the declared bound.
 
 [[sec_class_diagram]]
 === UML class diagram
@@ -548,7 +548,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | See also    | <<type_CardRequestSpi,`CardRequestSpi`>>
 |===
 
-A `CardResponseApi` MAY be embedded in an <<type_AbstractApduException,`AbstractApduException`>>; in that case
+A `CardResponseApi` MAY be embedded in an <<type_AbstractApdu,`AbstractApdu`>>; in that case
 some responses MAY be missing (e.g. the card was removed during processing, or processing stopped after an
 unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
 
@@ -683,7 +683,7 @@ vehicle for the channel number. It plays up to three roles:
   `MultichannelSmartCardSpi`), the exchange is addressed to the basic channel (channel `0`).
 . **Active-state check**: the active state of the smart card is verified before any exchange
   (`SmartCard.isActive()` is `true` per <<ref_cna_tr,CNA-TR-API>>). If it is not active, a
-  `CardBrokenCommunicationException` is raised without contacting the card.
+  `CardBrokenCommunication` is raised without contacting the card.
 . **Deactivation**: when the situation requires it (typically after a communication failure or after an explicit
   channel closure), <<op_SmartCardSpi_deactivate,`SmartCardSpi.deactivate`>> is called so that the deactivation is immediately
   visible to the application via `SmartCard.isActive() == false`.
@@ -703,8 +703,8 @@ variant.
   card. This operation is idempotent: calling it on an already-closed channel has no effect.
 | Parameters  | `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Throws
-| <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
-  <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken.
+| <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>> -- if communication with the reader is broken. +
+  <<type_CardBrokenCommunication,`CardBrokenCommunication`>> -- if communication with the card is broken.
 |===
 
 [[op_ProxyReaderApi_transmitCardRequest]]
@@ -721,10 +721,10 @@ variant.
 | Description
 | Transmits the provided <<type_CardRequestSpi,`CardRequestSpi`>> targeting the smart card identified by
   `smartCard`. The logical channel remains open after the operation. If the smart card is no longer active at the
-  moment of the call, a `CardBrokenCommunicationException` is raised without any exchange.
+  moment of the call, a `CardBrokenCommunication` is raised without any exchange.
 
 *Note:* if an error occurs while sending an APDU (communication error or unexpected status word), an
-<<type_AbstractApduException,`AbstractApduException`>> is thrown and the responses already collected from the
+<<type_AbstractApdu,`AbstractApdu`>> is thrown and the responses already collected from the
 previously transmitted APDUs are attached to it. This lets the application tolerate card tearing and retrieve the
 partial response, or keep strict control over the APDUs sent to the card (see
 <<op_CardRequestSpi_stopOnUnsuccessfulStatusWord,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
@@ -733,11 +733,11 @@ partial response, or keep strict control over the APDUs sent to the card (see
   `smartCard` (<<type_SmartCardSpi,`SmartCardSpi`>>)   -- the smart card SPI identifying the target.
 | Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Throws
-| <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
-  <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken, or if the smart card is no
+| <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>> -- if communication with the reader is broken. +
+  <<type_CardBrokenCommunication,`CardBrokenCommunication`>> -- if communication with the card is broken, or if the smart card is no
   longer active. +
-  <<type_UnexpectedStatusWordException,`UnexpectedStatusWordException`>> -- if a command returned an unexpected status word. +
-  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> -- if a measured APDU duration exceeded the bound declared on the
+  <<type_UnexpectedStatusWord,`UnexpectedStatusWord`>> -- if a command returned an unexpected status word. +
+  <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> -- if a measured APDU duration exceeded the bound declared on the
   request.
 |===
 
@@ -761,11 +761,11 @@ partial response, or keep strict control over the APDUs sent to the card (see
   `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Throws
-| <<type_ReaderBrokenCommunicationException,`ReaderBrokenCommunicationException`>> -- if communication with the reader is broken. +
-  <<type_CardBrokenCommunicationException,`CardBrokenCommunicationException`>> -- if communication with the card is broken, or if the smart card is no
+| <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>> -- if communication with the reader is broken. +
+  <<type_CardBrokenCommunication,`CardBrokenCommunication`>> -- if communication with the card is broken, or if the smart card is no
   longer active. +
-  <<type_UnexpectedStatusWordException,`UnexpectedStatusWordException`>> -- if a command returned an unexpected status word. +
-  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> -- if a measured APDU duration exceeded the bound declared on the
+  <<type_UnexpectedStatusWord,`UnexpectedStatusWord`>> -- if a command returned an unexpected status word. +
+  <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> -- if a measured APDU duration exceeded the bound declared on the
   request.
 |===
 
@@ -808,7 +808,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Description
 | Returns the maximum tolerated duration of the APDU exchange, in *milliseconds*. The proxy reader MUST measure
   the effective duration of the exchange and raise
-  <<type_ApduExchangeDurationExceededException,`ApduExchangeDurationExceededException`>> if it exceeds this
+  <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> if it exceeds this
   bound.
 | Returns     | The maximum duration in milliseconds, or `null` if no bound is defined for this request.
 | Throws      | None.
@@ -913,7 +913,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Parses the response of an executed selection case to produce the corresponding smart-card SPI.
 | Parameters  | `cardSelectionResponseApi` (<<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>) -- the card selection response.
 | Returns     | A <<type_SmartCardSpi,`SmartCardSpi`>>.
-| Throws      | <<type_ParseException,`ParseException`>> -- if the response cannot be interpreted.
+| Throws      | <<type_Parse,`Parse`>> -- if the response cannot be interpreted.
 |===
 
 [[type_CardSelectionRequestSpi]]
@@ -1005,22 +1005,22 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Throws      | None.
 |===
 
-[[sec_exceptions]]
-=== Exceptions
+[[sec_errors]]
+=== Errors
 
-[[type_AbstractApduException]]
-==== Abstract APDU Exception
+[[type_AbstractApdu]]
+==== Abstract APDU
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `AbstractApduException`
-| Kind     | Abstract checked exception
+| Name     | `AbstractApdu`
+| Kind     | Error
 | Namespace  | `card`
 | Since    | 1.0
-| Purpose  | Base class for every exception raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the response data received from the card until a communication failure occurs or an unexpected APDU status word is received, together with a completeness flag indicating whether every prepared APDU produced a response.
+| Purpose  | Base class for every error raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the response data received from the card until a communication failure occurs or an unexpected APDU status word is received, together with a completeness flag indicating whether every prepared APDU produced a response.
 |===
 
-[[op_AbstractApduException_getCardResponse]]
+[[op_AbstractApdu_getCardResponse]]
 ===== Get Card Response
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
@@ -1032,7 +1032,7 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Throws      | None.
 |===
 
-[[op_AbstractApduException_isCardResponseComplete]]
+[[op_AbstractApdu_isCardResponseComplete]]
 ===== Is Card Response Complete
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
@@ -1044,70 +1044,70 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 | Throws      | None.
 |===
 
-[[type_ApduExchangeDurationExceededException]]
-==== APDU Exchange Duration Exceeded Exception
+[[type_ApduExchangeDurationExceeded]]
+==== APDU Exchange Duration Exceeded
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ApduExchangeDurationExceededException`
-| Kind     | Checked exception
+| Name     | `ApduExchangeDurationExceeded`
+| Kind     | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
 | Since    | 3.0
 | Purpose
 | Indicates that the effective duration of an APDU exchange exceeded the bound declared on the request via
   <<op_ApduRequestSpi_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
-  intercept this exception, cancel any ongoing session and propagate the failure to the application as an
-  `InvalidCardResponseException` (<<ref_cna_tr,CNA-TR-API>>).
+  intercept this error, cancel any ongoing session and propagate the failure to the application as an
+  `InvalidCardResponse` (<<ref_cna_tr,CNA-TR-API>>).
 |===
 
-[[type_CardBrokenCommunicationException]]
-==== Card Broken Communication Exception
+[[type_CardBrokenCommunication]]
+==== Card Broken Communication
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardBrokenCommunicationException`
-| Kind     | Checked exception
+| Name     | `CardBrokenCommunication`
+| Kind     | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
 | Since    | 1.0
 | Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active. Carries the response data received from the card until the failure occurred.
 |===
 
-[[type_ParseException]]
-==== Parse Exception
+[[type_Parse]]
+==== Parse
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ParseException`
-| Kind     | Checked exception
+| Name     | `Parse`
+| Kind     | Error
 | Namespace  | `card`
 | Since    | 2.0
 | Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the parsing of the card selection response has failed. The most likely reason is that the *Select Application* command returned an invalid FCI structure.
 |===
 
-[[type_ReaderBrokenCommunicationException]]
-==== Reader Broken Communication Exception
+[[type_ReaderBrokenCommunication]]
+==== Reader Broken Communication
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ReaderBrokenCommunicationException`
-| Kind     | Checked exception
+| Name     | `ReaderBrokenCommunication`
+| Kind     | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
 | Since    | 1.0
 | Purpose  | Indicates that the communication with the reader has failed during the execution of a card request. Carries the response data received from the card until the failure occurred.
 |===
 
-[[type_UnexpectedStatusWordException]]
-==== Unexpected Status Word Exception
+[[type_UnexpectedStatusWord]]
+==== Unexpected Status Word
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `UnexpectedStatusWordException`
-| Kind     | Checked exception
+| Name     | `UnexpectedStatusWord`
+| Kind     | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApduException,`AbstractApduException`>>
+| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
 | Since    | 1.0
 | Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set. Carries the response data received from the card until that status word was received.
 |===
