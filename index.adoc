@@ -250,14 +250,14 @@ Each operation defined in this document is described by a table of the form:
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | The operation's signature.
-| Since       | The version of the API in which the operation was introduced.
-| Description | A normative description of the operation's behaviour.
-| Parameters  | A description of each input parameter.
-| Returns     | A description of the returned value, if any.
+| Signature      | The operation's signature.
+| Since          | The version of the API in which the operation was introduced.
+| Description    | A normative description of the operation's behaviour.
+| Parameters     | A description of each input parameter.
+| Returns        | A description of the returned value, if any.
 | Pre-conditions | The conditions the caller MUST satisfy before invoking the operation, each prefixed by its nature.
-| Errors      | A list of error conditions a correct caller must handle, each mapped to a specific error type.
-| See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
+| Errors         | A list of error conditions a correct caller must handle, each mapped to a specific error type.
+| See also       | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
 ==== Operation contracts
@@ -496,12 +496,12 @@ Instances are serialisable so that they can be transported across distributed bo
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getApdu() -> ByteArray`
-| Since       | 1.0
-| Description | Returns the raw response bytes received from the card, *including* the status word.
-| Returns     | A `ByteArray` of at least 2 bytes.
+| Signature      | `getApdu() -> ByteArray`
+| Since          | 1.0
+| Description    | Returns the raw response bytes received from the card, *including* the status word.
+| Returns        | A `ByteArray` of at least 2 bytes.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_ApduResponseApi_getApduExchangeDuration]]
@@ -509,14 +509,14 @@ Instances are serialisable so that they can be transported across distributed bo
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getApduExchangeDuration() -> Long?`
-| Since       | 3.0
+| Signature      | `getApduExchangeDuration() -> Long?`
+| Since          | 3.0
 | Description
 | Returns the effective duration of the APDU exchange, in *milliseconds*, as measured by the underlying reader
   implementation.
-| Returns     | The measured duration in milliseconds, or `null` if the reader does not provide the measurement.
+| Returns        | The measured duration in milliseconds, or `null` if the reader does not provide the measurement.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_ApduResponseApi_getDataOut]]
@@ -524,12 +524,12 @@ Instances are serialisable so that they can be transported across distributed bo
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getDataOut() -> ByteArray`
-| Since       | 1.0
-| Description | Returns the data part of the response (excluding the status word).
-| Returns     | A `ByteArray`; empty if the response carries no data.
+| Signature      | `getDataOut() -> ByteArray`
+| Since          | 1.0
+| Description    | Returns the data part of the response (excluding the status word).
+| Returns        | A `ByteArray`; empty if the response carries no data.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_ApduResponseApi_getStatusWord]]
@@ -537,12 +537,12 @@ Instances are serialisable so that they can be transported across distributed bo
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getStatusWord() -> Int`
-| Since       | 1.0
-| Description | Returns the status word as an `Int` between `0000h` and `FFFFh`.
-| Returns     | An `Int` in the range `[0x0000, 0xFFFF]`.
+| Signature      | `getStatusWord() -> Int`
+| Since          | 1.0
+| Description    | Returns the status word as an `Int` between `0000h` and `FFFFh`.
+| Returns        | An `Int` in the range `[0x0000, 0xFFFF]`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_CardResponseApi]]
@@ -567,12 +567,12 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getApduResponses() -> List<ApduResponseApi>`
-| Since       | 1.0
-| Description | Returns the responses received for the executed APDU requests, in the same order in which the requests were submitted.
-| Returns     | A `List`; empty if there is no response.
+| Signature      | `getApduResponses() -> List<ApduResponseApi>`
+| Since          | 1.0
+| Description    | Returns the responses received for the executed APDU requests, in the same order in which the requests were submitted.
+| Returns        | A `List`; empty if there is no response.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_CardSelectionResponseApi]]
@@ -593,12 +593,12 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCardResponse() -> CardResponseApi?`
-| Since       | 1.0
-| Description | Returns the responses received for any additional commands attached to the selection case.
-| Returns     | The grouped response (<<type_CardResponseApi,`CardResponseApi`>>), or `null` if no additional command was executed.
+| Signature      | `getCardResponse() -> CardResponseApi?`
+| Since          | 1.0
+| Description    | Returns the responses received for any additional commands attached to the selection case.
+| Returns        | The grouped response (<<type_CardResponseApi,`CardResponseApi`>>), or `null` if no additional command was executed.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardSelectionResponseApi_getChannel]]
@@ -606,15 +606,15 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getChannel() -> Int`
-| Since       | 3.0
+| Signature      | `getChannel() -> Int`
+| Since          | 3.0
 | Description
 | Returns the logical channel number on which the card has been placed by the selection. For a single-channel
   selection scenario this is `0`. For a multi-channel selection scenario, the channel may be any value
   supported by the underlying ISO/IEC 7816-4 card.
-| Returns     | A non-negative `Int`.
+| Returns        | A non-negative `Int`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardSelectionResponseApi_getPowerOnData]]
@@ -622,8 +622,8 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getPowerOnData() -> String?`
-| Since       | 1.0
+| Signature      | `getPowerOnData() -> String?`
+| Since          | 1.0
 | Description
 | Returns the card's power-on data, that is, the data retrieved by the reader when the card is inserted. For a
   contact reader, this is the Answer To Reset (ATR) defined by <<ref_iso7816,ISO/IEC 7816>>.
@@ -635,9 +635,9 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
   As this data varies from one reader to another, it is exposed as a `String`, which MAY be a hexadecimal string
   or any other relevant representation.
-| Returns     | The non-empty power-on data, or `null` if no power-on data is available.
+| Returns        | The non-empty power-on data, or `null` if no power-on data is available.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardSelectionResponseApi_getSelectApplicationResponse]]
@@ -645,12 +645,12 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getSelectApplicationResponse() -> ApduResponseApi?`
-| Since       | 1.0
-| Description | Returns the response received from the card to the *Select Application* command.
-| Returns     | The response (<<type_ApduResponseApi,`ApduResponseApi`>>), or `null` if no *Select Application* command was executed.
+| Signature      | `getSelectApplicationResponse() -> ApduResponseApi?`
+| Since          | 1.0
+| Description    | Returns the response received from the card to the *Select Application* command.
+| Returns        | The response (<<type_ApduResponseApi,`ApduResponseApi`>>), or `null` if no *Select Application* command was executed.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardSelectionResponseApi_hasMatched]]
@@ -658,12 +658,12 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `hasMatched() -> Boolean`
-| Since       | 1.0
-| Description | Indicates whether the inserted card matches the selection filters.
-| Returns     | `true` if the card matched, `false` otherwise.
+| Signature      | `hasMatched() -> Boolean`
+| Since          | 1.0
+| Description    | Indicates whether the inserted card matches the selection filters.
+| Returns        | `true` if the card matched, `false` otherwise.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_ProxyReaderApi]]
@@ -712,12 +712,12 @@ variant.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) -> Unit`
-| Since       | 3.0
+| Signature      | `closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) -> Unit`
+| Since          | 3.0
 | Description
 | Closes the logical channel of the smart card identified by `multichannelSmartCard` and deactivates the smart
   card. This operation is idempotent: calling it on an already-closed channel has no effect.
-| Parameters  | `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
+| Parameters     | `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>> -- if communication with the reader is broken. +
@@ -734,7 +734,7 @@ variant.
 `{nbsp}{nbsp}{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
 `{nbsp}{nbsp}{nbsp}{nbsp}smartCard: SmartCardSpi` +
 `) -> CardResponseApi`
-| Since       | 3.0
+| Since          | 3.0
 | Description
 | Transmits the provided <<type_CardRequestSpi,`CardRequestSpi`>> targeting the smart card identified by
   `smartCard`. The logical channel remains open after the operation. If the smart card is no longer active at the
@@ -748,7 +748,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Parameters
 | `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>) -- the request to transmit. +
   `smartCard` (<<type_SmartCardSpi,`SmartCardSpi`>>)   -- the smart card SPI identifying the target.
-| Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
+| Returns        | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>> -- if communication with the reader is broken. +
@@ -769,7 +769,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 `{nbsp}{nbsp}{nbsp}{nbsp}cardRequest: CardRequestSpi,` +
 `{nbsp}{nbsp}{nbsp}{nbsp}multichannelSmartCard: MultichannelSmartCardSpi` +
 `) -> CardResponseApi`
-| Since       | 3.0
+| Since          | 3.0
 | Description
 | Transmits the provided request targeting the smart card identified by `multichannelSmartCard` and, upon
   successful completion, closes the corresponding logical channel. The smart card is deactivated after the channel
@@ -777,7 +777,7 @@ partial response, or keep strict control over the APDUs sent to the card (see
 | Parameters
 | `cardRequest` (<<type_CardRequestSpi,`CardRequestSpi`>>)           -- the request to transmit. +
   `multichannelSmartCard` (<<type_MultichannelSmartCardSpi,`MultichannelSmartCardSpi`>>) -- the multi-channel smart card SPI identifying the target.
-| Returns     | A <<type_CardResponseApi,`CardResponseApi`>>.
+| Returns        | A <<type_CardResponseApi,`CardResponseApi`>>.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>> -- if communication with the reader is broken. +
@@ -808,14 +808,14 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getApdu() -> ByteArray`
-| Since       | 1.0
+| Signature      | `getApdu() -> ByteArray`
+| Since          | 1.0
 | Description
 | Returns the bytes of the APDU command (header and, when applicable, data field and `Le`). For case 4 APDU
   commands, the `Le` field is mandatory and MUST be set to `00h`.
-| Returns     | A `ByteArray` of at least 4 bytes.
+| Returns        | A `ByteArray` of at least 4 bytes.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_ApduRequestSpi_getApduExchangeMaxDuration]]
@@ -823,16 +823,16 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getApduExchangeMaxDuration() -> Long?`
-| Since       | 3.0
+| Signature      | `getApduExchangeMaxDuration() -> Long?`
+| Since          | 3.0
 | Description
 | Returns the maximum tolerated duration of the APDU exchange, in *milliseconds*. The proxy reader MUST measure
   the effective duration of the exchange and raise
   <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> if it exceeds this
   bound.
-| Returns     | The maximum duration in milliseconds, or `null` if no bound is defined for this request.
+| Returns        | The maximum duration in milliseconds, or `null` if no bound is defined for this request.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_ApduRequestSpi_getInfo]]
@@ -840,12 +840,12 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getInfo() -> String?`
-| Since       | 1.0
-| Description | Returns an informational string describing the APDU, used by implementations for logging and error messages.
-| Returns     | The non-empty informational `String`, or `null` if no information has been defined.
+| Signature      | `getInfo() -> String?`
+| Since          | 1.0
+| Description    | Returns an informational string describing the APDU, used by implementations for logging and error messages.
+| Returns        | The non-empty informational `String`, or `null` if no information has been defined.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_ApduRequestSpi_getSuccessfulStatusWords]]
@@ -853,12 +853,12 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getSuccessfulStatusWords() -> Set<Int>`
-| Since       | 1.0
-| Description | Returns the set of status words that MUST be considered successful for this APDU.
-| Returns     | A non-empty `Set` of status words, containing at least `9000h`.
+| Signature      | `getSuccessfulStatusWords() -> Set<Int>`
+| Since          | 1.0
+| Description    | Returns the set of status words that MUST be considered successful for this APDU.
+| Returns        | A non-empty `Set` of status words, containing at least `9000h`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_CardRequestSpi]]
@@ -879,12 +879,12 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getApduRequests() -> List<ApduRequestSpi>`
-| Since       | 1.0
-| Description | Returns the ordered list of APDU requests to be executed.
-| Returns     | A non-empty `List`.
+| Signature      | `getApduRequests() -> List<ApduRequestSpi>`
+| Since          | 1.0
+| Description    | Returns the ordered list of APDU requests to be executed.
+| Returns        | A non-empty `List`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardRequestSpi_stopOnUnsuccessfulStatusWord]]
@@ -892,12 +892,12 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `stopOnUnsuccessfulStatusWord() -> Boolean`
-| Since       | 1.0
-| Description | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
-| Returns     | `true` to stop on the first failure, `false` to continue regardless.
+| Signature      | `stopOnUnsuccessfulStatusWord() -> Boolean`
+| Since          | 1.0
+| Description    | Indicates whether the iteration MUST stop at the first APDU whose response status word is not in its `getSuccessfulStatusWords()` set.
+| Returns        | `true` to stop on the first failure, `false` to continue regardless.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_CardSelectionExtensionSpi]]
@@ -920,12 +920,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCardSelectionRequest() -> CardSelectionRequestSpi`
-| Since       | 1.0
-| Description | Returns the request to use when executing this selection case.
-| Returns     | A <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
+| Signature      | `getCardSelectionRequest() -> CardSelectionRequestSpi`
+| Since          | 1.0
+| Description    | Returns the request to use when executing this selection case.
+| Returns        | A <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardSelectionExtensionSpi_parse]]
@@ -933,14 +933,14 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
-| Since       | 1.0
+| Signature      | `parse(cardSelectionResponseApi: CardSelectionResponseApi) -> SmartCardSpi`
+| Since          | 1.0
 | Description
 | Parses the response of an executed selection case to produce the corresponding smart-card SPI.
-| Parameters  | `cardSelectionResponseApi` (<<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>) -- the card selection response.
-| Returns     | A <<type_SmartCardSpi,`SmartCardSpi`>>.
+| Parameters     | `cardSelectionResponseApi` (<<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>) -- the card selection response.
+| Returns        | A <<type_SmartCardSpi,`SmartCardSpi`>>.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
-| Errors      | <<type_Parse,`Parse`>> -- if the response cannot be interpreted.
+| Errors         | <<type_Parse,`Parse`>> -- if the response cannot be interpreted.
 |===
 
 [[type_CardSelectionRequestSpi]]
@@ -961,12 +961,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCardRequest() -> CardRequestSpi?`
-| Since       | 1.0
-| Description | Returns the optional follow-up card request to execute after a successful selection.
-| Returns     | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
+| Signature      | `getCardRequest() -> CardRequestSpi?`
+| Since          | 1.0
+| Description    | Returns the optional follow-up card request to execute after a successful selection.
+| Returns        | A <<type_CardRequestSpi,`CardRequestSpi`>>, or `null` if no follow-up is needed.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_CardSelectionRequestSpi_getSuccessfulSelectionStatusWords]]
@@ -974,12 +974,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getSuccessfulSelectionStatusWords() -> Set<Int>`
-| Since       | 2.0
-| Description | Returns the set of status words that MUST be considered successful for this selection case.
-| Returns     | A non-empty `Set` of status words, containing at least `9000h`.
+| Signature      | `getSuccessfulSelectionStatusWords() -> Set<Int>`
+| Since          | 2.0
+| Description    | Returns the set of status words that MUST be considered successful for this selection case.
+| Returns        | A non-empty `Set` of status words, containing at least `9000h`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_MultichannelSmartCardSpi]]
@@ -1000,12 +1000,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getChannel() -> Int`
-| Since       | 3.0
-| Description | Returns the logical channel number on which this smart card has been placed.
-| Returns     | A non-negative `Int`.
+| Signature      | `getChannel() -> Int`
+| Since          | 3.0
+| Description    | Returns the logical channel number on which this smart card has been placed.
+| Returns        | A non-negative `Int`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_SmartCardSpi]]
@@ -1025,15 +1025,15 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `deactivate() -> Unit`
-| Since       | 3.0
+| Signature      | `deactivate() -> Unit`
+| Since          | 3.0
 | Description
 | Marks this smart card as no longer active. After this operation has returned, the corresponding `SmartCard`
   exposed to the application via <<ref_cna_tr,CNA-TR-API>> MUST report `isActive() == false`.
 
   MUST be idempotent: calling it twice MUST have the same observable effect as calling it once.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[sec_errors]]
@@ -1056,12 +1056,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCardResponse() -> CardResponseApi?`
-| Since       | 1.0
-| Description | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
-| Returns     | A <<type_CardResponseApi,`CardResponseApi`>>, or `null`.
+| Signature      | `getCardResponse() -> CardResponseApi?`
+| Since          | 1.0
+| Description    | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
+| Returns        | A <<type_CardResponseApi,`CardResponseApi`>>, or `null`.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[op_AbstractApdu_isCardResponseComplete]]
@@ -1069,12 +1069,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `isCardResponseComplete() -> Boolean`
-| Since       | 1.0
-| Description | Indicates whether the embedded card response is complete (every prepared APDU produced a response) or partial.
-| Returns     | `true` if complete, `false` if partial.
+| Signature      | `isCardResponseComplete() -> Boolean`
+| Since          | 1.0
+| Description    | Indicates whether the embedded card response is complete (every prepared APDU produced a response) or partial.
+| Returns        | `true` if complete, `false` if partial.
 | Pre-conditions | None.
-| Errors      | None.
+| Errors         | None.
 |===
 
 [[type_ApduExchangeDurationExceeded]]
