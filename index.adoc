@@ -453,11 +453,11 @@ include::uml/class-diagram.puml[Terminal Card API class diagram]
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardApiProperties`
-| Kind     | Final class
+| Name       | `CardApiProperties`
+| Kind       | Final class
 | Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Exposes the immutable properties of the {doc-name}.
+| Since      | 1.0
+| Purpose    | Exposes the immutable properties of the {doc-name}.
 |===
 
 ===== Constants
@@ -481,12 +481,12 @@ The `CardApiProperties` type cannot be instantiated; it exposes only static prop
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ApduResponseApi`
-| Kind     | Interface (Serializable)
+| Name       | `ApduResponseApi`
+| Kind       | Interface (Serializable)
 | Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Carries the data received in response to a single APDU command (variable-length payload followed by the status word).
-| See also    | <<type_ApduRequestSpi,`ApduRequestSpi`>>
+| Since      | 1.0
+| Purpose    | Carries the data received in response to a single APDU command (variable-length payload followed by the status word).
+| See also   | <<type_ApduRequestSpi,`ApduRequestSpi`>>
 |===
 
 Instances are serialisable so that they can be transported across distributed boundaries.
@@ -550,15 +550,15 @@ Instances are serialisable so that they can be transported across distributed bo
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardResponseApi`
-| Kind     | Interface (Serializable)
+| Name       | `CardResponseApi`
+| Kind       | Interface (Serializable)
 | Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Groups multiple APDU responses received from the card after the execution of a `CardRequestSpi`.
-| See also    | <<type_CardRequestSpi,`CardRequestSpi`>>
+| Since      | 1.0
+| Purpose    | Groups multiple APDU responses received from the card after the execution of a `CardRequestSpi`.
+| See also   | <<type_CardRequestSpi,`CardRequestSpi`>>
 |===
 
-A `CardResponseApi` MAY be embedded in an <<type_AbstractApdu,`AbstractApdu`>>; in that case
+A `CardResponseApi` MAY be carried by an APDU-level error; in that case
 some responses MAY be missing (e.g. the card was removed during processing, or processing stopped after an
 unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
 
@@ -580,12 +580,12 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardSelectionResponseApi`
-| Kind     | Interface
+| Name       | `CardSelectionResponseApi`
+| Kind       | Interface
 | Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Carries the data observed during the start-up phase with the card -- the selection step itself, the channel on which the card has been placed and any additional commands that may have been executed afterwards.
-| See also    | <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>
+| Since      | 1.0
+| Purpose    | Carries the data observed during the start-up phase with the card -- the selection step itself, the channel on which the card has been placed and any additional commands that may have been executed afterwards.
+| See also   | <<type_CardSelectionRequestSpi,`CardSelectionRequestSpi`>>
 |===
 
 [[op_CardSelectionResponseApi_getCardResponse]]
@@ -671,11 +671,11 @@ unsuccessful status word -- see <<type_CardRequestSpi,`CardRequestSpi.stopOnUnsu
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ProxyReaderApi`
-| Kind     | Interface
+| Name       | `ProxyReaderApi`
+| Kind       | Interface
 | Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Reader-side facet exposing APDU transmission and channel-closure operations to card extensions.
+| Since      | 1.0
+| Purpose    | Reader-side facet exposing APDU transmission and channel-closure operations to card extensions.
 |===
 
 A `ProxyReaderApi` and the `CardReader` interface defined in <<ref_cna_tr,CNA-TR-API>> are two facets of the same
@@ -741,7 +741,7 @@ variant.
   moment of the call, a `CardBrokenCommunication` is raised without any exchange.
 
 *Note:* if an error occurs while sending an APDU (communication error or unexpected status word), an
-<<type_AbstractApdu,`AbstractApdu`>> is thrown and the responses already collected from the
+APDU-level error is raised and the responses already collected from the
 previously transmitted APDUs are attached to it. This lets the application tolerate card tearing and retrieve the
 partial response, or keep strict control over the APDUs sent to the card (see
 <<op_CardRequestSpi_stopOnUnsuccessfulStatusWord,`CardRequestSpi.stopOnUnsuccessfulStatusWord`>>).
@@ -795,12 +795,12 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ApduRequestSpi`
-| Kind     | Interface (SPI)
+| Name       | `ApduRequestSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to control the APDU exchange execution time.
-| See also    | <<type_ApduResponseApi,`ApduResponseApi`>>
+| Since      | 1.0
+| Purpose    | Carries a single APDU request together with its successful status words, its information string and an optional duration bound used to control the APDU exchange execution time.
+| See also   | <<type_ApduResponseApi,`ApduResponseApi`>>
 |===
 
 [[op_ApduRequestSpi_getApdu]]
@@ -866,12 +866,12 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardRequestSpi`
-| Kind     | Interface (SPI)
+| Name       | `CardRequestSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Aggregates an ordered list of <<type_ApduRequestSpi,`ApduRequestSpi`>> to be executed consecutively against the card, together with a flag indicating whether processing stops when one of the APDUs answers with an unexpected status word.
-| See also    | <<type_ApduResponseApi,`ApduResponseApi`>>
+| Since      | 1.0
+| Purpose    | Aggregates an ordered list of <<type_ApduRequestSpi,`ApduRequestSpi`>> to be executed consecutively against the card, together with a flag indicating whether processing stops when one of the APDUs answers with an unexpected status word.
+| See also   | <<type_ApduResponseApi,`ApduResponseApi`>>
 |===
 
 [[op_CardRequestSpi_getApduRequests]]
@@ -905,11 +905,11 @@ partial response, or keep strict control over the APDUs sent to the card (see
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardSelectionExtensionSpi`
-| Kind     | Interface (SPI)
+| Name       | `CardSelectionExtensionSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `card.spi`
-| Since    | 2.0
-| Purpose  | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
+| Since      | 2.0
+| Purpose    | Drives a selection case from the card-extension side: builds the selection request and parses the resulting response into a smart card.
 |===
 
 An implementation of `CardSelectionExtensionSpi` MUST also implement the `CardSelectionExtension` interface
@@ -948,12 +948,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardSelectionRequestSpi`
-| Kind     | Interface (SPI)
+| Name       | `CardSelectionRequestSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Carries the data needed to execute a single selection case: a card selector defining the target card profile, and an optional card request to be executed after a successful card selection.
-| See also    | <<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>
+| Since      | 1.0
+| Purpose    | Carries the data needed to execute a single selection case: a card selector defining the target card profile, and an optional card request to be executed after a successful card selection.
+| See also   | <<type_CardSelectionResponseApi,`CardSelectionResponseApi`>>
 |===
 
 [[op_CardSelectionRequestSpi_getCardRequest]]
@@ -987,12 +987,12 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `MultichannelSmartCardSpi`
-| Kind     | Interface (SPI)
+| Name       | `MultichannelSmartCardSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `card.spi`
-| Extends  | <<type_SmartCardSpi,`SmartCardSpi`>>
-| Since    | 3.0
-| Purpose  | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
+| Extends    | <<type_SmartCardSpi,`SmartCardSpi`>>
+| Since      | 3.0
+| Purpose    | Multi-channel variant of the smart-card SPI, used by card extensions whose underlying card supports several active logical channels.
 |===
 
 [[op_MultichannelSmartCardSpi_getChannel]]
@@ -1013,11 +1013,11 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `SmartCardSpi`
-| Kind     | Interface (SPI)
+| Name       | `SmartCardSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `card.spi`
-| Since    | 1.0
-| Purpose  | Card-extension facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in <<ref_cna_tr,CNA-TR-API>>.
+| Since      | 1.0
+| Purpose    | Card-extension facet of a successfully selected smart card. An implementation of this SPI MUST also implement the `SmartCard` interface defined in <<ref_cna_tr,CNA-TR-API>>.
 |===
 
 [[op_SmartCardSpi_deactivate]]
@@ -1039,54 +1039,25 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 [[sec_errors]]
 === Errors
 
-[[type_AbstractApdu]]
-==== Abstract APDU
+Every error defined below carries two properties: `message` (`String`), which describes the condition, and
+`cause` (`Any?`), the underlying error that triggered it, `null` when there is none. They are not
+restated for each error.
 
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Name     | `AbstractApdu`
-| Kind     | Error
-| Namespace  | `card`
-| Since    | 1.0
-| Purpose  | Base class for every error raised by `ProxyReaderApi.transmitCardRequest*` operations. Carries the response data received from the card until a communication failure occurs or an unexpected APDU status word is received, together with a completeness flag indicating whether every prepared APDU produced a response.
-|===
-
-[[op_AbstractApdu_getCardResponse]]
-===== Get Card Response
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getCardResponse() -> CardResponseApi?`
-| Since          | 1.0
-| Description    | Returns the responses collected before the failure occurred. MAY be `null` if no response was collected.
-| Returns        | A <<type_CardResponseApi,`CardResponseApi`>>, or `null`.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_AbstractApdu_isCardResponseComplete]]
-===== Is Card Response Complete
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `isCardResponseComplete() -> Boolean`
-| Since          | 1.0
-| Description    | Indicates whether the embedded card response is complete (every prepared APDU produced a response) or partial.
-| Returns        | `true` if complete, `false` if partial.
-| Pre-conditions | None.
-| Errors         | None.
-|===
+The APDU-level errors -- <<type_ReaderBrokenCommunication,`ReaderBrokenCommunication`>>,
+<<type_CardBrokenCommunication,`CardBrokenCommunication`>>, <<type_UnexpectedStatusWord,`UnexpectedStatusWord`>>
+and <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> -- additionally carry
+`cardResponse` (`CardResponseApi?`), the responses collected before the failure occurred, and
+`isCardResponseComplete` (`Boolean`), which indicates whether every prepared APDU produced a response.
 
 [[type_ApduExchangeDurationExceeded]]
 ==== APDU Exchange Duration Exceeded
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ApduExchangeDurationExceeded`
-| Kind     | Error
+| Name       | `ApduExchangeDurationExceeded`
+| Kind       | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
-| Since    | 3.0
+| Since      | 3.0
 | Purpose
 | Indicates that the effective duration of an APDU exchange exceeded the bound declared on the request via
   <<op_ApduRequestSpi_getApduExchangeMaxDuration,`getApduExchangeMaxDuration`>>. Higher-level extensions (e.g. Calypso) MAY
@@ -1099,12 +1070,11 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardBrokenCommunication`
-| Kind     | Error
+| Name       | `CardBrokenCommunication`
+| Kind       | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
-| Since    | 1.0
-| Purpose  | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active. Carries the response data received from the card until the failure occurred.
+| Since      | 1.0
+| Purpose    | Indicates that the communication with the card has failed during the execution of a card request, or that the targeted smart card is no longer active. Carries the response data received from the card until the failure occurred.
 |===
 
 [[type_Parse]]
@@ -1112,11 +1082,11 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `Parse`
-| Kind     | Error
+| Name       | `Parse`
+| Kind       | Error
 | Namespace  | `card`
-| Since    | 2.0
-| Purpose  | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the parsing of the card selection response has failed. The most likely reason is that the *Select Application* command returned an invalid FCI structure.
+| Since      | 2.0
+| Purpose    | Raised by <<type_CardSelectionExtensionSpi,`CardSelectionExtensionSpi.parse`>> when the parsing of the card selection response has failed. The most likely reason is that the *Select Application* command returned an invalid FCI structure.
 |===
 
 [[type_ReaderBrokenCommunication]]
@@ -1124,12 +1094,11 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `ReaderBrokenCommunication`
-| Kind     | Error
+| Name       | `ReaderBrokenCommunication`
+| Kind       | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
-| Since    | 1.0
-| Purpose  | Indicates that the communication with the reader has failed during the execution of a card request. Carries the response data received from the card until the failure occurred.
+| Since      | 1.0
+| Purpose    | Indicates that the communication with the reader has failed during the execution of a card request. Carries the response data received from the card until the failure occurred.
 |===
 
 [[type_UnexpectedStatusWord]]
@@ -1137,10 +1106,9 @@ defined in <<ref_cna_tr,CNA-TR-API>>.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `UnexpectedStatusWord`
-| Kind     | Error
+| Name       | `UnexpectedStatusWord`
+| Kind       | Error
 | Namespace  | `card`
-| Extends  | <<type_AbstractApdu,`AbstractApdu`>>
-| Since    | 1.0
-| Purpose  | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set. Carries the response data received from the card until that status word was received.
+| Since      | 1.0
+| Purpose    | Indicates that a command returned a status word that was not part of its `getSuccessfulStatusWords()` set. Carries the response data received from the card until that status word was received.
 |===
