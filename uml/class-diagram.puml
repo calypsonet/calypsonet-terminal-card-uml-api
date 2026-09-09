@@ -101,7 +101,7 @@ package "spi" as spi {
 +class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** VERSION: String
 }
-+exception "<i>«error»\nParse" as Parse <<purple>>  {
++exception "Parse" as Parse <<purple>> <<error>> {
     +val message: String
     +val cause: Any?
 }
@@ -138,7 +138,7 @@ package "spi" as spi {
     +<color:blue>getApduExchangeDuration() → Long?
 }
 
-+exception "<i>«error»\nReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<purple>>  {
++exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<purple>> <<error>> {
     +val message: String
     +val cause: Any?
     +val cardResponse: CardResponseApi?
