@@ -74,6 +74,7 @@ package "spi" as spi {
     +interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
         +getCardSelectionRequest() → CardSelectionRequestSpi
         +parse(cardSelectionResponseApi: CardSelectionResponseApi) → SmartCardSpi
+        {method} <size:10><color:#7F8C8D>    ⚠ errors: Parse</color></size>
     }
     +interface SmartCardSpi <<red>> {
         +<color:blue>deactivate() → Unit
@@ -109,12 +110,15 @@ package "spi" as spi {
     +<color:blue>transmitCardRequest(
         \t<color:blue>cardRequest: CardRequestSpi,
         \t<color:blue>smartCard: SmartCardSpi) → CardResponseApi
+    {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication, UnexpectedStatusWord, ApduExchangeDurationExceeded</color></size>
 
     +<color:blue>transmitCardRequestAndCloseChannel(
         \t<color:blue>cardRequest: CardRequestSpi,
         \t<color:blue>multichannelSmartCard: MultichannelSmartCardSpi) → CardResponseApi
+    {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication, UnexpectedStatusWord, ApduExchangeDurationExceeded</color></size>
 
     +<color:blue>closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) → Unit
+    {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication</color></size>
 }
 ' RESPONSE
 +interface CardSelectionResponseApi {
