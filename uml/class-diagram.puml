@@ -71,41 +71,41 @@ package "card" as card {
 
 ' SPI
 package "spi" as spi {
-    +interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
+    interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
         +getCardSelectionRequest() → CardSelectionRequestSpi
         +parse(cardSelectionResponseApi: CardSelectionResponseApi) → SmartCardSpi
         {method} <size:10><color:#7F8C8D>    ⚠ errors: Parse</color></size>
     }
-    +interface SmartCardSpi <<red>> {
+    interface SmartCardSpi <<red>> {
         +<color:blue>deactivate() → Unit
     }
-    +interface "<color:blue>MultichannelSmartCardSpi" as MultichannelSmartCardSpi <<red>> extends SmartCardSpi {
+    interface "<color:blue>MultichannelSmartCardSpi" as MultichannelSmartCardSpi <<red>> extends SmartCardSpi {
         +<color:blue>getChannel() → Int
     }
     ' REQUEST
-    +interface CardSelectionRequestSpi <<red>> {
+    interface CardSelectionRequestSpi <<red>> {
         +getSuccessfulSelectionStatusWords() → Set<Int>
         +getCardRequest() → CardRequestSpi?
     }
-    +interface CardRequestSpi <<red>> {
+    interface CardRequestSpi <<red>> {
         +getApduRequests() → List<ApduRequestSpi>
         +stopOnUnsuccessfulStatusWord() → Boolean
     }
-    +interface ApduRequestSpi <<red>> {
+    interface ApduRequestSpi <<red>> {
         +getApdu() → ByteArray
         +getSuccessfulStatusWords() → Set<Int>
         +getInfo() → String?
         +<color:blue>getApduExchangeMaxDuration() → Long?
     }
 }
-+class "**final** CardApiProperties" as ApiProperties <<green>> {
+class "**final** CardApiProperties" as ApiProperties <<green>> {
     +{static} **final** VERSION: String
 }
-+exception "Parse" as Parse <<purple>> <<error>> {
+exception "Parse" as Parse <<green>> <<error>> {
     +val message: String
     +val cause: Any?
 }
-+interface ProxyReaderApi {
+interface ProxyReaderApi {
     --
     +<color:blue>transmitCardRequest(
         \t<color:blue>cardRequest: CardRequestSpi,
@@ -121,24 +121,24 @@ package "spi" as spi {
     {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication</color></size>
 }
 ' RESPONSE
-+interface CardSelectionResponseApi {
+interface CardSelectionResponseApi {
     +<color:blue>getChannel() → Int
     +getPowerOnData() → String?
     +getSelectApplicationResponse() → ApduResponseApi?
     +hasMatched() → Boolean
     +getCardResponse() → CardResponseApi?
 }
-+interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
+interface "<<Serializable>>\nCardResponseApi" as CardResponseApi {
     +getApduResponses() → List<ApduResponseApi>
 }
-+interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
+interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
     +getApdu() → ByteArray
     +getDataOut() → ByteArray
     +getStatusWord() → Int
     +<color:blue>getApduExchangeDuration() → Long?
 }
 
-+exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<purple>> <<error>> {
+exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<green>> <<error>> {
     +val message: String
     +val cause: Any?
     +val cardResponse: CardResponseApi?
