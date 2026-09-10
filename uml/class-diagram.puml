@@ -98,10 +98,10 @@ package "spi" as spi {
         +<color:blue>getApduExchangeMaxDuration() → Long?
     }
 }
-class "CardApiProperties" as ApiProperties <<green>> <<constants>> {
+class "CardApiProperties" as ApiProperties <<constants>> <<green>> {
     +const VERSION: String = "3.0"
 }
-exception "Parse" as Parse <<green>> <<error>> {
+exception "Parse" as Parse <<error>> <<green>> {
     +val message: String
     +val cause: Any?
 }
@@ -138,7 +138,7 @@ interface "<<Serializable>>\nApduResponseApi" as ApduResponseApi {
     +<color:blue>getApduExchangeDuration() → Long?
 }
 
-exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<green>> <<error>> {
+exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<error>> <<green>> {
     +val message: String
     +val cause: Any?
     +val cardResponse: CardResponseApi?

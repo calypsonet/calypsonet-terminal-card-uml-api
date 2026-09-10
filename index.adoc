@@ -214,16 +214,17 @@ semantic intent rather than the syntactic form.
 
 [cols="^.^1,.^3,.^3", options="header"]
 |===
-| Type            | Description                                                     | Typical bindings
-| `String`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
-| `Boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
-| `Int`           | Signed 32-bit integer.                                           | `int`, `Int32`, `i32`.
-| `Long`          | Signed 64-bit integer.                                           | `long`, `Int64`, `i64`.
-| `ByteArray`     | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
-| `List<T>`       | Ordered collection of `T` values, may contain duplicates.        | `List<T>`, `Vec<T>`.
-| `Set<T>`        | Unordered collection of unique `T` values.                       | `Set<T>`, `HashSet<T>`.
-| `T?`            | Nullable value: either a `T` value or the absence of value (`null`). | `Integer` (boxed), `Optional<T>`, `T?`, `Option<T>`.
-| `Unit`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`, `()`.
+| Type        | Description                                                | Typical bindings
+| `String`    | Sequence of characters, UTF-8 encoded by default.          | `String`, `string`, `str`.
+| `Boolean`   | Two-state truth value.                                     | `boolean`, `bool`.
+| `Int`       | Signed 32-bit integer.                                     | `int`, `Int32`, `i32`.
+| `Long`      | Signed 64-bit integer.                                     | `long`, `Int64`, `i64`.
+| `ByteArray` | Ordered sequence of octets.                                | `byte[]`, `[u8]`, `bytes`.
+| `List<T>`   | Ordered collection of `T` values, may contain duplicates.  | `List<T>`, `Vec<T>`.
+| `Set<T>`    | Unordered collection of unique `T` values.                 | `Set<T>`, `HashSet<T>`.
+| `T?`        | Nullable value: either a `T` value or `null`.              | `Integer` (boxed), `Optional<T>`, `T?`, `Option<T>`.
+| `null`      | Absence of value, the alternative held by a nullable type. | `null`, `nil`, `None`.
+| `Unit`      | Indicates that an operation returns no value.              | `void`, `Unit`, `()`.
 |===
 
 ==== Type tables
