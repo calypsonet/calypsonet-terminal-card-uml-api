@@ -72,8 +72,8 @@ package "card" as card {
 ' SPI
 package "spi" as spi {
     interface "CardSelectionExtensionSpi" as CardSelectionExtensionSpi <<red>> {
-        +getCardSelectionRequest() → CardSelectionRequestSpi
-        +parse(cardSelectionResponseApi: CardSelectionResponseApi) → SmartCardSpi
+        +getCardSelectionRequest() → <color:blue>CardSelectionRequest
+        +parse(cardSelectionResponse: <color:blue>CardSelectionResponse</color>) → SmartCardSpi
         {method} <size:10><color:#7F8C8D>    ⚠ errors: Parse</color></size>
     }
     interface SmartCardSpi <<red>> {
@@ -83,19 +83,19 @@ package "spi" as spi {
         +<color:blue>getChannel() → Int
     }
     ' REQUEST
-    interface CardSelectionRequestSpi <<red>> {
-        +getSuccessfulSelectionStatusWords() → Set<Int>
-        +getCardRequest() → CardRequestSpi?
+    class "<color:blue>CardSelectionRequest" as CardSelectionRequest <<data>> <<green>> {
+        +{field} val successfulSelectionStatusWords: Set<Int> = setOf(0x9000)
+        +val cardRequest: CardRequest? = null
     }
-    interface CardRequestSpi <<red>> {
-        +getApduRequests() → List<ApduRequestSpi>
-        +stopOnUnsuccessfulStatusWord() → Boolean
+    class "<color:blue>CardRequest" as CardRequest <<data>> <<green>> {
+        +val apduRequests: List<ApduRequest>
+        +val stopOnUnsuccessfulStatusWord: Boolean
     }
-    interface ApduRequestSpi <<red>> {
-        +getApdu() → ByteArray
-        +getSuccessfulStatusWords() → Set<Int>
-        +getInfo() → String?
-        +<color:blue>getApduExchangeMaxDuration() → Long?
+    class "<color:blue>ApduRequest" as ApduRequest <<data>> <<green>> {
+        +val apdu: ByteArray
+        +{field} val successfulStatusWords: Set<Int> = setOf(0x9000)
+        +val info: String? = null
+        +<color:blue>val apduExchangeMaxDuration: Long? = null
     }
 }
 class "CardApiProperties" as ApiProperties <<constants>> <<green>> {
@@ -108,40 +108,38 @@ exception "Parse" as Parse <<error>> <<green>> {
 interface ProxyReaderApi {
     --
     +<color:blue>transmitCardRequest(
-        \t<color:blue>cardRequest: CardRequestSpi,
-        \t<color:blue>smartCard: SmartCardSpi) → CardResponseApi
+        \t<color:blue>cardRequest: CardRequest,
+        \t<color:blue>smartCard: SmartCardSpi) → CardResponse
     {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication, UnexpectedStatusWord, ApduExchangeDurationExceeded</color></size>
 
     +<color:blue>transmitCardRequestAndCloseChannel(
-        \t<color:blue>cardRequest: CardRequestSpi,
-        \t<color:blue>multichannelSmartCard: MultichannelSmartCardSpi) → CardResponseApi
+        \t<color:blue>cardRequest: CardRequest,
+        \t<color:blue>multichannelSmartCard: MultichannelSmartCardSpi) → CardResponse
     {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication, UnexpectedStatusWord, ApduExchangeDurationExceeded</color></size>
 
     +<color:blue>closeChannel(multichannelSmartCard: MultichannelSmartCardSpi) → Unit
     {method} <size:10><color:#7F8C8D>    ⚠ errors: ReaderBrokenCommunication, CardBrokenCommunication</color></size>
 }
 ' RESPONSE
-interface CardSelectionResponseApi {
-    +<color:blue>getChannel() → Int
-    +getPowerOnData() → String?
-    +getSelectApplicationResponse() → ApduResponseApi?
-    +hasMatched() → Boolean
-    +getCardResponse() → CardResponseApi?
+class "<color:blue>CardSelectionResponse" as CardSelectionResponse <<data>> <<green>> {
+    +<color:blue>val channel: Int
+    +val powerOnData: String?
+    +val selectApplicationResponse: ApduResponse?
+    +val hasMatched: Boolean
+    +val cardResponse: CardResponse?
 }
-interface "«Serializable»\nCardResponseApi" as CardResponseApi {
-    +getApduResponses() → List<ApduResponseApi>
+class "<color:blue>CardResponse" as CardResponse <<data>> <<green>> {
+    +val apduResponses: List<ApduResponse>
 }
-interface "«Serializable»\nApduResponseApi" as ApduResponseApi {
-    +getApdu() → ByteArray
-    +getDataOut() → ByteArray
-    +getStatusWord() → Int
-    +<color:blue>getApduExchangeDuration() → Long?
+class "<color:blue>ApduResponse" as ApduResponse <<data>> <<green>> {
+    +val apdu: ByteArray
+    +<color:blue>val apduExchangeDuration: Long?
 }
 
 exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusWord\n<color:blue>ApduExchangeDurationExceeded" as errors <<error>> <<green>> {
     +val message: String
     +val cause: Any?
-    +val cardResponse: CardResponseApi?
+    +val cardResponse: CardResponse?
     +val isCardResponseComplete: Boolean
 }
 
@@ -150,25 +148,25 @@ exception "ReaderBrokenCommunication\nCardBrokenCommunication\nUnexpectedStatusW
 ' Associations
 
 CardSelectionExtensionSpi ..> SmartCardSpi #C_LINK : provide >
-CardSelectionExtensionSpi ..> CardSelectionRequestSpi #C_LINK : provide >
-CardSelectionExtensionSpi ..> CardSelectionResponseApi #C_USE : use >
+CardSelectionExtensionSpi ..> CardSelectionRequest #C_LINK : provide >
+CardSelectionExtensionSpi ..> CardSelectionResponse #C_USE : use >
 
-CardSelectionRequestSpi ..> CardRequestSpi #C_LINK : provide >
+CardSelectionRequest ..> CardRequest #C_USE : use >
 
-CardRequestSpi ..> ApduRequestSpi #C_LINK : provide >
+CardRequest ..> ApduRequest #C_USE : use >
 
-CardSelectionResponseApi ..> ApduResponseApi #C_LINK : provide >
-CardSelectionResponseApi ..> CardResponseApi #C_LINK : provide >
+CardSelectionResponse ..> ApduResponse #C_USE : use >
+CardSelectionResponse ..> CardResponse #C_USE : use >
 
-CardResponseApi ..> ApduResponseApi #C_LINK : provide >
+CardResponse ..> ApduResponse #C_USE : use >
 
-errors *-up- "0..1" CardResponseApi #C_LINK
+errors *-up- "0..1" CardResponse #C_LINK
 
-ProxyReaderApi .left.> CardRequestSpi #C_USE : use >
+ProxyReaderApi .left.> CardRequest #C_USE : use >
 ProxyReaderApi .up.> SmartCardSpi #C_USE : use >
-ProxyReaderApi .left.> MultichannelSmartCardSpi #C_USE : use >
+ProxyReaderApi ..> MultichannelSmartCardSpi #C_USE : use >
 
-ProxyReaderApi .right.> CardResponseApi #C_LINK : provide >
+ProxyReaderApi .right.> CardResponse #C_LINK : provide >
 
 ' == LAYOUT ==
 
