@@ -238,6 +238,7 @@ semantic intent rather than the syntactic form.
 | `ByteArray` | Ordered sequence of octets.                                | `byte[]`, `[u8]`, `bytes`.
 | `List<T>`   | Ordered collection of `T` values, may contain duplicates.  | `List<T>`, `Vec<T>`.
 | `Set<T>`    | Unordered collection of unique `T` values.                 | `Set<T>`, `HashSet<T>`.
+| `Any`       | Value of any type, root of the type hierarchy.             | `Object`, `Any`, `object`, `Box<dyn Any>`.
 | `T?`        | Nullable value: either a `T` value or `null`.              | `Integer` (boxed), `Optional<T>`, `T?`, `Option<T>`.
 | `null`      | Absence of value, the alternative held by a nullable type. | `null`, `nil`, `None`.
 | `Unit`      | Indicates that an operation returns no value.              | `void`, `Unit`, `()`.
