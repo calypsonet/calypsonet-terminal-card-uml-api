@@ -289,8 +289,8 @@ not restated for each operation:
   operation. Violating one is a contract error, never listed in the *Errors* row, which describes only the
   outcomes a correct caller must handle. Each entry is prefixed by its nature, which determines the error
   raised when the condition is not met:
-** *Argument* -- an illegal argument error.
-** *Range* -- an index out of bounds error.
+** *Argument* -- an illegal argument error. Applies to any invalid argument, including values bounded by a card or SAM protocol.
+** *Range* -- an index out of bounds error. Applies when the argument designates a position within a collection or memory image exposed by the API.
 ** *State* -- an illegal state error.
 ** *Capability* -- an unsupported operation error.
 * *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
