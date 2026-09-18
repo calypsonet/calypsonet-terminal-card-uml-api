@@ -64,7 +64,7 @@ legend top
     *** <back:#EBF5FB><color:#3498DB><b>Factory or interface provided by the factory
     *** <back:#FEFECE><color:#D4AC0D><b>Interface that cannot be instantiated directly by the factory
     *** <back:#FDEDEC><color:#E74C3C><b>SPI (Service Provider Interface) to be provided by the end-user
-    *** <back:#E9F7EF><color:#27AE60><b>Class, enum or error
+    *** <back:#E9F7EF><color:#27AE60><b>Data, constants, enumeration or error
 end legend
 
 package "card" as card {
