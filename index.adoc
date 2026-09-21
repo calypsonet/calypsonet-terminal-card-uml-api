@@ -362,7 +362,7 @@ is backward-compatible per that API's evolution policy.
 | Term              | Definition
 
 | APDU              | Application Protocol Data Unit, the message format used between the terminal and the card (<<ref_iso7816,ISO/IEC 7816-4>>).
-| Case 4 APDU       | APDU command that carries data in both directions; the `Le` field is mandatory and MUST be set to `00h`.
+| Case 4 APDU       | APDU command that carries data in both directions; the `Le` field is mandatory and RECOMMENDED to be set to `00h`.
 | Card Extension    | Software module providing the card-specific dialog with a card family (e.g. Calypso).
 | Logical Channel   | Software-level communication path established with a card after a successful selection.
 | Basic Channel     | The default logical channel (channel `0`) of an ISO/IEC 7816-4 card.
@@ -450,6 +450,23 @@ dialog with a card to a remote location adds a transmission delay; an abnormally
 that the card is not actually present in front of the reader. The maximum duration to declare depends on the
 command, the card and the reader, and is chosen by the application or the card extension.
 
+[[sec_apdu_construction_rules]]
+=== APDU construction rules
+
+The APDU commands carried by <<type_ApduRequest,`ApduRequest`>> MUST strictly comply with
+<<ref_iso7816,ISO/IEC 7816-3>>. In particular, a case 4 command -- one carrying data in both directions -- MUST
+include the `Le` field. It is RECOMMENDED to set this field to `00h`.
+
+[[sec_limitations_constraints]]
+=== Limitations and constraints
+
+The Card API does not allow the transmission of the following APDU commands to a card to be requested:
+
+* *Select Application* by DF name: the selection of a card application is managed exclusively through a
+  <<type_CardSelectionRequest,`CardSelectionRequest`>>;
+* *Get Response*: the status words `61XYh` and `6CXYh` are handled automatically by the reader implementation, which
+  issues a *Get Response* command or re-issues the previous command with the expected `Le` field.
+
 [[sec_class_diagram]]
 === UML class diagram
 
@@ -510,8 +527,8 @@ include::uml/class-diagram.puml[Terminal Card API class diagram]
 | `ByteArray`
 | --
 | 1.0
-| Bytes of the APDU command (header and, when applicable, data field and `Le`). For case 4 APDU commands, the
-  `Le` field is mandatory and MUST be set to `00h`. At least 4 bytes.
+| Bytes of the APDU command (header and, when applicable, data field and `Le`), built according to
+  <<sec_apdu_construction_rules,the APDU construction rules>>. At least 4 bytes.
 
 | `successfulStatusWords`
 | `Set<Int>`
