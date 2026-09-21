@@ -435,14 +435,20 @@ implementation extracts the channel information from the dynamic sub-type when n
 
 === APDU exchange execution-time control
 
-To enable software-level control of the APDU exchange execution time, this specification carries:
+This specification allows the execution time of each APDU exchange to be controlled at software level. It
+provides:
 
-* an *optional* per-request duration bound on <<type_ApduRequest,`ApduRequest`>>
+* an *optional* maximum duration on each request
   (<<type_ApduRequest,`ApduRequest.apduExchangeMaxDuration`>>),
-* an *optional* per-response effective duration on <<type_ApduResponse,`ApduResponse`>>
+* an *optional* effective duration on each response
   (<<type_ApduResponse,`ApduResponse.apduExchangeDuration`>>),
-* a dedicated error <<type_ApduExchangeDurationExceeded,
-  `ApduExchangeDurationExceeded`>> raised when the effective duration exceeds the declared bound.
+* a dedicated error, <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>>, raised when the
+  effective duration of an exchange exceeds the declared maximum.
+
+This mechanism is a practical way to implement security countermeasures against *relay attacks*. Relaying the
+dialog with a card to a remote location adds a transmission delay; an abnormally long exchange can therefore reveal
+that the card is not actually present in front of the reader. The maximum duration to declare depends on the
+command, the card and the reader, and is chosen by the application or the card extension.
 
 [[sec_class_diagram]]
 === UML class diagram
