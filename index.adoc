@@ -445,10 +445,17 @@ provides:
 * a dedicated error, <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>>, raised when the
   effective duration of an exchange exceeds the declared maximum.
 
-This mechanism is a practical way to implement security countermeasures against *relay attacks*. Relaying the
-dialog with a card to a remote location adds a transmission delay; an abnormally long exchange can therefore reveal
-that the card is not actually present in front of the reader. The maximum duration to declare depends on the
-command, the card and the reader, and is chosen by the application or the card extension.
+The durations exchanged through this specification are expressed in *microseconds*. The effective resolution of
+the measurement depends on the reader and on the execution platform: an implementation MUST document the
+resolution it provides, and a bound finer than that resolution MUST NOT be relied upon.
+
+This mechanism is a practical way to implement security countermeasures against two threats. Against a *relay
+attack*, relaying the dialog with a card to a remote location adds a transmission delay; an abnormally long exchange
+can therefore reveal that the card is not actually present in front of the reader. Against *card emulation*, a
+generic RFID device answering in place of the expected card processes the command in software, where the chip
+answers in hardware; an abnormally long exchange then reveals that the answer does not come from the expected
+product. The maximum duration to declare depends on the command, the card and the reader, and is chosen by the
+application or the card extension.
 
 [[sec_apdu_construction_rules]]
 === APDU construction rules
@@ -547,10 +554,10 @@ include::uml/class-diagram.puml[Terminal Card API class diagram]
 | `Long?`
 | `null`
 | 3.0
-| Maximum tolerated duration of the APDU exchange, in *milliseconds*. The proxy reader MUST measure the
+| Maximum tolerated duration of the APDU exchange, in *microseconds*. The proxy reader MUST measure the
   effective duration of the exchange and raise
-  <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> if it exceeds this bound. `null` when
-  no bound is defined for this request.
+  <<type_ApduExchangeDurationExceeded,`ApduExchangeDurationExceeded`>> if it exceeds this bound. Strictly
+  positive when set; `null` when no bound is defined for this request.
 |===
 
 [[type_ApduResponse]]
@@ -584,7 +591,7 @@ Instances are serialisable so that they can be transported across distributed bo
 | `Long?`
 | --
 | 3.0
-| Effective duration of the APDU exchange, in *milliseconds*, as measured by the underlying reader
+| Effective duration of the APDU exchange, in *microseconds*, as measured by the underlying reader
   implementation. `null` if the reader does not provide the measurement.
 |===
 
