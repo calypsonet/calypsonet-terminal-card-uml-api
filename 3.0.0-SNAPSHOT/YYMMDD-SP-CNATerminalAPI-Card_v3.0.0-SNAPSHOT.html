@@ -1689,10 +1689,18 @@ effective duration of an exchange exceeds the declared maximum.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>This mechanism is a practical way to implement security countermeasures against <strong>relay attacks</strong>. Relaying the
-dialog with a card to a remote location adds a transmission delay; an abnormally long exchange can therefore reveal
-that the card is not actually present in front of the reader. The maximum duration to declare depends on the
-command, the card and the reader, and is chosen by the application or the card extension.</p>
+<p>The durations exchanged through this specification are expressed in <strong>microseconds</strong>. The effective resolution of
+the measurement depends on the reader and on the execution platform: an implementation MUST document the
+resolution it provides, and a bound finer than that resolution MUST NOT be relied upon.</p>
+</div>
+<div class="paragraph">
+<p>This mechanism is a practical way to implement security countermeasures against two threats. Against a <strong>relay
+attack</strong>, relaying the dialog with a card to a remote location adds a transmission delay; an abnormally long exchange
+can therefore reveal that the card is not actually present in front of the reader. Against <strong>card emulation</strong>, a
+generic RFID device answering in place of the expected card processes the command in software, where the chip
+answers in hardware; an abnormally long exchange then reveals that the answer does not come from the expected
+product. The maximum duration to declare depends on the command, the card and the reader, and is chosen by the
+application or the card extension.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1879,10 +1887,10 @@ issues a <strong>Get Response</strong> command or re-issues the previous command
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><code>Long?</code></p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><code>null</code></p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">3.0</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Maximum tolerated duration of the APDU exchange, in <strong>milliseconds</strong>. The proxy reader MUST measure the
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Maximum tolerated duration of the APDU exchange, in <strong>microseconds</strong>. The proxy reader MUST measure the
   effective duration of the exchange and raise
-  <a href="#type_ApduExchangeDurationExceeded"><code>ApduExchangeDurationExceeded</code></a> if it exceeds this bound. <code>null</code> when
-  no bound is defined for this request.</p></td>
+  <a href="#type_ApduExchangeDurationExceeded"><code>ApduExchangeDurationExceeded</code></a> if it exceeds this bound. Strictly
+  positive when set; <code>null</code> when no bound is defined for this request.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1956,7 +1964,7 @@ issues a <strong>Get Response</strong> command or re-issues the previous command
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><code>Long?</code></p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">3.0</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Effective duration of the APDU exchange, in <strong>milliseconds</strong>, as measured by the underlying reader
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Effective duration of the APDU exchange, in <strong>microseconds</strong>, as measured by the underlying reader
   implementation. <code>null</code> if the reader does not provide the measurement.</p></td>
 </tr>
 </tbody>
