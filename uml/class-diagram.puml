@@ -1,8 +1,6 @@
 @startuml
 title
-    <img:assets/logos/calypso.svg{scale=0.2}>
-
-    Terminal Card API 3.0 — UML Class Diagram
+    <#transparent,#transparent>|<img:assets/logos/calypso.svg{scale=0.16}>|<size:16> </size>%newline()  Terminal Card API 3.0 — UML Class Diagram |
 end title
 
 ' == THEME (class) ==
@@ -27,6 +25,9 @@ skinparam stereotypeEBorderColor #EB937F
 
 skinparam ClassBorderThickness 2
 skinparam ArrowThickness 2
+
+' Compact header
+skinparam TitleFontSize 16
 
 ' Yellow
 skinparam ClassBackgroundColor #FEFECE
@@ -54,17 +55,22 @@ hide <<grey>> stereotype
 
 ' == CONTENT ==
 
+<style>
+legend {
+  BackGroundColor transparent
+  LineColor transparent
+  LineThickness 0
+  Padding 0
+  Margin 8
+  FontSize 11
+}
+</style>
 legend top
-    * __Text__
-    *** <color:blue><b>New element added since the last version
-    *** <color:red><s><b>Element marked as deprecated since the last version
-    *** <s><b>Element marked as deprecated
-    *** <color:grey><b>Work in progress...
-    * __Object__
-    *** <back:#EBF5FB><color:#3498DB><b>Factory or interface provided by the factory
-    *** <back:#FEFECE><color:#D4AC0D><b>Interface that cannot be instantiated directly by the factory
-    *** <back:#FDEDEC><color:#E74C3C><b>SPI (Service Provider Interface) to be provided by the end-user
-    *** <back:#E9F7EF><color:#27AE60><b>Data, constants, enumeration or error
+<#F2F3F4,#D7DBDD>|= Text styles |= Object colors |
+<#FFFFFF,#D7DBDD>| <color:blue>**Element**</color> new since the last version |<#EBF5FB> <color:#3498DB>Factory or interface provided by the factory</color> |
+<#FFFFFF,#D7DBDD>| <color:red><s>**Element**</s></color> deprecated since the last version |<#FEFECE> <color:#D4AC0D>Interface that cannot be instantiated directly by the factory</color> |
+<#FFFFFF,#D7DBDD>| <s>**Element**</s> deprecated |<#FDEDEC> <color:#E74C3C>SPI (Service Provider Interface) to be provided by the end-user</color> |
+<#FFFFFF,#D7DBDD>| <color:grey>**Element**</color> work in progress |<#E9F7EF> <color:#27AE60>Data, constants, enumeration or error</color> |
 end legend
 
 package "card" as card {

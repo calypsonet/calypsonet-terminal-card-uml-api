@@ -39,9 +39,14 @@ SUBJECT = 'UML Class Diagram'
 # Matches the historical form "<name> <version> (<date>)" as well as the current
 # "<name> <version> - <subject>", so that a diagram coming back from an older
 # edition is migrated instead of being reported as unparsable.
-TITLE_RE = re.compile(r'(?m)^(?P<indent>[ \t]*)(?P<name>[A-Za-z0-9 ]*API)[ \t]*-?[ \t]*'
+# The title may be embedded in a creole markup (e.g. a borderless table putting the
+# logo beside the title): any prefix ending with ">", "|" or ")" and a trailing "|"
+# are kept as is, only the "title" group is compared and rewritten.
+TITLE_RE = re.compile(r'(?m)^[ \t]*(?:\S[^\n]*?[>|)][ \t]*)?'
+                      r'(?P<title>(?P<name>[A-Za-z0-9 ]*API)[ \t]*-?[ \t]*'
                       r'(?P<version>\d+\.\d+)(?:\.\+)?[ \t]*'
-                      r'(?:\((?P<date>\d{4}-\d{2}-\d{2})\)|\u2014[ \t]*[A-Za-z ]+)[ \t]*$')
+                      r'(?:\((?P<date>\d{4}-\d{2}-\d{2})\)|\u2014[ \t]*[A-Za-z ]+?))'
+                      r'[ \t]*\|?[ \t]*$')
 FOOTER_RE = re.compile(r'(?ms)^center footer\n.*?^end footer\n')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -86,9 +91,9 @@ def main():
     m = TITLE_RE.search(t)
     if not m:
         issues.append('title line not found')
-    elif m.group(0).strip() != title:
-        issues.append('title: %s -> %s' % (m.group(0).strip(), title))
-        t = t[:m.start()] + m.group('indent') + title + t[m.end():]
+    elif m.group('title').strip() != title:
+        issues.append('title: %s -> %s' % (m.group('title').strip(), title))
+        t = t[:m.start('title')] + title + t[m.end('title'):]
 
     current = FOOTER_RE.search(t)
     if current is None:
