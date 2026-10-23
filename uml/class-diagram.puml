@@ -2,7 +2,7 @@
 title
     <img:assets/logos/calypso.svg{scale=0.2}>
 
-    Terminal Card API 3.0.+ (2026-04-21)
+    Terminal Card API 3.0 — UML Class Diagram
 end title
 
 ' == THEME (class) ==
@@ -176,5 +176,9 @@ ApiProperties -[hidden]- Parse
 
 package card #C_GREY1 {}
 package card.spi #C_GREY2 {}
+
+center footer
+<size:10><color:#566573>Terminal Card API 3.0 (2026-07-20) — CNA-TC-API — Copyright © Calypso Networks Association — CC BY-ND 4.0 (https://creativecommons.org/licenses/by-nd/4.0/) — https://docs.terminal-api.calypsonet.org</color></size>
+end footer
 
 @enduml

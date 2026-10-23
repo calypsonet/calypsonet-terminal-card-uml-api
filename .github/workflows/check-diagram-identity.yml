@@ -1,0 +1,35 @@
+name: Check Diagram Identity
+
+# The class diagram is published on its own, so its title and footer must carry
+# the identity declared by index.adoc (API name, version, edition date, document
+# reference, copyright, license, URL). The pre-commit hook of this repository
+# performs the same check locally; see .githooks/pre-commit.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.adoc'
+      - 'uml/class-diagram.puml'
+      - 'assets/legal/**'
+      - 'tools/sync_diagram_identity.py'
+      - '.github/workflows/check-diagram-identity.yml'
+  pull_request:
+    paths:
+      - 'index.adoc'
+      - 'uml/class-diagram.puml'
+      - 'assets/legal/**'
+      - 'tools/sync_diagram_identity.py'
+      - '.github/workflows/check-diagram-identity.yml'
+  workflow_dispatch:
+
+jobs:
+  check-diagram-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Check that the class diagram identity matches index.adoc
+        run: python tools/sync_diagram_identity.py --check
