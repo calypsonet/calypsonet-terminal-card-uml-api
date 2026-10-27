@@ -2,6 +2,7 @@
 layout: default
 title: "calypsonet-terminal-card-api-spec"
 repository: "calypsonet-terminal-card-api-spec"
+doc_name: "Terminal Card API"
 latest_stable: "2.0.1"
 latest_stable_path: ""
 versions:
