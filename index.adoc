@@ -11,7 +11,7 @@
 :doc-classification: Public
 :doc-id: CNA-TC-API
 :doc-ref: YYMMDD-SP-CNATerminalAPI-Card
-:doc-repo: https://github.com/calypsonet/calypsonet-terminal-card-uml-api
+:doc-repo: https://github.com/calypsonet/calypsonet-terminal-card-api-spec
 include::assets/logos/_terminal-api.adoc[]
 include::assets/legal/_license-cc-by-nd-4.0.adoc[]
 //
@@ -316,7 +316,7 @@ is backward-compatible per that API's evolution policy.
 | Reference | Document
 
 | [[ref_cna_tr]] [CNA-TR-API]
-| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-reader-uml-api/[_CNA Terminal API -- Reader_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
+| https://docs.terminal-api.calypsonet.org/reader/[_CNA Terminal API -- Reader_] (SP-CNATerminalAPI-Reader), version {ver-cna-tr}, {organization}.
 |===
 
 ==== Normative References
