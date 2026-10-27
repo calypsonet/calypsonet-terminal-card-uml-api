@@ -136,13 +136,26 @@ changelog is maintained in the {doc-repo}/blob/HEAD/CHANGELOG.md[`CHANGELOG.md`]
 file at the root of the source repository.
 ====
 
+//
+// Writing convention for this table:
+//   - one row per published edition, the most recent first;
+//   - describe only what affects the specified contract, from the reader's point of
+//     view: elements added, renamed, removed or clarified, named in code style;
+//   - three lines at most; the migration guide carries the details;
+//   - an editorial-only edition says so, which justifies a PATCH version;
+//   - no pull request number, file name or implementation detail: those belong to
+//     the CHANGELOG.md of the source repository.
+// Examples:
+//   | *v3.1.0* + <date> | Added `authorizeFileNotFoundError()` and `authorizeRecordNotFoundError()` to the security settings.
+//   | *v3.0.1* + <date> | Editorial corrections only: wording of the Stored Value operations. No change to the specified contract.
+//
 [cols="^.^1,.^4", options="header"]
 |===
 | Version / Date | Modifications
 
 | *v{revnumber}* +
 {revdate}
-| Baseline.
+| Initial edition of this document.
 |===
 
 // =============================================================================
