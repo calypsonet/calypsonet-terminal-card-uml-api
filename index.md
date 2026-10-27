@@ -1,8 +1,9 @@
 ---
 layout: default
-title: "calypsonet-terminal-card-uml-api"
-repository: "calypsonet-terminal-card-uml-api"
+title: "calypsonet-terminal-card-api-spec"
+repository: "calypsonet-terminal-card-api-spec"
 latest_stable: "2.0.1"
+latest_stable_path: ""
 versions:
   - version: "3.0.0-SNAPSHOT"
     status: snapshot
