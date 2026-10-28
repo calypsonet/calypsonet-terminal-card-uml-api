@@ -16,5 +16,9 @@ applied to the specified contract:
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-10-28
 ### Added
 - Initial baseline (v3.0.0) of the Terminal Card API specification.
+
+[unreleased]: https://github.com/calypsonet/calypsonet-terminal-card-api-spec/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/calypsonet/calypsonet-terminal-card-api-spec/releases/tag/3.0.0
