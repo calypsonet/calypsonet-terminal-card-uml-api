@@ -1,0 +1,12 @@
+  - version: "3.0.0"
+    status: stable
+    files:
+      diagram:
+        name: "class-diagram.svg"
+        size: "63 kB"
+      html:
+        name: "261028-SP-CNATerminalAPI-Card_v3.0.0.html"
+        size: "1.4 MB"
+      pdf:
+        name: "261028-SP-CNATerminalAPI-Card_v3.0.0.pdf"
+        size: "1.1 MB"
